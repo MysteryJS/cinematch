@@ -25,3 +25,10 @@ replay_pid*
 
 #env file
 .env
+
+#Maven files
+/target/
+
+#Others
+.idea/
+.vscode/
