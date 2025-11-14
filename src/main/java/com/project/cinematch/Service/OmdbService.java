@@ -12,7 +12,7 @@ public class OmdbService {
     private final RestTemplate restTemplate = new RestTemplate();
 
     public String getMovieByTitle(String title) {
-        String url = "http://www.omdbapi.com/?apikey=" + apiKey + "&t=interstellar";
+        String url = "http://www.omdbapi.com/?apikey=" + apiKey + "&t=" + title;
         return restTemplate.getForObject(url, String.class);
     }
 }
