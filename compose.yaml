@@ -6,7 +6,7 @@ services:
       - 'POSTGRES_PASSWORD=secret'
       - 'POSTGRES_USER=cinematch'
     ports:
-      - '5432'
+      - '5432:5432'
   sentiment:
     build: ./sentiment-analysis
     ports:
