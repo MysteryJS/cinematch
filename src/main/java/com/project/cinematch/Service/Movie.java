@@ -1,3 +1,5 @@
+package com.project.cinematch.Service;
+
 public class Movie {
     private String title;
     private int year;
