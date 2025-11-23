@@ -10,7 +10,7 @@ public class PageControllers {
     public String search() { return "search"; }
 
     @GetMapping("/trending")
-    public String treanding() { return "treanding"; }
+    public String treanding() { return "trending"; }
 
     @GetMapping("/forum")
     public String forum() { return "forum"; }
