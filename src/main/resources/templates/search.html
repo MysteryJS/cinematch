@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="el">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Search</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/search.css">
 </head>
 
 <body>
@@ -12,12 +13,12 @@
     <nav class="navbar">
         <div class="nav-container">
             <a href="index.html" class="logo-link" title="CineMatch">
-                <img src="logo.png" alt="CineMatch logo" class="logo-img">
+                <img src="/logo.png" alt="CineMatch logo" class="logo-img"> </a>
             </a>
 
             <ul class="nav-menu">
                 <li><a href="index.html" class="nav-link">Home</a></li>
-                <li><a href="movie-search.html" class="nav-link active">Movie Search</a></li>
+                <li><a href="/search" class="nav-link active">Search</a></li>
             </ul>
         </div>
     </nav>
@@ -38,7 +39,7 @@
     </section>
 
     <script>
-        const apiKey = "YOUR_API_KEY_HERE";
+
         const searchBtn = document.getElementById("searchBtn");
         const input = document.getElementById("searchInput");
         const results = document.getElementById("movieResults");
@@ -66,7 +67,7 @@
                         <p><strong>Ηθοποιοί:</strong> ${data.Actors}</p>
                         <p><strong>Σκηνοθέτης:</strong> ${data.Director}</p>
                         <p><strong>Είδος:</strong> ${data.Genre}</p>
-                        <p><strong>IMDB Rating:</strong> :star: ${data.imdbRating}</p>
+                        <p><strong>IMDB Rating:</strong> 🌟 ${data.imdbRating}</p>
                         <p><strong>Πλοκή:</strong> ${data.Plot}</p>
                     </div>
                 </div>`;
@@ -77,4 +78,5 @@
         });
     </script>
 </body>
+
 </html>
