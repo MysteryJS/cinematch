@@ -10,7 +10,11 @@ import java.util.List;
 @RequestMapping("/api/trending")
 public class TraktController {
 
-    private final TraktService traktService = new TraktService();
+    private final TraktService traktService;
+
+    public TraktController(TraktService traktService) {
+        this.traktService = traktService;
+    }
 
     @GetMapping
     public List<Movie> getTrendingMovies() throws Exception {

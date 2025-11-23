@@ -9,13 +9,16 @@ import java.util.Map;
 @RequestMapping("/api/quiz")
 public class QuizController {
 
-    private final QuizService quizService = new QuizService();
+    private final QuizService quizService;
+
+    public QuizController(QuizService quizService) {
+        this.quizService = quizService;
+    }
 
     @GetMapping
     public Map<String, Object> getQuiz(
-        @RequestParam(defaultValue = "5") int amount,
-        @RequestParam(defaultValue = "easy") String difficulty
-    ) {
+            @RequestParam(defaultValue = "5") int amount,
+            @RequestParam(defaultValue = "easy") String difficulty) {
         return quizService.fetchQuiz(amount, difficulty);
     }
 }
