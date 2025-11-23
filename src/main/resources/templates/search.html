@@ -3,9 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search</title>
+    <title>Movie Search</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <h1>Searching Page!</h1>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo-link" title="CineMatch">
+                <img src="logo.png" alt="CineMatch logo" class="logo-img">
+            </a>
+
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="movie-search.html" class="nav-link active">Movie Search</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="page active">
+        <div class="page-header">
+            <h1>Αναζήτηση Ταινιών</h1>
+            <p>Πληκτρολογήστε μια ταινία και δείτε λεπτομέρειες από το OMDb API</p>
+        </div>
+
+        <div class="search-container">
+            <input id="searchInput" type="text" placeholder="Πληκτρολόγησε τίτλο ταινίας...">
+            <button id="searchBtn">Αναζήτηση</button>
+        </div>
+
+        <div id="movieResults" class="results-container"></div>
+
+    </section>
+
+    <script>
+        const apiKey = "YOUR_API_KEY_HERE";
+        const searchBtn = document.getElementById("searchBtn");
+        const input = document.getElementById("searchInput");
+        const results = document.getElementById("movieResults");
+
+        searchBtn.addEventListener("click", () => {
+            const title = input.value.trim();
+            if (!title) {
+                results.innerHTML = "<p class='error'>Γράψε μια ταινία πρώτα.</p>";
+                return;
+            }
+
+            fetch(`http://localhost:8080/api/movies/${encodeURIComponent(title)}`)
+                .then(res => res.text())
+                .then(txt => {
+                    const data = JSON.parse(txt);
+                    if (data.Response === "False") {
+                        results.innerHTML = "<p class='error'>Δεν βρέθηκε ταινία.</p>";
+                        return;
+                    }
+                    results.innerHTML = `
+                <div class="movie-card">
+                    <img src="${data.Poster}" alt="Poster">
+                    <div class="movie-info">
+                        <h2>${data.Title} (${data.Year})</h2>
+                        <p><strong>Ηθοποιοί:</strong> ${data.Actors}</p>
+                        <p><strong>Σκηνοθέτης:</strong> ${data.Director}</p>
+                        <p><strong>Είδος:</strong> ${data.Genre}</p>
+                        <p><strong>IMDB Rating:</strong> :star: ${data.imdbRating}</p>
+                        <p><strong>Πλοκή:</strong> ${data.Plot}</p>
+                    </div>
+                </div>`;
+                })
+                .catch(err => {
+                    results.innerHTML = "<p class='error'>Σφάλμα σύνδεσης.</p>";
+                });
+        });
+    </script>
 </body>
 </html>
