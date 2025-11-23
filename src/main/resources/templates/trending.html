@@ -1,11 +1,62 @@
 <!DOCTYPE html>
 <html lang="el">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trending!</title>
+    <title>Trending Movies</title>
+    <link rel="stylesheet" href="/trending.css">
 </head>
+
 <body>
-    <h1>Trending List!</h1>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo-link" title="CineMatch">
+                <img src="/logo.png" alt="CineMatch logo" class="logo-img">
+            </a>
+
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="/search" class="nav-link">Search</a></li>
+                <li><a href="/trending" class="nav-link active">Trending Movies</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="page active">
+        <div class="page-header">
+            <h1>Top 10 Trending Ταινίες</h1>
+            <p>Οι πιο δημοφιλείς ταινίες αυτή τη στιγμή από το API</p>
+        </div>
+
+        <div id="trendingResults" class="results-container"></div>
+    </section>
+
+    <script>
+
+        const results = document.getElementById("trendingResults");
+        fetch("http://localhost:8080/api/trending")
+            .then(res => res.json())
+            .then(movies => {
+                if (!Array.isArray(movies) || movies.length === 0) {
+                    results.innerHTML = "<p class='error'>Δεν βρέθηκαν trending ταινίες.</p>";
+                    return;
+                }
+                results.innerHTML = movies.map(movie => `
+            <div class="movie-card">
+                <h2>${movie.title}</h2>
+                <p><strong>Year:</strong> ${movie.year}</p>
+            </div>
+            `).join("");
+            })
+            .catch(err => {
+                results.innerHTML = "<p class='error'>Σφάλμα επικοινωνίας με το backend!</p>";
+                console.log(err);
+            });
+    </script>
+
+
 </body>
+
 </html>
