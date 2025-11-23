@@ -9,7 +9,7 @@ public class PageControllers {
     @GetMapping("/search")
     public String search() { return "search"; }
 
-    @GetMapping("/treanding")
+    @GetMapping("/trending")
     public String treanding() { return "treanding"; }
 
     @GetMapping("/forum")
