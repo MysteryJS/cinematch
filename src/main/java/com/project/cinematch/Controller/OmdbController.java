@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.*;
 import com.project.cinematch.Service.OmdbService;
 
 @RestController
-@RequestMapping("/api/movies")
+@RequestMapping("/api/movie")
 public class OmdbController {
 
     private final OmdbService omdbService;
