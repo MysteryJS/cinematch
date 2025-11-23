@@ -7,8 +7,11 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import io.github.cdimascio.dotenv.Dotenv;
 
+@Service
 public class TraktService {
 
     private final String clientId;
