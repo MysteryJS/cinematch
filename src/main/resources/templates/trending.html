@@ -37,34 +37,64 @@
 
         const results = document.getElementById("trendingResults");
 
+        // 1️⃣ Φέρνουμε τα trending από το backend
         fetch("http://localhost:8080/api/trending")
             .then(res => res.json())
-            .then(movies => {
+            .then(async (movies) => {
 
                 if (!Array.isArray(movies) || movies.length === 0) {
                     results.innerHTML = "<p class='error'>Δεν βρέθηκαν trending ταινίες.</p>";
                     return;
                 }
 
-                results.innerHTML = movies.map(movie => `
-                    <div class="movie-card">
+                // 2️⃣ Για κάθε ταινία κάνουμε fetch στο OMDb API
+                const detailedMovies = await Promise.all(
+                    movies.map(async (m) => {
 
-                        <img src="${movie.Poster}" alt="Poster" class="poster-img">
+                        const title = m.title || m.Title;
 
-                        <div class="movie-info">
-                            <h2>${movie.Title} (${movie.Year})</h2>
+                        try {
+                            const omdbRes = await fetch(`https://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=YOUR_OMDB_KEY`);
+                            const data = await omdbRes.json();
+                            return data;
+                        } catch (err) {
+                            console.log("OMDb error:", err);
+                            return null;
+                        }
+                    })
+                );
 
-                            <p><strong>Ηθοποιοί:</strong> ${movie.Actors || "N/A"}</p>
-                            <p><strong>Σκηνοθέτης:</strong> ${movie.Director || "N/A"}</p>
-                            <p><strong>Είδος:</strong> ${movie.Genre || "N/A"}</p>
+                // 3️⃣ Φτιάχνουμε το HTML
+                results.innerHTML = detailedMovies.map(movie => {
 
-                            <p><strong>IMDB Rating:</strong> ⭐ ${movie.imdbRating || "N/A"}</p>
+                    if (!movie || movie.Response === "False") {
+                        return `
+                            <div class="movie-card">
+                                <p>Σφάλμα φόρτωσης στοιχείων ταινίας.</p>
+                            </div>
+                        `;
+                    }
 
-                            <p><strong>Πλοκή:</strong> ${movie.Plot || "Δεν υπάρχει διαθέσιμη περιγραφή."}</p>
+                    return `
+                        <div class="movie-card">
+
+                            <img src="${movie.Poster}" alt="Poster" class="poster-img">
+
+                            <div class="movie-info">
+                                <h2>${movie.Title} (${movie.Year})</h2>
+
+                                <p><strong>Ηθοποιοί:</strong> ${movie.Actors}</p>
+                                <p><strong>Σκηνοθέτης:</strong> ${movie.Director}</p>
+                                <p><strong>Είδος:</strong> ${movie.Genre}</p>
+
+                                <p><strong>IMDB Rating:</strong> ⭐ ${movie.imdbRating}</p>
+
+                                <p><strong>Πλοκή:</strong> ${movie.Plot}</p>
+                            </div>
+
                         </div>
-
-                    </div>
-                `).join("");
+                    `;
+                }).join("");
 
             })
             .catch(err => {
@@ -74,7 +104,6 @@
 
     </script>
 
-    
 </body>
 
 </html>
