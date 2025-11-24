@@ -7,7 +7,12 @@ import java.util.*;
 @Service
 public class QuizService {
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
+
+    // ✅ Constructor injection for RestTemplate
+    public QuizService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     public Map<String, Object> fetchQuiz(int amount, String difficulty) {
         String url = String.format(
