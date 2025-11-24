@@ -37,7 +37,6 @@
 
         const results = document.getElementById("trendingResults");
 
-        // 1️⃣ Φέρνουμε τα trending από το backend
         fetch("http://localhost:8080/api/trending")
             .then(res => res.json())
             .then(async (movies) => {
@@ -47,14 +46,15 @@
                     return;
                 }
 
-                // 2️⃣ Για κάθε ταινία κάνουμε fetch στο OMDb API
                 const detailedMovies = await Promise.all(
                     movies.map(async (m) => {
 
                         const title = m.title || m.Title;
 
                         try {
-                            const omdbRes = await fetch(`https://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=YOUR_OMDB_KEY`);
+                          
+                            const omdbRes = await fetch(`http://localhost:8080/api/movie/${encodeURIComponent(title)}`);
+
                             const data = await omdbRes.json();
                             return data;
                         } catch (err) {
@@ -64,7 +64,6 @@
                     })
                 );
 
-                // 3️⃣ Φτιάχνουμε το HTML
                 results.innerHTML = detailedMovies.map(movie => {
 
                     if (!movie || movie.Response === "False") {
@@ -77,21 +76,15 @@
 
                     return `
                         <div class="movie-card">
-
                             <img src="${movie.Poster}" alt="Poster" class="poster-img">
-
                             <div class="movie-info">
                                 <h2>${movie.Title} (${movie.Year})</h2>
-
                                 <p><strong>Ηθοποιοί:</strong> ${movie.Actors}</p>
                                 <p><strong>Σκηνοθέτης:</strong> ${movie.Director}</p>
                                 <p><strong>Είδος:</strong> ${movie.Genre}</p>
-
                                 <p><strong>IMDB Rating:</strong> ⭐ ${movie.imdbRating}</p>
-
                                 <p><strong>Πλοκή:</strong> ${movie.Plot}</p>
                             </div>
-
                         </div>
                     `;
                 }).join("");
