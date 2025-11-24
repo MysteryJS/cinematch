@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trending Movies</title>
-    <link rel="stylesheet" href="/trending.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -34,44 +34,45 @@
     </section>
 
     <script>
-    const results = document.getElementById("trendingResults");
 
-    fetch("http://localhost:8080/api/trending")
-        .then(res => res.json())
-        .then(movies => {
+        const results = document.getElementById("trendingResults");
 
-            if (!Array.isArray(movies) || movies.length === 0) {
-                results.innerHTML = "<p class='error'>Δεν βρέθηκαν trending ταινίες.</p>";
-                return;
-            }
+        fetch("http://localhost:8080/api/trending")
+            .then(res => res.json())
+            .then(movies => {
 
-            results.innerHTML = movies.map(movie => `
-                <div class="movie-card">
+                if (!Array.isArray(movies) || movies.length === 0) {
+                    results.innerHTML = "<p class='error'>Δεν βρέθηκαν trending ταινίες.</p>";
+                    return;
+                }
 
-                    <img src="${movie.Poster}" alt="Poster">
+                results.innerHTML = movies.map(movie => `
+                    <div class="movie-card">
 
-                    <div class="movie-info">
-                        <h2>${movie.Title} (${movie.Year})</h2>
+                        <img src="${movie.Poster}" alt="Poster" class="poster-img">
 
-                        <p><strong>Ηθοποιοί:</strong> ${movie.Actors || "N/A"}</p>
-                        <p><strong>Σκηνοθέτης:</strong> ${movie.Director || "N/A"}</p>
-                        <p><strong>Είδος:</strong> ${movie.Genre || "N/A"}</p>
+                        <div class="movie-info">
+                            <h2>${movie.Title} (${movie.Year})</h2>
 
-                        <p><strong>IMDB Rating:</strong> 🌟 ${movie.imdbRating || "N/A"}</p>
+                            <p><strong>Ηθοποιοί:</strong> ${movie.Actors || "N/A"}</p>
+                            <p><strong>Σκηνοθέτης:</strong> ${movie.Director || "N/A"}</p>
+                            <p><strong>Είδος:</strong> ${movie.Genre || "N/A"}</p>
 
-                        <p><strong>Πλοκή:</strong> ${movie.Plot || "Δεν υπάρχει περιγραφή."}</p>
+                            <p><strong>IMDB Rating:</strong> ⭐ ${movie.imdbRating || "N/A"}</p>
+
+                            <p><strong>Πλοκή:</strong> ${movie.Plot || "Δεν υπάρχει διαθέσιμη περιγραφή."}</p>
+                        </div>
+
                     </div>
+                `).join("");
 
-                </div>
-            `).join("");
-        })
-        .catch(err => {
-            results.innerHTML = "<p class='error'>Σφάλμα επικοινωνίας με το backend!</p>";
-            console.log(err);
-        });
-</script>
+            })
+            .catch(err => {
+                results.innerHTML = "<p class='error'>Σφάλμα επικοινωνίας με το backend!</p>";
+                console.log(err);
+            });
 
-
+    </script>
 
 </body>
 
