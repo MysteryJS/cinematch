@@ -1,5 +1,6 @@
 package com.project.cinematch.Service;
 
+import com.project.cinematch.Service.QuizService;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestTemplate;
 
@@ -7,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class QuizServiceIntegrationTest {
 
