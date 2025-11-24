@@ -21,7 +21,6 @@ class ApiConnectivityTest {
 
         assertNotNull(response);
         assertTrue(response.containsKey("results"));
-
     }
 
 }

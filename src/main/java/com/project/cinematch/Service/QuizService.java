@@ -9,7 +9,6 @@ public class QuizService {
 
     private final RestTemplate restTemplate;
 
-
     // ✅ Constructor injection for RestTemplate
     public QuizService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;

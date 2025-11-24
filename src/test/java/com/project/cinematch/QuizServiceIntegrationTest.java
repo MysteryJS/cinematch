@@ -34,5 +34,6 @@ class QuizServiceIntegrationTest {
 
         List<String> answers = (List<String>) q.get("answers");
         assertFalse(answers.isEmpty(), "Answers should not be empty");
+
     }
 }
