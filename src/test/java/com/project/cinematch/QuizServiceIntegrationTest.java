@@ -13,7 +13,7 @@ class QuizServiceIntegrationTest {
     @Test
     void testFetchQuizReturnsData() {
 
-        QuizService quizService = new QuizService(new RestTemplate());
+        QuizService quizService = new QuizService();
 
         Map<String, Object> result = quizService.fetchQuiz(3, "easy");
 
