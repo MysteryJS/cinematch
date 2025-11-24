@@ -34,26 +34,43 @@
     </section>
 
     <script>
+    const results = document.getElementById("trendingResults");
 
-        const results = document.getElementById("trendingResults");
-        fetch("http://localhost:8080/api/trending")
-            .then(res => res.json())
-            .then(movies => {
-                if (!Array.isArray(movies) || movies.length === 0) {
-                    results.innerHTML = "<p class='error'>Δεν βρέθηκαν trending ταινίες.</p>";
-                    return;
-                }
-                results.innerHTML = movies.map(movie => `
-            <div class="movie-card">
-                <h2>${movie.title}</h2>
-            </div>
+    fetch("http://localhost:8080/api/trending")
+        .then(res => res.json())
+        .then(movies => {
+
+            if (!Array.isArray(movies) || movies.length === 0) {
+                results.innerHTML = "<p class='error'>Δεν βρέθηκαν trending ταινίες.</p>";
+                return;
+            }
+
+            results.innerHTML = movies.map(movie => `
+                <div class="movie-card">
+
+                    <img src="${movie.Poster}" alt="Poster">
+
+                    <div class="movie-info">
+                        <h2>${movie.Title} (${movie.Year})</h2>
+
+                        <p><strong>Ηθοποιοί:</strong> ${movie.Actors || "N/A"}</p>
+                        <p><strong>Σκηνοθέτης:</strong> ${movie.Director || "N/A"}</p>
+                        <p><strong>Είδος:</strong> ${movie.Genre || "N/A"}</p>
+
+                        <p><strong>IMDB Rating:</strong> 🌟 ${movie.imdbRating || "N/A"}</p>
+
+                        <p><strong>Πλοκή:</strong> ${movie.Plot || "Δεν υπάρχει περιγραφή."}</p>
+                    </div>
+
+                </div>
             `).join("");
-            })
-            .catch(err => {
-                results.innerHTML = "<p class='error'>Σφάλμα επικοινωνίας με το backend!</p>";
-                console.log(err);
-            });
-    </script>
+        })
+        .catch(err => {
+            results.innerHTML = "<p class='error'>Σφάλμα επικοινωνίας με το backend!</p>";
+            console.log(err);
+        });
+</script>
+
 
 
 </body>
