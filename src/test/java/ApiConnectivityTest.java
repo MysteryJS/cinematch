@@ -13,7 +13,7 @@ class ApiConnectivityTest {
     @Disabled("External API rate limits — run manually only")
     @Test
     void testApiIsReachable() {
-        RestTemplate restTemplate = new RestTemplate();
+        QuizService quizService = new QuizService(new RestTemplate());
         String url = "https://opentdb.com/api.php?amount=1&category=11&difficulty=easy";
 
         Map<String, Object> response =
