@@ -32,5 +32,6 @@ class QuizServiceIntegrationTest {
 
         assertNotNull(result);
         assertTrue(((List<?>) result.get("questions")).size() > 0);
+
     }
 }
