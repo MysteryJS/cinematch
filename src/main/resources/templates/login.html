@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="el">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Demo Εγγραφή / Σύνδεση (localStorage)</title>
+  <link rel="stylesheet" href="login.css">
+</head>
+
+<body>
+
+  <a href="/" class="logo-link" title="CineMatch">
+    <img src="/logo.png" alt="CineMatch logo" class="logo-img">
+  </a>
+  <h1>Demo Εγγραφή / Σύνδεση</h1>
+  <div id="feedback" class="msg hidden"></div>
+
+  <div id="loggedView" class="hidden">
+    <div class="msg success">Συνδεδεμένος/η ως <span id="userName"></span></div>
+    <button id="logoutBtn">Αποσύνδεση</button>
+  </div>
+
+  <div id="authViews">
+    <h2>Εγγραφή</h2>
+    <form id="registerForm" autocomplete="off">
+      <label>Πλήρες όνομα</label>
+      <input type="text" id="regName" maxlength="255" required />
+      <label>Email</label>
+      <input type="email" id="regEmail" maxlength="255" required />
+      <label>Κωδικός (τουλάχιστον 6 χαρακτήρες)</label>
+      <input type="password" id="regPassword" minlength="6" required />
+      <button type="submit">Εγγραφή</button>
+    </form>
+
+    <h2>Σύνδεση</h2>
+    <form id="loginForm" autocomplete="off">
+      <label>Email</label>
+      <input type="email" id="loginEmail" required />
+      <label>Κωδικός</label>
+      <input type="password" id="loginPassword" required />
+      <button type="submit">Σύνδεση</button>
+    </form>
+  </div>
+
+</body>
+
+</html>
