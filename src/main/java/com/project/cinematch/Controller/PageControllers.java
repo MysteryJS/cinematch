@@ -15,10 +15,10 @@ public class PageControllers {
     @GetMapping("/forum")
     public String forum() { return "forum"; }
 
-    @GetMapping("/actor")
-    public String actor() { return "actor"; }
+    @GetMapping("/sentiment")
+    public String sentiment() { return "sentiment"; }
 
-    @GetMapping("/emotion")
-    public String emotion() { return "emotion"; }
+    @GetMapping("/login")
+    public String login() { return "login"; }
 
 }
