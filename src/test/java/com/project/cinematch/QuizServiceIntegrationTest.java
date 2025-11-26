@@ -17,6 +17,25 @@ class QuizServiceIntegrationTest {
     void testFetchQuizReturnsData() {
 
         RestTemplate mockRestTemplate = mock(RestTemplate.class);
+
+        // Mock API JSON response
+        Map<String, Object> fakeApiResponse = Map.of(
+                "results", List.of(
+                        Map.of(
+                                "question", "What is 2+2?",
+                                "correct_answer", "4",
+                                "incorrect_answers", List.of("1", "2", "3")
+                        )
+                )
+        );
+
+        // Make mockRestTemplate return the fake response
+        when(mockRestTemplate.getForObject(
+                org.mockito.ArgumentMatchers.anyString(),
+                org.mockito.ArgumentMatchers.eq(Map.class)
+        )).thenReturn(fakeApiResponse);
+
+        // Inject mock into service
         QuizService quizService = new QuizService(mockRestTemplate);
 
         Map<String, Object> result = quizService.fetchQuiz(3, "easy");
@@ -27,8 +46,8 @@ class QuizServiceIntegrationTest {
         List<Map<String, Object>> questions =
                 (List<Map<String, Object>>) result.get("questions");
 
-        assertNotNull(questions, "Questions should not be null");
-        assertFalse(questions.isEmpty(), "Questions should not be empty");
+        assertNotNull(questions);
+        assertFalse(questions.isEmpty());
 
         Map<String, Object> q = questions.get(0);
 
@@ -37,7 +56,6 @@ class QuizServiceIntegrationTest {
         assertTrue(q.containsKey("correctIndex"));
 
         List<String> answers = (List<String>) q.get("answers");
-        assertFalse(answers.isEmpty(), "Answers should not be empty");
-
+        assertFalse(answers.isEmpty());
     }
 }
