@@ -9,17 +9,23 @@ public class QuizService {
 
     private final RestTemplate restTemplate;
 
-    // ✅ Constructor injection for RestTemplate
+    // Used in tests
     public QuizService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
+    // Used by Spring Boot at runtime
+    public QuizService() {
+        this.restTemplate = new RestTemplate();
+    }
+
     public Map<String, Object> fetchQuiz(int amount, String difficulty) {
         String url = String.format(
-            "https://opentdb.com/api.php?amount=%d&category=11&difficulty=%s",
-            amount, 
-            difficulty
+                "https://opentdb.com/api.php?amount=%d&category=11&difficulty=%s",
+                amount,
+                difficulty
         );
+
         Map<String, Object> apiResponse = restTemplate.getForObject(url, Map.class);
         List<Map<String, Object>> results = (List<Map<String, Object>>) apiResponse.get("results");
 
