@@ -1,4 +1,4 @@
-package com.project.cinematch.Service;
+package com.project.cinematch;
 
 import com.project.cinematch.Service.QuizService;
 import org.junit.jupiter.api.Test;

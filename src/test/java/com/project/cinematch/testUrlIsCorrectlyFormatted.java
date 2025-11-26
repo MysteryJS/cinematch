@@ -1,8 +1,10 @@
-package com.project.cinematch.Service;
+package com.project.cinematch;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.web.client.RestTemplate;
+
+import com.project.cinematch.Service.QuizService;
 
 import java.util.List;
 import java.util.Map;
