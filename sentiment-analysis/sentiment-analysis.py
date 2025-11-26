@@ -115,7 +115,7 @@ def recommend():
     def at_least_two_from_analysis(genres_str):
         movie_genres = set(tag.strip() for tag in genres_str.split(','))
         common = movie_genres & desired_genres
-        return len(common) >= 2
+        return len(common) >= 1
 
     filtered_df = df[df['Genres'].apply(at_least_two_from_analysis)]
 

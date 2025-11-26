@@ -1,11 +1,160 @@
 <!DOCTYPE html>
 <html lang="el">
+
 <head>
     <meta charset="UTF-8">
+    <title>Movie Sentiment API Viewer</title>
+    <link rel="stylesheet" href="/sentiment.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emotion Calculator</title>
 </head>
+
 <body>
-    <h1>Emotion Calculator!</h1>
+
+    <!-- Navigation bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo-link" title="CineMatch">
+                <img src="/logo.png" alt="CineMatch logo" class="logo-img">
+            </a>
+            <ul class="nav-menu">
+                <li><a href="/" data-page="home" class="nav-link active">Home</a></li>
+                <li><a href="/search" class="nav-link">Search</a></li>
+                <li><a href="/trending" class="nav-link active">Trending Movies</a></li>
+                <li><a href="/sentiment" class="nav-link active">Sentiment Analysis</a></li>
+                <li><a href="/login" class="nav-link active">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="page active">
+        <div class="main">
+            <div class="page-header">
+                <h2>Ανάλυση & Προτάσεις API</h2>
+                <p>Γράψε το σχόλιό σου και πάρε προτάσεις ταινιών με συναισθήματα και είδη!</p>
+            </div>
+            <textarea id="reviewText" rows="5" placeholder="Γράψε εδώ..."></textarea>
+            <br>
+            <div class="sentiment-btn-group">
+                <button id="analyzeBtn" class="main-btn">Αποστολή στο API</button>
+            </div>
+
+            <div id="genresArea" class="subresult"></div>
+            <div id="emotionsArea" class="subresult"></div>
+            <div id="titlesArea" class="subresult"></div>
+            <div id="result" class="result"></div>
+        </div>
+    </section>
+
+    <script>
+        document.getElementById('analyzeBtn').onclick = async function () {
+            const text = document.getElementById('reviewText').value.trim();
+
+            const resultDiv = document.getElementById('result');
+            const genresDiv = document.getElementById('genresArea');
+            const emotionsDiv = document.getElementById('emotionsArea');
+            const titlesDiv = document.getElementById('titlesArea');
+
+            genresDiv.innerHTML = '';
+            emotionsDiv.innerHTML = '';
+            titlesDiv.innerHTML = '';
+            resultDiv.innerHTML = '';
+
+            if (!text) {
+                resultDiv.innerHTML = "<span class='error'>Συμπλήρωσε κείμενο.</span>";
+                return;
+            }
+
+            resultDiv.innerHTML = "Γίνεται αποστολή στο API...";
+
+            try {
+                const response = await fetch("http://localhost:5000/recommend", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ text })
+                });
+
+                if (!response.ok) {
+                    resultDiv.innerHTML = "<span class='error'>Σφάλμα API / δεν είναι διαθέσιμο.</span>";
+                    return;
+                }
+
+                let data;
+                try {
+                    data = await response.json();
+                } catch (parseErr) {
+                    resultDiv.innerHTML = "<span class='error'>Το API επέστρεψε μη αναγνωρίσιμο JSON.</span>";
+                    return;
+                }
+
+                resultDiv.innerHTML = ""; 
+
+                if (data.genres && Array.isArray(data.genres)) {
+                    genresDiv.innerHTML =
+                        "<strong>Είδη (Genres):</strong> <ul>" +
+                        data.genres.map(g => `<li>${g}</li>`).join('') +
+                        "</ul>";
+                } else {
+                    genresDiv.innerHTML = "<strong>Genres:</strong> —";
+                }
+
+                if (data.emotion_probabilities && typeof data.emotion_probabilities === 'object') {
+                    let rows = "";
+                    for (const [emotion, prob] of Object.entries(data.emotion_probabilities)) {
+                        rows += `<tr><td>${emotion}</td><td>${prob.toFixed(2)}%</td></tr>`;
+                    }
+                    emotionsDiv.innerHTML =
+                        `<strong>Πιθανότητες συναισθημάτων:</strong>
+                <table class="emotions-table">
+                  <thead><tr><th>Συναίσθημα</th><th>Πιθανότητα</th></tr></thead>
+                  <tbody>${rows}</tbody>
+                </table>`;
+                } else {
+                    emotionsDiv.innerHTML = "<strong>Probabilities:</strong> —";
+                }
+
+                if (data.titles && Array.isArray(data.titles)) {
+                    titlesDiv.innerHTML = "<strong>Αναλυτικά αποτελέσματα ταινιών:</strong>";
+                    const list = document.createElement("ul");
+                    titlesDiv.appendChild(list);
+                    const movieDetails = await Promise.all(data.titles.map(async title => {
+                        try {
+                            const searchRes = await fetch(`http://localhost:8080/api/movie/${encodeURIComponent(title)}`);
+                            const details = await searchRes.json();
+                            return { title, details };
+                        } catch (e) {
+                            return { title, details: null };
+                        }
+                    }));
+
+                    movieDetails.forEach(({ title, details }) => {
+                        const li = document.createElement("li");
+                        li.innerHTML = `<b>${title}</b>`;
+                        if (details && details.Title) {
+                            li.innerHTML += `
+                        <div class="movie-extra">
+                        <span><b>Έτος:</b> ${details.Year || ''}</span>
+                        <span><b>Σκηνοθέτης:</b> ${details.Director || ''}</span>
+                        <span><b>Είδος:</b> ${details.Genre || ''}</span>
+                        <span><b>IMDB:</b> ${details.imdbRating || ''}</span>
+                        <span><b>Πλοκή:</b> ${details.Plot || ''}</span>
+                        </div>
+                    `;
+                        } else {
+                            li.innerHTML += `<span class="error">Δεν βρέθηκαν στοιχεία.</span>`;
+                        }
+                        list.appendChild(li);
+                    });
+                } else {
+                    titlesDiv.innerHTML = "<strong>Ταινίες:</strong> —";
+                }
+
+            } catch (err) {
+                resultDiv.innerHTML = "<span class='error'>Σφάλμα επικοινωνίας με το API!</span>";
+                console.error(err);
+            }
+        };
+
+    </script>
 </body>
+
 </html>
