@@ -8,25 +8,25 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS search_history (
   search_id SERIAL PRIMARY KEY,
-  user_id INT REFERENCES users(id),
+  user_id INT REFERENCES users(id)  ON DELETE CASCADE,
   movie_id INT,
   searched_at TIMESTAMP DEFAULT now()
 );
 
-CREATE TABLE IF NOT EXISTS cinematchdb.favorites (
-    user_id INT,
+CREATE TABLE IF NOT EXISTS favorites (
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
     movie_id INT,
     PRIMARY KEY (user_id, movie_id)
 );
 
-CREATE TABLE IF NOT EXISTS cinematchdb.quiz_history (
+CREATE TABLE IF NOT EXISTS quiz_history (
     id SERIAL PRIMARY KEY,
-    user_id INT,
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
     score INT NOT NULL,
     created_at TIMESTAMP DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS cinematchdb.kpis (
+CREATE TABLE IF NOT EXISTS kpis (
     kpi_id SERIAL PRIMARY KEY,
     target_type VARCHAR(20) NOT NULL,
     target_id INT NOT NULL,
