@@ -15,6 +15,3 @@ services:
     container_name: sentiment_service
     ports:
       - '5000:5000'
-
-volumes:
-  postgres_data:
