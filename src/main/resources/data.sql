@@ -5,6 +5,8 @@ INSERT INTO users (username, email, password_hash) VALUES
 ('testuser1', 'user1@gmail.com', 'pass123'),
 ('testuser2', 'user2@gmail.com', 'abcd'),
 ('demouser', 'demo@gmail.com', '12345');
+ON CONFLICT (username) DO NOTHING;
+
 
 -- ================================
 -- TEST SEARCH HISTORY
