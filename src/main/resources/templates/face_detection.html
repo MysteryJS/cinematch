@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="el">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ποιος ηθοποιός μοιάζεις; — CineMatch</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo-link" title="CineMatch">
+                <img src="/logo.png" alt="CineMatch logo" class="logo-img">
+            </a>
+
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Αρχική</a></li>
+                <li><a href="/search" class="nav-link active">Αναζήτηση</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="page active">
+        <div class="page-header">
+            <h1>Βρες ποιος ηθοποιός μοιάζει με εσένα</h1>
+            <p>Φόρτωσε μια φωτογραφία και θα σου δείξουμε τον πιο κοντινό ηθοποιό και άλλες προτάσεις.</p>
+        </div>
+
+        <section class="face-ui">
+            <div class="upload-panel">
+                <label class="dropzone" id="dropzone">
+                    <input id="photoInput" type="file" accept="image/*" hidden>
+                    <div class="dz-content">
+                        <svg class="camera-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M20 7h-3.586l-1.707-1.707A.996.996 0 0014.586 5H9.414a.996.996 0 00-.707.293L7 7H4a2 2 0 00-2 2v8a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="12" cy="13" r="3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <p>Κάνε κλικ ή σύρε μια φωτογραφία εδώ</p>
+                        <small>Υποστηρίζονται JPG / PNG. Μέγιστο μέγεθος 8MB.</small>
+                    </div>
+                </label>
+
+                <div class="preview-and-actions">
+                    <div class="preview" id="preview">
+                        <img id="previewImg" src="" alt="Προεπισκόπηση" hidden>
+                        <div class="preview-empty">Δεν έχει φορτωθεί εικόνα</div>
+                    </div>
+
+                    <div class="actions">
+                        <button id="chooseBtn" class="btn">Επίλεξε αρχείο</button>
+                        <button id="sendBtn" class="btn primary" disabled>Ανάλυση &amp; Σύγκριση</button>
+                        <button id="clearBtn" class="btn ghost" disabled>Καθαρισμός</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results" id="results">
+                <div class="results-empty">Εδώ θα εμφανιστούν τα αποτελέσματα της σύγκρισης.</div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© CineMatch — UI δοκιμής · Αυτή είναι μόνο η διεπαφή. Για πραγματική λειτουργία χρειάζεται backend με face-recognition.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Ελληνικά UI: upload, preview, send to backend, show results
+        const dropzone = document.getElementById('dropzone');
+        const photoInput = document.getElementById('photoInput');
+        const chooseBtn = document.getElementById('chooseBtn');
+        const sendBtn = document.getElementById('sendBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const preview = document.getElementById('preview');
+        const previewImg = document.getElementById('previewImg');
+        const results = document.getElementById('results');
+
+        let currentFile = null;
+
+        // Drag & drop UX
+        ['dragenter', 'dragover'].forEach(evt => {
+            dropzone.addEventListener(evt, (e) => {
+                e.preventDefault();
+                dropzone.classList.add('dz-over');
+            });
+        });
+        ['dragleave', 'drop', 'dragend'].forEach(evt => {
+            dropzone.addEventListener(evt, (e) => {
+                e.preventDefault();
+                dropzone.classList.remove('dz-over');
+            });
+        });
+
+        dropzone.addEventListener('click', () => photoInput.click());
+        dropzone.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            if (dt && dt.files && dt.files[0]) handleFile(dt.files[0]);
+        });
+
+        photoInput.addEventListener('change', (e) => {
+            if (e.target.files && e.target.files[0]) handleFile(e.target.files[0]);
+        });
+
+        chooseBtn.addEventListener('click', () => photoInput.click());
+        clearBtn.addEventListener('click', clearSelection);
+
+        sendBtn.addEventListener('click', () => {
+            if (!currentFile) return;
+            analyzePhoto(currentFile);
+        });
+
+        function handleFile(file) {
+            // Basic validations
+            const maxMB = 8;
+            if (!file.type.startsWith('image/')) {
+                showError('Παρακαλώ επίλεξε αρχείο εικόνας.');
+                return;
+            }
+            if (file.size > maxMB * 1024 * 1024) {
+                showError(`Το αρχείο είναι πολύ μεγάλο. Μέγιστο ${maxMB}MB.`);
+                return;
+            }
+
+            currentFile = file;
+            const url = URL.createObjectURL(file);
+            previewImg.src = url;
+            previewImg.hidden = false;
+            preview.querySelector('.preview-empty').hidden = true;
+
+            sendBtn.disabled = false;
+            clearBtn.disabled = false;
+            results.innerHTML = '<div class="results-empty">Ετοιμοί για ανάλυση. Πάτησε "Ανάλυση &amp; Σύγκριση".</div>';
+        }
+
+        function clearSelection() {
+            currentFile = null;
+            previewImg.src = '';
+            previewImg.hidden = true;
+            preview.querySelector('.preview-empty').hidden = false;
+            sendBtn.disabled = true;
+            clearBtn.disabled = true;
+            results.innerHTML = '<div class="results-empty">Εδώ θα εμφανιστούν τα αποτελέσματα της σύγκρισης.</div>';
+        }
+
+        function showError(message) {
+            results.innerHTML = `<div class="error">${escapeHtml(message)}</div>`;
+        }
+
+        function showLoading() {
+            results.innerHTML = `<div class="loading">Ανάλυση εικόνας…</div>`;
+        }
+
+        function renderResults(data) {
+            // data expected: { matches: [ { name, similarity, actorImage }, ... ] }
+            if (!data || !Array.isArray(data.matches) || data.matches.length === 0) {
+                results.innerHTML = `<div class="no-match">Δεν βρέθηκε ομοιότητα.</div>`;
+                return;
+            }
+
+            const top = data.matches[0];
+            const others = data.matches.slice(1);
+
+            let html = `
+            <div class="match-card">
+                <div class="match-left">
+                    <div class="match-photo">
+                        <img src="${escapeHtml(top.actorImage || '')}" alt="${escapeHtml(top.name)}">
+                    </div>
+                    <div class="match-main">
+                        <h3>${escapeHtml(top.name)}</h3>
+                        <p class="similarity">Ομοιότητα: <strong>${Math.round(top.similarity * 100)}%</strong></p>
+                        <p class="note">Αυτός είναι ο πιο πιθανός/ηθοποιός με βάση το μοντέλο.</p>
+                    </div>
+                </div>
+                <div class="match-actions">
+                    <button class="btn" onclick="openActor('${encodeURIComponent(top.name)}')">Περισσότερα</button>
+                </div>
+            </div>
+            `;
+
+            if (others.length) {
+                html += `<div class="other-matches"><h4>Άλλες προτάσεις</h4><div class="other-list">`;
+                for (const m of others) {
+                    html += `<div class="other-item">
+                                <img src="${escapeHtml(m.actorImage || '')}" alt="${escapeHtml(m.name)}">
+                                <div>
+                                    <div class="name">${escapeHtml(m.name)}</div>
+                                    <div class="sim">${Math.round(m.similarity * 100)}%</div>
+                                </div>
+                             </div>`;
+                }
+                html += `</div></div>`;
+            }
+
+            results.innerHTML = html;
+        }
+
+        function openActor(name) {
+            // απλό παράδειγμα: αναζήτηση IMDB Google
+            const q = decodeURIComponent(name);
+            window.open('https://www.google.com/search?q=' + encodeURIComponent(q + ' actor'), '_blank');
+        }
+
+        async function analyzePhoto(file) {
+            showLoading();
+            const fd = new FormData();
+            fd.append('photo', file, file.name);
+
+            try {
+                const res = await fetch('/api/face-match', {
+                    method: 'POST',
+                    body: fd
+                });
+
+                if (!res.ok) {
+                    // fallback demo mode
+                    const text = await res.text().catch(()=>null);
+                    console.warn('Server error:', res.status, text);
+                    simulateDemoResults();
+                    return;
+                }
+
+                const json = await res.json();
+                // Expected shape: { matches: [ { name: string, similarity: 0..1, actorImage: url }, ... ] }
+                renderResults(json);
+            } catch (err) {
+                console.warn('Network or CORS error:', err);
+                // Demo fallback so UI is testable without backend
+                simulateDemoResults();
+            }
+        }
+
+        function simulateDemoResults() {
+            // Προσωρινό demo — αντικατάστησε με πραγματικό backend response
+            const demoActors = [
+                { name: 'Brad Pitt', similarity: 0.82, actorImage: 'https://i.pravatar.cc/200?img=10' },
+                { name: 'Leonardo DiCaprio', similarity: 0.61, actorImage: 'https://i.pravatar.cc/200?img=32' },
+                { name: 'Natalie Portman', similarity: 0.44, actorImage: 'https://i.pravatar.cc/200?img=45' },
+            ];
+            renderResults({ matches: demoActors });
+        }
+
+        // small helper for safety
+        function escapeHtml(unsafe) {
+            if (!unsafe && unsafe !== '') return '';
+            return String(unsafe)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+    </script>
+</body>
+
+</html>
