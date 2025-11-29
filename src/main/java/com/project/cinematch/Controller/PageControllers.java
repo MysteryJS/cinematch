@@ -21,4 +21,8 @@ public class PageControllers {
     @GetMapping("/login")
     public String login() { return "login"; }
 
+    @GetMapping("/quiz")
+    public String quiz() { return "quiz"; }
+
+    
 }
