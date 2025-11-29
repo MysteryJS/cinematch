@@ -21,4 +21,7 @@ public class PageControllers {
     @GetMapping("/login")
     public String login() { return "login"; }
 
+    @GetMapping("/face")
+    public String face() { return "face_detection"; }
+    
 }
