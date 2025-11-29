@@ -24,5 +24,7 @@ public class PageControllers {
     @GetMapping("/quiz")
     public String quiz() { return "quiz"; }
 
+    @GetMapping("/face")
+    public String face() { return "face_detection"; }
     
 }

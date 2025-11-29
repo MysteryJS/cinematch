@@ -15,6 +15,12 @@ services:
     container_name: sentiment_service
     ports:
       - '5000:5000'
+  face_detection:
+    build: ./face_detection
+    container_name: face_detection
+    ports:
+      - '5001:5001'    
 volumes:
   postgres_data:
     driver: local
+    
