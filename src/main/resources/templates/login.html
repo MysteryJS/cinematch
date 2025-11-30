@@ -1,48 +1,107 @@
 <!doctype html>
-<html lang="el">
+<html lang="el" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Demo Εγγραφή / Σύνδεση (localStorage)</title>
-  <link rel="stylesheet" href="login.css">
+  <title>Εγγραφή / Σύνδεση</title>
+  <link rel="stylesheet" href="/login.css">
 </head>
 
 <body>
-
   <a href="/" class="logo-link" title="CineMatch">
     <img src="/logo.png" alt="CineMatch logo" class="logo-img">
   </a>
   <h1>Demo Εγγραφή / Σύνδεση</h1>
   <div id="feedback" class="msg hidden"></div>
 
-  <div id="loggedView" class="hidden">
-    <div class="msg success">Συνδεδεμένος/η ως <span id="userName"></span></div>
-    <button id="logoutBtn">Αποσύνδεση</button>
-  </div>
-
-  <div id="authViews">
+  <section>
     <h2>Εγγραφή</h2>
     <form id="registerForm" autocomplete="off">
-      <label>Πλήρες όνομα</label>
-      <input type="text" id="regName" maxlength="255" required />
+      <label>Username</label>
+      <input type="text" id="regName" pattern="^[a-z_]+$" maxlength="30" required />
+      <small>Μόνο μικρά και "_", χωρίς κενά ή κεφαλαία</small>
       <label>Email</label>
       <input type="email" id="regEmail" maxlength="255" required />
       <label>Κωδικός (τουλάχιστον 6 χαρακτήρες)</label>
       <input type="password" id="regPassword" minlength="6" required />
       <button type="submit">Εγγραφή</button>
     </form>
+  </section>
 
+  <section>
     <h2>Σύνδεση</h2>
-    <form id="loginForm" autocomplete="off">
-      <label>Email</label>
-      <input type="email" id="loginEmail" required />
+    <form method="post" action="/login">
+      <label>Username</label>
+      <input type="text" name="username" maxlength="30" required />
       <label>Κωδικός</label>
-      <input type="password" id="loginPassword" required />
+      <input type="password" name="password" required />
       <button type="submit">Σύνδεση</button>
+      <div th:if="${param.error}" style="color: red;">Λάθος στοιχεία!</div>
+      <div th:if="${param.logout}" style="color: green;">Αποσυνδεθήκατε!</div>
     </form>
-  </div>
+  </section>
 
+  <script>
+    const regUsernameInput = document.getElementById('regName');
+    regUsernameInput.addEventListener('input', function (e) {
+      let clean = this.value.toLowerCase().replace(/[^a-z_]/g, '');
+      if (this.value !== clean) {
+        this.value = clean;
+      }
+    });
+
+    document.getElementById('registerForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const name = regUsernameInput.value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const password = document.getElementById('regPassword').value;
+
+      let response1 = await fetch(`/api/user/email-exists?email=${encodeURIComponent(email)}`);
+      if (response1.ok) {
+        const exists = await response1.json();
+        if (exists) {
+          document.getElementById('feedback').className = 'msg error';
+          document.getElementById('feedback').textContent = 'Το email υπάρχει ήδη!';
+          document.getElementById('feedback').style.display = 'block';
+          return;
+        }
+      }
+
+      if (!/^[a-z_]+$/.test(name)) {
+        document.getElementById('feedback').className = 'msg error';
+        document.getElementById('feedback').textContent = 'Το username πρέπει να έχει μόνο μικρά γράμματα ή "_"';
+        document.getElementById('feedback').style.display = 'block';
+        return;
+      }
+
+      const payload = {
+        username: name,
+        email: email,
+        passwordHash: password
+      };
+
+      let response = await fetch('/api/user/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (response.ok) {
+        const user = await response.json();
+        document.getElementById('feedback').className = 'msg success';
+        document.getElementById('feedback').textContent = 'Εγγραφή επιτυχής! Μπορείς να κάνεις σύνδεση.';
+        document.getElementById('feedback').style.display = 'block';
+        document.getElementById('registerForm').reset();
+      } else {
+        const error = await response.text();
+        document.getElementById('feedback').className = 'msg error';
+        document.getElementById('feedback').textContent = 'Σφάλμα εγγραφής: ' + error;
+        document.getElementById('feedback').style.display = 'block';
+      }
+    });
+  </script>
 </body>
 
 </html>

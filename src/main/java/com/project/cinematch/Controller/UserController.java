@@ -28,6 +28,7 @@ public class UserController {
 
     @PostMapping("/register")
     public User register(@RequestBody User user) {
+        user.setPasswordHash("{noop}" + user.getPasswordHash());
         return userService.register(user);
     }
 }
