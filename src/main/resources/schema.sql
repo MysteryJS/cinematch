@@ -1,38 +1,36 @@
 CREATE TABLE IF NOT EXISTS users (
-    id SERIAL PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    password_hash VARCHAR(200) NOT NULL,
-    created_at TIMESTAMP DEFAULT NOW()
+  id SERIAL PRIMARY KEY,
+  username VARCHAR(100) UNIQUE NOT NULL,
+  email VARCHAR(255),
+  password_hash VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS search_history (
-  search_id SERIAL PRIMARY KEY,
-  user_id INT REFERENCES users(id)  ON DELETE CASCADE,
-  movie_id INT,
-  searched_at TIMESTAMP DEFAULT now()
+  id SERIAL PRIMARY KEY,
+  user_id INT REFERENCES users(id) ON DELETE CASCADE,
+  movie_id INT NOT NULL,
+  searched_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE IF NOT EXISTS favorites (
-    user_id INT REFERENCES users(id) ON DELETE CASCADE,
-    movie_id INT,
-    PRIMARY KEY (user_id, movie_id)
+  user_id INT REFERENCES users(id) ON DELETE CASCADE,
+  movie_id INT,
+  PRIMARY KEY (user_id, movie_id)
 );
 
 CREATE TABLE IF NOT EXISTS quiz_history (
-    id SERIAL PRIMARY KEY,
-    user_id INT REFERENCES users(id) ON DELETE CASCADE,
-    score INT NOT NULL,
-    created_at TIMESTAMP DEFAULT NOW()
+  id SERIAL PRIMARY KEY,
+  user_id INT REFERENCES users(id) ON DELETE CASCADE,
+  score INT,
+  taken_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE IF NOT EXISTS kpis (
-    kpi_id SERIAL PRIMARY KEY,
-    target_type VARCHAR(20) NOT NULL,
-    target_id INT NOT NULL,
-    audience_engagement NUMERIC,
-    star_power NUMERIC,
-    awards_potential NUMERIC,
-    popularity_proxy NUMERIC,
-    created_at TIMESTAMP DEFAULT NOW()
+  id SERIAL PRIMARY KEY,
+  target_type VARCHAR(50),
+  target_id INT,
+  audience_engagement REAL,
+  star_power REAL,
+  awards_potential REAL,
+  popularity_proxy REAL
 );
