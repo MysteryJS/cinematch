@@ -140,3 +140,50 @@ body {
     .controls { justify-content: center; flex-direction: column; }
     .top-row { flex-direction: column; gap: 0.4rem; align-items: flex-start; }
 }
+.leaderboard-table {
+    max-width: 600px;
+    margin: 2.2rem auto 0 auto;
+    padding: 0 1rem 1.6rem;
+    text-align: center;
+    background: var(--bg-card);
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(2,10,30,0.12);
+    border: 1px solid var(--border);
+}
+.lb-title {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+}
+.lb-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    background: transparent;
+}
+.lb-table th, .lb-table td {
+    padding: 0.7rem 0.3rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-secondary);
+}
+.lb-table th {
+    background: var(--bg-dark);
+    color: var(--primary);
+    font-size: 1rem;
+    font-weight: 700;
+}
+.lb-table tr:nth-child(even) {
+    background: rgba(255,255,255,0.01);
+}
+.lb-table tr:hover {
+    background: var(--bg-hover);
+    transition: background 0.12s;
+}
+.lb-error { color: var(--danger); margin: 1rem 0; font-weight: 600; }
+@media (max-width: 700px) {
+    .leaderboard-table { max-width: 100%; }
+    .lb-table th, .lb-table td { font-size: 0.95em; padding: 0.4rem 0.22rem; }
+}
