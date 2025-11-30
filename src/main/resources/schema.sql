@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS quiz_history (
   id SERIAL PRIMARY KEY,
   user_id INT REFERENCES users(id) ON DELETE CASCADE,
   score INT,
-  taken_at TIMESTAMP DEFAULT NOW()
+  created_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE IF NOT EXISTS kpis (
@@ -32,5 +32,6 @@ CREATE TABLE IF NOT EXISTS kpis (
   audience_engagement REAL,
   star_power REAL,
   awards_potential REAL,
-  popularity_proxy REAL
+  popularity_proxy REAL,
+  created_at TIMESTAMP DEFAULT NOW()
 );
