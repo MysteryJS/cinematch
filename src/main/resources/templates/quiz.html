@@ -19,7 +19,7 @@
                 <li><a href="/quiz" class="nav-link">Quiz</a></li>
                 <li><a href="/sentiment" class="nav-link">Sentiment Analysis</a></li>
                 <li><a href="/face" class="nav-link">Face Detection</a></li>
-                <li><a href="/logout" class="nav-link">Logout</a></li>
+                <li><a href="/login" class="nav-link">Login</a></li>
             </ul>
         </div>
     </nav>
@@ -60,207 +60,205 @@
     </main>
 
 <script>
-/*
-  Quiz behaviour:
-  - Επιλέγει τυχαία 10 ερωτήσεις από τη δεξαμενή (θέμα: ταινίες)
-  - Κάθε ερώτηση έχει 5 επιλογές
-  - Ο χρήστης επιλέγει μια απάντηση, βλέπει αμέσως αν είναι σωστή ή λάθος,
-    εμφανίζεται η σωστή απάντηση, και ξεκλειδώνει το "Επόμενη"
-  - Στο τέλος εμφανίζεται συνολικό σκορ και πλήρης ανασκόπηση
-*/
+        // state
+        let quizQuestions = [];
+        let currentIndex = 0;
+        let score = 0;
+        let answersLog = []; // { question, selectedIndex, correctIndex, answers }
 
-const POOL = [
-    { q: "Ποιος είναι ο σκηνοθέτης της ταινίας 'Inception';", choices: ["Steven Spielberg","Christopher Nolan","Quentin Tarantino","James Cameron","Martin Scorsese"], correct: 1 },
-    { q: "Σε ποια ταινία ακούγεται η φράση 'I'll be back';", choices: ["Terminator 2","The Terminator","Predator","RoboCop","Commando"], correct: 1 },
-    { q: "Ποιος υποδύεται τον Jack Dawson στην ταινία 'Titanic';", choices: ["Tom Cruise","Leonardo DiCaprio","Brad Pitt","Matt Damon","Johnny Depp"], correct: 1 },
-    { q: "Ποια ταινία κέρδισε το Όσκαρ Καλύτερης Ταινίας το 1994;", choices: ["Pulp Fiction","Forrest Gump","The Shawshank Redemption","Four Weddings and a Funeral","Speed"], correct: 1 },
-    { q: "Σε ποια σειρά ταινιών εμφανίζεται ο χαρακτήρας Darth Vader;", choices: ["Star Trek","Star Wars","Battlestar Galactica","Guardians of the Galaxy","The Matrix"], correct: 1 },
-    { q: "Ποιος σκηνοθέτησε την 'Pulp Fiction';", choices: ["Guy Ritchie","David Fincher","Quentin Tarantino","Ridley Scott","Clint Eastwood"], correct: 2 },
-    { q: "Ποια είναι η φανταστική πόλη που είναι το κύριο σκηνικό στην ταινία 'The Dark Knight';", choices: ["Metropolis","Gotham","New York","London","Los Angeles"], correct: 1 },
-    { q: "Σε ποια ταινία ακούγεται το τραγούδι 'My Heart Will Go On';", choices: ["Avatar","Titanic","Gladiator","Moulin Rouge!","La La Land"], correct: 1 },
-    { q: "Ποιος πρωταγωνίστησε ως Indiana Jones;", choices: ["Sean Connery","Harrison Ford","Tom Hanks","Arnold Schwarzenegger","Mel Gibson"], correct: 1 },
-    { q: "Ποια σειρά ταινιών περιλαμβάνει το σχολείο μάγων Hogwarts;", choices: ["The Lord of the Rings","Chronicles of Narnia","Star Wars","Harry Potter","The Hunger Games"], correct: 3 },
-    { q: "Ποιος σκηνοθέτησε την ταινία 'E.T. the Extra-Terrestrial';", choices: ["George Lucas","Steven Spielberg","Francis Ford Coppola","Tim Burton","Peter Jackson"], correct: 1 },
-    { q: "Ποια ταινία κέρδισε το Όσκαρ Καλύτερης Ταινίας το 2010;", choices: ["The Hurt Locker","Black Swan","Inception","The King's Speech","Toy Story 3"], correct: 3 },
-    { q: "Ποια ταινία είναι του Hayao Miyazaki;", choices: ["Spirited Away","Your Name","Akira","Ghost in the Shell","Perfect Blue"], correct: 0 },
-    { q: "Ποιος ηθοποιός υποδύθηκε τον Joker στην ταινία 'The Dark Knight' (2008);", choices: ["Joaquin Phoenix","Jared Leto","Heath Ledger","Jack Nicholson","Cillian Murphy"], correct: 2 },
-    { q: "Σε ποια ταινία εμφανίζεται ο χαρακτήρας Tyler Durden;", choices: ["Se7en","Fight Club","American Psycho","The Social Network","Gone Girl"], correct: 1 },
-    { q: "Ποιος σκηνοθέτησε την τριλογία 'The Lord of the Rings';", choices: ["Peter Jackson","Christopher Nolan","George Lucas","James Cameron","Ridley Scott"], correct: 0 },
-    { q: "Ποια ταινία του 1999 είναι γνωστή για την 'κόκκινη' και 'μπλε' επιλογή;", choices: ["The Matrix","Fight Club","The Sixth Sense","Memento","The Blair Witch Project"], correct: 0 },
-    { q: "Ποιος πρωταγωνιστεί στην ταινία 'Cast Away' μαζί με έναν κόκκινο τάφο;", choices: ["Tom Hanks","Will Smith","Harrison Ford","Russell Crowe","Kevin Spacey"], correct: 0 },
-    { q: "Ποια ταινία του James Cameron διαδραματίζεται σε ένα φανταστικό κόσμο με μπλε αυτόχθονες;", choices: ["Avatar","Terminator","Aliens","True Lies","The Abyss"], correct: 0 },
-    { q: "Ποιος υποδύεται τον Neo στην ταινία 'The Matrix';", choices: ["Keanu Reeves","Brad Pitt","Tom Cruise","Matt Damon","Keifer Sutherland"], correct: 0 }
-];
+        const progressText = document.getElementById('progressText');
+        const scoreText = document.getElementById('scoreText');
+        const questionTitle = document.getElementById('questionTitle');
+        const choicesEl = document.getElementById('choices');
+        const nextBtn = document.getElementById('nextBtn');
+        const restartBtn = document.getElementById('restartBtn');
+        const resultSummary = document.getElementById('resultSummary');
 
-// state
-let quizQuestions = [];
-let currentIndex = 0;
-let score = 0;
-let answersLog = []; // { q, selectedIndex, correctIndex, choices }
+        async function fetchQuiz(amount = 10, difficulty = 'easy') {
+            const res = await fetch(`/api/quiz?amount=${amount}&difficulty=${difficulty}`);
+            if (!res.ok) {
+                throw new Error('HTTP error ' + res.status);
+            }
+            const data = await res.json();
+            return data.questions || [];
+        }
 
-const progressText = document.getElementById('progressText');
-const scoreText = document.getElementById('scoreText');
-const questionTitle = document.getElementById('questionTitle');
-const choicesEl = document.getElementById('choices');
-const nextBtn = document.getElementById('nextBtn');
-const restartBtn = document.getElementById('restartBtn');
-const resultSummary = document.getElementById('resultSummary');
+        async function startQuiz() {
+            // reset state
+            quizQuestions = [];
+            currentIndex = 0;
+            score = 0;
+            answersLog = [];
 
-function shuffleArray(a) {
-    for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-}
+            progressText.textContent = 'Φόρτωση...';
+            scoreText.textContent = 'Σκορ: 0';
+            questionTitle.textContent = 'Φόρτωση ερώτησης...';
+            choicesEl.innerHTML = '';
+            resultSummary.hidden = true;
+            restartBtn.hidden = true;
+            nextBtn.hidden = true;
 
-function pickQuestions() {
-    const poolCopy = POOL.map((p,i) => ({...p, id:i}));
-    shuffleArray(poolCopy);
-    return poolCopy.slice(0, 10).map(q => {
-        const choices = q.choices.map((c, idx) => ({ text: c, originalIndex: idx }));
-        shuffleArray(choices);
-        const newCorrectIndex = choices.findIndex(c => c.originalIndex === q.correct);
-        return {
-            q: q.q,
-            choices: choices.map(c => c.text),
-            correct: newCorrectIndex
-        };
-    });
-}
+            try {
+                // Φέρνουμε 10 ερωτήσεις difficulty=easy (μπορείς να το αλλάξεις)
+                quizQuestions = await fetchQuiz(10, 'easy');
 
-function renderQuestion() {
-    const item = quizQuestions[currentIndex];
-    progressText.textContent = `Ερώτηση ${currentIndex + 1} / ${quizQuestions.length}`;
-    scoreText.textContent = `Σκορ: ${score}`;
-    questionTitle.textContent = item.q;
+                if (quizQuestions.length === 0) {
+                    questionTitle.textContent = 'Δεν βρέθηκαν ερωτήσεις από το API.';
+                    return;
+                }
 
-    choicesEl.innerHTML = '';
-    choicesEl.dataset.answered = 'false';
-    item.choices.forEach((choice, i) => {
-        const btn = document.createElement('button');
-        btn.className = 'choice-btn';
-        btn.type = 'button';
-        btn.setAttribute('data-index', i);
-        btn.setAttribute('role', 'option');
-        btn.textContent = choice;
-        btn.addEventListener('click', onChoiceClick);
-        btn.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                btn.click();
+                nextBtn.hidden = false;
+                renderQuestion();
+            } catch (err) {
+                console.error(err);
+                questionTitle.textContent =
+                    'Προέκυψε σφάλμα κατά τη φόρτωση των ερωτήσεων από το API.';
+            }
+        }
+
+        function renderQuestion() {
+            const item = quizQuestions[currentIndex];
+
+            progressText.textContent = `Ερώτηση ${currentIndex + 1} / ${quizQuestions.length}`;
+            scoreText.textContent = `Σκορ: ${score}`;
+
+            // Τα string από OpenTDB έχουν HTML entities (π.χ. &quot;), τα κάνουμε decode
+            questionTitle.textContent = decodeHtml(item.question);
+
+            choicesEl.innerHTML = '';
+            choicesEl.dataset.answered = 'false';
+
+            item.answers.forEach((ans, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'choice-btn';
+                btn.type = 'button';
+                btn.setAttribute('data-index', i);
+                btn.setAttribute('role', 'option');
+                btn.textContent = decodeHtml(ans);
+                btn.addEventListener('click', onChoiceClick);
+                btn.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        btn.click();
+                    }
+                });
+                choicesEl.appendChild(btn);
+            });
+
+            nextBtn.disabled = true;
+            nextBtn.setAttribute('aria-disabled', 'true');
+            nextBtn.hidden = false;
+            restartBtn.hidden = true;
+            resultSummary.hidden = true;
+        }
+
+        function onChoiceClick(e) {
+            const selected = Number(e.currentTarget.getAttribute('data-index'));
+            const item = quizQuestions[currentIndex];
+            if (choicesEl.dataset.answered === 'true') return;
+            choicesEl.dataset.answered = 'true';
+
+            const buttons = Array.from(choicesEl.querySelectorAll('.choice-btn'));
+            buttons.forEach((b, idx) => {
+                b.disabled = true;
+                b.classList.remove('chosen-correct', 'chosen-wrong', 'correct');
+                if (idx === item.correctIndex) {
+                    b.classList.add('correct');
+                }
+            });
+
+            const selectedBtn = e.currentTarget;
+            let correctNow = false;
+            if (selected === item.correctIndex) {
+                selectedBtn.classList.add('chosen-correct');
+                score++;
+                correctNow = true;
+                scoreText.textContent = `Σκορ: ${score}`;
+            } else {
+                selectedBtn.classList.add('chosen-wrong');
+            }
+
+            answersLog.push({
+                question: item.question,
+                selectedIndex: selected,
+                correctIndex: item.correctIndex,
+                answers: item.answers.slice()
+            });
+
+            const feedback = document.createElement('div');
+            feedback.className = 'feedback';
+            feedback.textContent = correctNow ? 'Σωστό!' : 'Λάθος!';
+            choicesEl.appendChild(feedback);
+
+            nextBtn.disabled = false;
+            nextBtn.setAttribute('aria-disabled', 'false');
+        }
+
+        nextBtn.addEventListener('click', () => {
+            currentIndex++;
+            if (currentIndex < quizQuestions.length) {
+                renderQuestion();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                showSummary();
             }
         });
-        choicesEl.appendChild(btn);
-    });
 
-    nextBtn.disabled = true;
-    nextBtn.setAttribute('aria-disabled', 'true');
-    nextBtn.hidden = false;
-    restartBtn.hidden = true;
-    resultSummary.hidden = true;
-}
+        restartBtn.addEventListener('click', () => startQuiz());
 
-function onChoiceClick(e) {
-    const selected = Number(e.currentTarget.getAttribute('data-index'));
-    const item = quizQuestions[currentIndex];
-    if (choicesEl.dataset.answered === 'true') return;
-    choicesEl.dataset.answered = 'true';
+        function showSummary() {
+            progressText.textContent = 'Ολοκληρώθηκε';
+            questionTitle.textContent = `Τελικό σκορ: ${score} / ${quizQuestions.length}`;
+            choicesEl.innerHTML = '';
+            nextBtn.hidden = true;
+            restartBtn.hidden = false;
+            resultSummary.hidden = false;
 
-    const buttons = Array.from(choicesEl.querySelectorAll('.choice-btn'));
-    buttons.forEach((b, idx) => {
-        b.disabled = true;
-        b.classList.remove('chosen-correct', 'chosen-wrong');
-        if (idx === item.correct) b.classList.add('correct');
-    });
+            let html = `<h3>Αποτελέσματα</h3>`;
+            html += `<p>Σύνολο σωστών: <strong>${score}</strong> από ${quizQuestions.length}</p>`;
+            html += `<div class="review">`;
 
-    const selectedBtn = e.currentTarget;
-    let correctNow = false;
-    if (selected === item.correct) {
-        selectedBtn.classList.add('chosen-correct');
-        score++;
-        correctNow = true;
-        scoreText.textContent = `Σκορ: ${score}`;
-    } else {
-        selectedBtn.classList.add('chosen-wrong');
-    }
+            answersLog.forEach((a, i) => {
+                const correctTextRaw = a.answers[a.correctIndex] ?? '';
+                const selectedTextRaw = a.answers[a.selectedIndex] ?? '';
+                const correctText = decodeHtml(correctTextRaw);
+                const selectedText = decodeHtml(selectedTextRaw);
+                const ok = a.selectedIndex === a.correctIndex;
 
-    answersLog.push({
-        q: item.q,
-        selectedIndex: selected,
-        correctIndex: item.correct,
-        choices: item.choices.slice()
-    });
+                html += `<div class="review-item">
+                        <div class="r-q"><strong>Q${i + 1}:</strong> ${escapeHtml(decodeHtml(a.question))}</div>
+                        <div class="r-ans ${ok ? 'ok' : 'bad'}">
+                            <div>Η δική σου απάντηση: <span class="user">${escapeHtml(selectedText)}</span></div>
+                            <div>Σωστή απάντηση: <span class="correct">${escapeHtml(correctText)}</span></div>
+                        </div>
+                     </div>`;
+            });
 
-    const feedback = document.createElement('div');
-    feedback.className = 'feedback';
-    feedback.textContent = correctNow ? 'Σωστό!' : 'Λάθος!';
-    choicesEl.appendChild(feedback);
+            html += `</div>`;
+            resultSummary.innerHTML = html;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
-    nextBtn.disabled = false;
-    nextBtn.setAttribute('aria-disabled', 'false');
-}
+        // safety helper
+        function escapeHtml(unsafe) {
+            if (!unsafe && unsafe !== '') return '';
+            return String(unsafe)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
 
-nextBtn.addEventListener('click', () => {
-    currentIndex++;
-    if (currentIndex < quizQuestions.length) {
-        renderQuestion();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-        showSummary();
-    }
-});
+        // decode HTML entities από OpenTDB (π.χ. &quot;, &#039;)
+        function decodeHtml(html) {
+            const txt = document.createElement('textarea');
+            txt.innerHTML = html;
+            return txt.value;
+        }
 
-restartBtn.addEventListener('click', () => startQuiz());
-
-function showSummary() {
-    progressText.textContent = `Ολοκληρώθηκε`;
-    questionTitle.textContent = `Τελικό σκορ: ${score} / ${quizQuestions.length}`;
-    choicesEl.innerHTML = '';
-    nextBtn.hidden = true;
-    restartBtn.hidden = false;
-    resultSummary.hidden = false;
-
-    let html = `<h3>Αποτελέσματα</h3>`;
-    html += `<p>Σύνολο σωστών: <strong>${score}</strong> από ${quizQuestions.length}</p>`;
-    html += `<div class="review">`;
-    answersLog.forEach((a, i) => {
-        const correctText = a.choices[a.correctIndex] ?? '';
-        const selectedText = a.choices[a.selectedIndex] ?? '';
-        const ok = a.selectedIndex === a.correctIndex;
-        html += `<div class="review-item">
-                    <div class="r-q"><strong>Q${i+1}:</strong> ${escapeHtml(a.q)}</div>
-                    <div class="r-ans ${ok ? 'ok' : 'bad'}">
-                        <div>Η δική σου απάντηση: <span class="user">${escapeHtml(selectedText)}</span></div>
-                        <div>Σωστή απάντηση: <span class="correct">${escapeHtml(correctText)}</span></div>
-                    </div>
-                 </div>`;
-    });
-    html += `</div>`;
-    resultSummary.innerHTML = html;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function startQuiz() {
-    quizQuestions = pickQuestions();
-    currentIndex = 0;
-    score = 0;
-    answersLog = [];
-    renderQuestion();
-}
-
-// safety helper
-function escapeHtml(unsafe) {
-    if (!unsafe && unsafe !== '') return '';
-    return String(unsafe)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-}
-
-startQuiz();
-</script>
+        // ξεκινάει αυτόματα όταν φορτώνει η σελίδα
+        startQuiz();
+    </script>
 </body>
 </html>
