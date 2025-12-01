@@ -20,7 +20,6 @@ public class SearchHistory {
     @Column(name = "searched_at")
     private LocalDateTime searchedAt = LocalDateTime.now();
 
-    // Getters & Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
