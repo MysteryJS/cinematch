@@ -12,6 +12,10 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User loginRequest) {
         var user = userService.findByUsername(loginRequest.getUsername());
@@ -29,5 +33,6 @@ public class UserController {
     public User register(@RequestBody User user) {
         user.setPasswordHash("{noop}" + user.getPasswordHash());
         return userService.register(user);
+
     }
 }
