@@ -15,18 +15,23 @@ public class logintest {
 
     @Test
     void testLoginUserNotFound() {
+        // 1️⃣ Create mock service
         UserService mockService = mock(UserService.class);
         when(mockService.findByUsername("unknown")).thenReturn(Optional.empty());
 
+        // 2️⃣ Create controller and inject mock using setter
         UserController controller = new UserController();
-        controller.setUserService(mockService); // use setter
+        controller.setUserService(mockService);
 
+        // 3️⃣ Create login request
         User login = new User();
         login.setUsername("unknown");
         login.setPasswordHash("pass");
 
+        // 4️⃣ Call method under test
         ResponseEntity<?> response = controller.login(login);
 
+        // 5️⃣ Assert results
         assertEquals(401, response.getStatusCodeValue());
         assertEquals("User not found", response.getBody());
     }
@@ -41,7 +46,7 @@ public class logintest {
         when(mockService.findByUsername("john")).thenReturn(Optional.of(user));
 
         UserController controller = new UserController();
-        controller.setUserService(mockService); // use setter
+        controller.setUserService(mockService);
 
         User login = new User();
         login.setUsername("john");
@@ -63,7 +68,7 @@ public class logintest {
         when(mockService.findByUsername("john")).thenReturn(Optional.of(user));
 
         UserController controller = new UserController();
-        controller.setUserService(mockService); // use setter
+        controller.setUserService(mockService);
 
         User login = new User();
         login.setUsername("john");
@@ -85,7 +90,7 @@ public class logintest {
         when(mockService.register(any(User.class))).thenAnswer(i -> i.getArgument(0));
 
         UserController controller = new UserController();
-        controller.setUserService(mockService); // use setter
+        controller.setUserService(mockService);
 
         User result = controller.register(user);
 
