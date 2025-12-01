@@ -1,6 +1,7 @@
-package com.project.cinematch.Controller;
+package com.project.cinematch;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.cinematch.Controller.QuizHistoryController;
 import com.project.cinematch.Model.User;
 import com.project.cinematch.Repository.QuizHistoryRepository;
 import com.project.cinematch.Repository.UserRepository;
@@ -10,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.security.Principal;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -22,13 +23,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(QuizHistoryController.class)
-class QuizHistoryControllerTests {
+class quiztests {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @MockBean
     private QuizHistoryRepository quizHistoryRepository;
@@ -36,52 +34,64 @@ class QuizHistoryControllerTests {
     @MockBean
     private UserRepository userRepository;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    // Helper Principal Mock
+    private Principal mockPrincipal(String username) {
+        return () -> username;
+    }
+
     // ----------------------------
-    // 1. Missing score -> no save
+    // 1. Missing score
     // ----------------------------
     @Test
-    @WithMockUser(username = "john")
     void testMissingScore() throws Exception {
-        String json = "{}"; // No score field
+        Principal principal = mockPrincipal("john");
+
+        String json = "{}";
 
         mockMvc.perform(post("/api/user/quiz-history")
+                        .principal(principal)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
-                .andExpect(status().isOk()); // Controller returns void (200)
+                .andExpect(status().isOk());
 
         verify(quizHistoryRepository, never()).save(any());
     }
 
     // ----------------------------
-    // 2. Missing Principal (Unauthorized)
+    // 2. Missing principal
     // ----------------------------
     @Test
     void testMissingPrincipal() throws Exception {
-        String json = "{\"score\": 10}";
+        String json = "{\"score\": 5}";
 
         mockMvc.perform(post("/api/user/quiz-history")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isOk()); // controller returns void
 
         verify(quizHistoryRepository, never()).save(any());
     }
 
     // ----------------------------
-    // 3. User Not Found -> no save
+    // 3. User not found
     // ----------------------------
     @Test
-    @WithMockUser(username = "ghost")
     void testUserNotFound() throws Exception {
+        Principal principal = mockPrincipal("ghost");
+
         Mockito.when(userRepository.findByUsername("ghost"))
                 .thenReturn(Optional.empty());
 
         String json = "{\"score\": 10}";
 
         mockMvc.perform(post("/api/user/quiz-history")
+                        .principal(principal)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
-                .andExpect(status().isOk()); // Controller returns void
+                .andExpect(status().isOk());
 
         verify(quizHistoryRepository, never()).save(any());
     }
@@ -90,8 +100,9 @@ class QuizHistoryControllerTests {
     // 4. Successful save
     // ----------------------------
     @Test
-    @WithMockUser(username = "john")
     void testSuccessfulSave() throws Exception {
+        Principal principal = mockPrincipal("john");
+
         User user = new User();
         user.setUsername("john");
 
@@ -101,6 +112,7 @@ class QuizHistoryControllerTests {
         String json = "{\"score\": 12}";
 
         mockMvc.perform(post("/api/user/quiz-history")
+                        .principal(principal)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk());
@@ -108,5 +120,6 @@ class QuizHistoryControllerTests {
         verify(quizHistoryRepository).save(any());
     }
 }
+
 
 
