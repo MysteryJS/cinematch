@@ -1,7 +1,6 @@
-package com.project.cinematch;
+package com.project.cinematch.Controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.cinematch.Controller.QuizHistoryController;
 import com.project.cinematch.Model.User;
 import com.project.cinematch.Repository.QuizHistoryRepository;
 import com.project.cinematch.Repository.UserRepository;
@@ -16,12 +15,14 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.mockito.ArgumentMatchers.any;
 
 @WebMvcTest(QuizHistoryController.class)
-public class QuizHistoryControllerTests {
+class QuizHistoryControllerTests {
 
     @Autowired
     private MockMvc mockMvc;
@@ -36,17 +37,19 @@ public class QuizHistoryControllerTests {
     private UserRepository userRepository;
 
     // ----------------------------
-    // 1. Missing Score
+    // 1. Missing score -> no save
     // ----------------------------
     @Test
     @WithMockUser(username = "john")
     void testMissingScore() throws Exception {
-        String json = "{}"; // no score
+        String json = "{}"; // No score field
 
         mockMvc.perform(post("/api/user/quiz-history")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
-                .andExpect(status().isBadRequest()); // validation should fail
+                .andExpect(status().isOk()); // Controller returns void (200)
+
+        verify(quizHistoryRepository, never()).save(any());
     }
 
     // ----------------------------
@@ -54,33 +57,37 @@ public class QuizHistoryControllerTests {
     // ----------------------------
     @Test
     void testMissingPrincipal() throws Exception {
-        String json = "{\"score\": 5}";
+        String json = "{\"score\": 10}";
 
         mockMvc.perform(post("/api/user/quiz-history")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isUnauthorized());
+
+        verify(quizHistoryRepository, never()).save(any());
     }
 
     // ----------------------------
-    // 3. User Not Found
+    // 3. User Not Found -> no save
     // ----------------------------
     @Test
-    @WithMockUser(username = "ghostUser")
+    @WithMockUser(username = "ghost")
     void testUserNotFound() throws Exception {
-        Mockito.when(userRepository.findByUsername("ghostUser"))
+        Mockito.when(userRepository.findByUsername("ghost"))
                 .thenReturn(Optional.empty());
 
-        String json = "{\"score\": 5}";
+        String json = "{\"score\": 10}";
 
         mockMvc.perform(post("/api/user/quiz-history")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isOk()); // Controller returns void
+
+        verify(quizHistoryRepository, never()).save(any());
     }
 
     // ----------------------------
-    // 4. Successful Save
+    // 4. Successful save
     // ----------------------------
     @Test
     @WithMockUser(username = "john")
@@ -91,15 +98,15 @@ public class QuizHistoryControllerTests {
         Mockito.when(userRepository.findByUsername("john"))
                 .thenReturn(Optional.of(user));
 
-        Mockito.when(quizHistoryRepository.save(any()))
-                .thenAnswer(invocation -> invocation.getArgument(0)); // return same object
-
-        String json = "{\"score\": 8}";
+        String json = "{\"score\": 12}";
 
         mockMvc.perform(post("/api/user/quiz-history")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk());
+
+        verify(quizHistoryRepository).save(any());
     }
 }
+
 

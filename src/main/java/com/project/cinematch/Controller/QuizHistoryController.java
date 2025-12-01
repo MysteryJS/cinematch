@@ -23,6 +23,7 @@ public class QuizHistoryController {
 
     @PostMapping("/quiz-history")
     public void saveQuizHistory(@RequestBody Map<String, Object> payload, Principal principal) {
+
         Integer score = (Integer) payload.get("score");
         if (score == null || principal == null) return;
 
@@ -34,8 +35,10 @@ public class QuizHistoryController {
         qh.setUser(user);
         qh.setScore(score);
         qh.setTakenAt(LocalDateTime.now());
+
         quizHistoryRepository.save(qh);
     }
 }
+
 
 
