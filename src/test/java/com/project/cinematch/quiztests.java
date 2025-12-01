@@ -37,7 +37,6 @@ class quiztests {
     @Autowired
     private ObjectMapper objectMapper;
 
-    // Helper Principal Mock
     private Principal mockPrincipal(String username) {
         return () -> username;
     }
