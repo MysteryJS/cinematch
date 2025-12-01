@@ -12,4 +12,6 @@ public interface QuizHistoryRepository extends JpaRepository<QuizHistory, Long> 
             "GROUP BY u.username " +
             "ORDER BY MAX(q.score) DESC")
     List<Object[]> findGlobalLeaderboard();
+    @Query("SELECT AVG(q.score) FROM QuizHistory q")
+    Double findAverageScore();
 }
