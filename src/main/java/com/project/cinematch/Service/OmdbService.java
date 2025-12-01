@@ -15,27 +15,20 @@ public class OmdbService {
     private final String apiKey = Dotenv.load().get("OMDB_KEY");
     private final RestTemplate restTemplate = new RestTemplate();
 
-
-
     public String getMovieByTitle(String title) {
         String url = "http://www.omdbapi.com/?apikey=" + apiKey + "&t=" + title + "&plot=full";
         return restTemplate.getForObject(url, String.class);
     }
 
-
-
-    // 1) Get movie data by IMDb ID
     public Movie getMovieById(String imdbId) {
         String url = "http://www.omdbapi.com/?apikey=" + apiKey + "&i=" + imdbId + "&plot=full";
         return restTemplate.getForObject(url, Movie.class);
     }
 
-    // 2) Return empty list because OMDb does NOT support actor → movies search
     public List<Movie> getMoviesByActor(String actorName) {
         return Collections.emptyList();
     }
 
-    // 3) Return simple Actor object because OMDb does NOT support actor lookup
     public Actor getActorById(String actorName) {
         Actor actor = new Actor();
         actor.setName(actorName);

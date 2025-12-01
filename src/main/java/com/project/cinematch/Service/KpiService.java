@@ -34,8 +34,7 @@ public class KpiService {
         double rating = movie.getImdbRating();
         long votes = movie.getImdbVotes() != null ? movie.getImdbVotes() : 0;
 
-        double normalizedVotes = Math.log10(votes + 1); // 0,1,... ~ 6
-
+        double normalizedVotes = Math.log10(votes + 1);
         return (rating * 0.5) + (normalizedVotes * 0.5);
     }
 

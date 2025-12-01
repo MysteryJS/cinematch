@@ -42,9 +42,6 @@ class quiztests {
         return () -> username;
     }
 
-    // ----------------------------
-    // 1. Missing score
-    // ----------------------------
     @Test
     void testMissingScore() throws Exception {
         Principal principal = mockPrincipal("john");
@@ -60,9 +57,6 @@ class quiztests {
         verify(quizHistoryRepository, never()).save(any());
     }
 
-    // ----------------------------
-    // 2. Missing principal
-    // ----------------------------
     @Test
     void testMissingPrincipal() throws Exception {
         String json = "{\"score\": 5}";
@@ -75,9 +69,6 @@ class quiztests {
         verify(quizHistoryRepository, never()).save(any());
     }
 
-    // ----------------------------
-    // 3. User not found
-    // ----------------------------
     @Test
     void testUserNotFound() throws Exception {
         Principal principal = mockPrincipal("ghost");
@@ -96,9 +87,6 @@ class quiztests {
         verify(quizHistoryRepository, never()).save(any());
     }
 
-    // ----------------------------
-    // 4. Successful save
-    // ----------------------------
     @Test
     void testSuccessfulSave() throws Exception {
         Principal principal = mockPrincipal("john");
@@ -119,6 +107,7 @@ class quiztests {
 
         verify(quizHistoryRepository).save(any());
     }
+    
 }
 
 

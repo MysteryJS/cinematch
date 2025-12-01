@@ -19,7 +19,6 @@ public class UserController {
         if (user.isEmpty())
             return ResponseEntity.status(401).body("User not found");
 
-        // Simple password check (replace with hashing later)
         if (!user.get().getPasswordHash().equals(loginRequest.getPasswordHash()))
             return ResponseEntity.status(401).body("Wrong password");
 
