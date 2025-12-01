@@ -1,9 +1,9 @@
-package com.project.cinematch.Controller;
+package com.project.cinematch;
 
+import com.project.cinematch.Controller.UserController;
 import com.project.cinematch.Model.User;
 import com.project.cinematch.Service.UserService;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Optional;
@@ -11,16 +11,15 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class UserControllerTest {
+public class logintest {
 
-    // Test: user not found
     @Test
     void testLoginUserNotFound() {
         UserService mockService = mock(UserService.class);
         when(mockService.findByUsername("unknown")).thenReturn(Optional.empty());
 
         UserController controller = new UserController();
-        controller.userService = mockService;
+        controller.setUserService(mockService); // use setter
 
         User login = new User();
         login.setUsername("unknown");
@@ -32,8 +31,6 @@ public class UserControllerTest {
         assertEquals("User not found", response.getBody());
     }
 
-
-    // Test: wrong password
     @Test
     void testLoginWrongPassword() {
         User user = new User();
@@ -44,7 +41,7 @@ public class UserControllerTest {
         when(mockService.findByUsername("john")).thenReturn(Optional.of(user));
 
         UserController controller = new UserController();
-        controller.userService = mockService;
+        controller.setUserService(mockService); // use setter
 
         User login = new User();
         login.setUsername("john");
@@ -56,8 +53,6 @@ public class UserControllerTest {
         assertEquals("Wrong password", response.getBody());
     }
 
-
-    // Test: successful login
     @Test
     void testLoginSuccess() {
         User user = new User();
@@ -68,7 +63,7 @@ public class UserControllerTest {
         when(mockService.findByUsername("john")).thenReturn(Optional.of(user));
 
         UserController controller = new UserController();
-        controller.userService = mockService;
+        controller.setUserService(mockService); // use setter
 
         User login = new User();
         login.setUsername("john");
@@ -80,8 +75,6 @@ public class UserControllerTest {
         assertEquals(user, response.getBody());
     }
 
-
-    // Test: register adds {noop} to password
     @Test
     void testRegisterAddsNoopPrefix() {
         User user = new User();
@@ -92,11 +85,10 @@ public class UserControllerTest {
         when(mockService.register(any(User.class))).thenAnswer(i -> i.getArgument(0));
 
         UserController controller = new UserController();
-        controller.userService = mockService;
+        controller.setUserService(mockService); // use setter
 
         User result = controller.register(user);
 
         assertEquals("{noop}mypassword", result.getPasswordHash());
     }
-
 }
