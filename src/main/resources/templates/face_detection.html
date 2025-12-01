@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="el">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ποιος ηθοποιός μοιάζεις; — CineMatch</title>
+    <link rel="stylesheet" href="/face_detection.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo-link" title="CineMatch">
+                <img src="/logo.png" alt="CineMatch logo" class="logo-img">
+            </a>
+
+            <ul class="nav-menu">
+                <li><a href="/" data-page="home" class="nav-link">Home</a></li>
+                <li><a href="/search" class="nav-link">Search</a></li>
+                <li><a href="/trending" class="nav-link">Trending Movies</a></li>
+                <li><a href="/quiz" class="nav-link">Quiz</a></li>
+                <li><a href="/sentiment" class="nav-link">Sentiment Analysis</a></li>
+                <li><a href="/face" class="nav-link">Face Detection</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="page active">
+        <div class="page-header">
+            <h1>Βρες ποιος ηθοποιός μοιάζει με εσένα</h1>
+            <p>Φόρτωσε μια φωτογραφία και θα σου δείξουμε τον πιο κοντινό ηθοποιό και άλλες προτάσεις.</p>
+        </div>
+
+        <section class="face-ui">
+            <div class="upload-panel">
+                <label class="dropzone" id="dropzone">
+                    <input id="photoInput" type="file" accept="image/*" hidden>
+                    <div class="dz-content">
+                        <svg class="camera-icon" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                            aria-hidden="true">
+                            <path
+                                d="M20 7h-3.586l-1.707-1.707A.996.996 0 0014.586 5H9.414a.996.996 0 00-.707.293L7 7H4a2 2 0 00-2 2v8a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"
+                                stroke="currentColor" stroke-width="1.2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <circle cx="12" cy="13" r="3" stroke="currentColor" stroke-width="1.2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <p>Κάνε κλικ ή σύρε μια φωτογραφία εδώ</p>
+                        <small>Υποστηρίζονται JPG / PNG. Μέγιστο μέγεθος 8MB.</small>
+                    </div>
+                </label>
+
+                <div class="preview-and-actions">
+                    <div class="preview" id="preview">
+                        <img id="previewImg" src="" alt="Προεπισκόπηση" hidden>
+                        <div class="preview-empty">Δεν έχει φορτωθεί εικόνα</div>
+                    </div>
+
+                    <div class="actions">
+                        <button id="chooseBtn" class="btn">Επίλεξε αρχείο</button>
+                        <button id="sendBtn" class="btn primary" disabled>Ανάλυση &amp; Σύγκριση</button>
+                        <button id="clearBtn" class="btn ghost" disabled>Καθαρισμός</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results" id="results">
+                <div class="results-empty">Εδώ θα εμφανιστούν τα αποτελέσματα της σύγκρισης.</div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© CineMatch — UI δοκιμής · Αυτή είναι μόνο η διεπαφή. Για πραγματική λειτουργία χρειάζεται backend με
+                face-recognition.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Ελληνικά UI: upload, preview, send to backend, show results
+        const dropzone = document.getElementById('dropzone');
+        const photoInput = document.getElementById('photoInput');
+        const chooseBtn = document.getElementById('chooseBtn');
+        const sendBtn = document.getElementById('sendBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const preview = document.getElementById('preview');
+        const previewImg = document.getElementById('previewImg');
+        const results = document.getElementById('results');
+
+        let currentFile = null;
+
+        ['dragenter', 'dragover'].forEach(evt => {
+            dropzone.addEventListener(evt, (e) => {
+                e.preventDefault();
+                dropzone.classList.add('dz-over');
+            });
+        });
+        ['dragleave', 'drop', 'dragend'].forEach(evt => {
+            dropzone.addEventListener(evt, (e) => {
+                e.preventDefault();
+                dropzone.classList.remove('dz-over');
+            });
+        });
+
+        dropzone.addEventListener('click', () => photoInput.click());
+        dropzone.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            if (dt && dt.files && dt.files[0]) handleFile(dt.files[0]);
+        });
+
+        photoInput.addEventListener('change', (e) => {
+            if (e.target.files && e.target.files[0]) handleFile(e.target.files[0]);
+        });
+
+        chooseBtn.addEventListener('click', () => photoInput.click());
+        clearBtn.addEventListener('click', clearSelection);
+
+        sendBtn.addEventListener('click', () => {
+            if (!currentFile) return;
+            analyzePhoto(currentFile);
+        });
+
+        function handleFile(file) {
+            const maxMB = 8;
+            if (!file.type.startsWith('image/')) {
+                showError('Παρακαλώ επίλεξε αρχείο εικόνας.');
+                return;
+            }
+            if (file.size > maxMB * 1024 * 1024) {
+                showError(`Το αρχείο είναι πολύ μεγάλο. Μέγιστο ${maxMB}MB.`);
+                return;
+            }
+
+            currentFile = file;
+            const url = URL.createObjectURL(file);
+            previewImg.src = url;
+            previewImg.hidden = false;
+            preview.querySelector('.preview-empty').hidden = true;
+
+            sendBtn.disabled = false;
+            clearBtn.disabled = false;
+            results.innerHTML = '<div class="results-empty">Ετοιμοί για ανάλυση. Πάτησε "Ανάλυση &amp; Σύγκριση".</div>';
+        }
+
+        function clearSelection() {
+            currentFile = null;
+            previewImg.src = '';
+            previewImg.hidden = true;
+            preview.querySelector('.preview-empty').hidden = false;
+            sendBtn.disabled = true;
+            clearBtn.disabled = true;
+            results.innerHTML = '<div class="results-empty">Εδώ θα εμφανιστούν τα αποτελέσματα της σύγκρισης.</div>';
+        }
+
+        function showError(message) {
+            results.innerHTML = `<div class="error">${escapeHtml(message)}</div>`;
+        }
+
+        function showLoading() {
+            results.innerHTML = `<div class="loading">Ανάλυση εικόνας…</div>`;
+        }
+
+        function renderResults(data) {
+
+            if (data.error) {
+                results.innerHTML = `<div class="no-match">${escapeHtml(data.error)}</div>`;
+                return;
+            }
+
+            let similarity = data.similarity;
+            if (similarity === undefined && data.score !== undefined) {
+                similarity = (1 - data.score) * 100;
+            }
+
+            if (similarity !== undefined && similarity < 45) {
+                results.innerHTML = `<div class="no-match">Δεν βρέθηκε αρκετά κοντινό πρόσωπο (ομοιότητα μόνο ${Math.round(similarity)}%).</div>`;
+                return;
+            }
+
+            if (data.closest_celebrity && data.score !== undefined) {
+                results.innerHTML = `
+            <div class="result-card">
+                <h3>Αποτέλεσμα</h3>
+                <p><strong>Ηθοποιός:</strong> ${escapeHtml(data.closest_celebrity)}</p>
+                <p><strong>Ομοιότητα:</strong> ${Math.round(similarity)}%</p>
+            </div>
+        `;
+                return;
+            }
+            results.innerHTML = `<div class="no-match">Δεν βρέθηκε αποτέλεσμα.</div>`;
+        }
+
+        async function analyzePhoto(file) {
+            showLoading();
+            const fd = new FormData();
+            fd.append('photo', file, file.name);
+
+            try {
+                const res = await fetch('http://localhost:5001/match', {
+                    method: 'POST',
+                    body: fd
+                });
+                const json = await res.json();
+                renderResults(json);
+            } catch (err) {
+                showError('Network error: ' + (err && err.message ? err.message : err));
+            }
+        }
+
+        function escapeHtml(unsafe) {
+            if (!unsafe && unsafe !== '') return '';
+            return String(unsafe)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+    </script>
+</body>
+
+</html>
