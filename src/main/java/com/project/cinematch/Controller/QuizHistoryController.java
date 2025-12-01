@@ -17,22 +17,21 @@ public class QuizHistoryController {
 
     @Autowired
     private QuizHistoryRepository quizHistoryRepository;
+
     @Autowired
     private UserRepository userRepository;
 
     @PostMapping("/quiz-history")
-    public void saveQuizHistory(@RequestBody Map<String, Object> payload, Principal principal) {
-        Integer score = (Integer) payload.get("score");
-        if (score == null || principal == null) return;
+    public void saveQuizHistory(@Valid @RequestBody QuizRequest request, Principal principal) {
 
-        String username = principal.getName();
-        User user = userRepository.findByUsername(username).orElse(null);
-        if (user == null) return;
+        User user = userRepository.findByUsername(principal.getName())
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
         QuizHistory qh = new QuizHistory();
         qh.setUser(user);
-        qh.setScore(score);
+        qh.setScore(request.getScore());
         qh.setTakenAt(LocalDateTime.now());
+
         quizHistoryRepository.save(qh);
     }
 }
