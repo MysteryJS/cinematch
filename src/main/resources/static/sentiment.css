@@ -1,4 +1,4 @@
-/* ====== SENTIMENT PAGE STYLES (original + footer added) ====== */
+/* ====== SENTIMENT PAGE STYLES (original + footer added + movie-list additions) ====== */
 * {
     margin: 0;
     padding: 0;
@@ -208,6 +208,7 @@ button:hover,
     background: #213047;
 }
 
+/* existing titlesArea list styles */
 #titlesArea ul {
     list-style: none;
     padding: 0;
@@ -248,6 +249,74 @@ button:hover,
     color: var(--accent);
     font-weight: 600;
 }
+
+/* --- NEW: movie list & poster styles (add these at the end of file) --- */
+.movie-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.6rem 0 0 0;
+  display: grid;
+  gap: 1rem;
+}
+.movie-item .movie-card {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 0.8rem;
+  border-radius: 10px;
+}
+.movie-poster {
+  width: 120px;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 6px;
+  flex: 0 0 120px;
+  background: #0b1220;
+  border: 1px solid rgba(255,255,255,0.03);
+}
+.movie-meta {
+  flex: 1;
+}
+.movie-meta .movie-title {
+  margin: 0 0 .4rem 0;
+  color: var(--primary);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+.movie-plot {
+  margin-top: .5rem;
+  color: var(--text-secondary);
+  line-height: 1.3;
+  max-height: 6.5em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* small adjustments for the existing #titlesArea list to integrate with movie-list */
+#titlesArea .movie-card { display:flex; gap:1rem; align-items:flex-start; }
+#titlesArea .movie-card img { width:120px; height:170px; object-fit:cover; border-radius:6px; }
+
+/* fallback placeholder utility class */
+.placeholder-poster {
+  background: linear-gradient(180deg,#0b1220,#122033);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color: rgba(255,255,255,0.06);
+  font-size: 0.9rem;
+}
+
+/* responsive */
+@media (max-width: 700px) {
+  .movie-item .movie-card { flex-direction: column; }
+  .movie-poster { width: 100%; height: auto; flex: none; }
+  #titlesArea ul li { flex-direction: column; gap: 0.7rem; padding: 1.2rem 0.7rem; }
+  #titlesArea ul li b { font-size: 1em; min-width: 0; }
+}
+
+/* End of movie-list additions */
 
 @media (max-width: 800px) {
     .main {
