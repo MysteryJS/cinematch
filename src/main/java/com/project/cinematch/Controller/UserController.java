@@ -34,5 +34,6 @@ public class UserController {
     public User register(@RequestBody User user) {
         user.setPasswordHash("{noop}" + user.getPasswordHash());
         return userService.register(user);
+
     }
 }
