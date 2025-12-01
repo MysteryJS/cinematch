@@ -98,4 +98,5 @@ public class UserControllerTest {
 
         assertEquals("{noop}mypassword", result.getPasswordHash());
     }
+
 }
