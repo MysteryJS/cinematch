@@ -1,10 +1,4 @@
-import sys
-import os
-
-repo_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sys.path.append(os.path.join(repo_root, "src"))
-
-from app import app, predict, emotion_to_genre
+from sentiment_analysis.sentiment_analysis import app, predict, emotion_to_genre
 import pytest
 
 @pytest.fixture
