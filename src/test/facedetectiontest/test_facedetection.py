@@ -1,14 +1,16 @@
-import subprocess, sys
+import sys, os
+import subprocess
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../face detection")))
 subprocess.run([sys.executable, "-m", "pip", "install", "numpy", "pillow", "scipy"], check=True)
 
-import numpy as np
-
+from app import app, precomputed
 
 import io
 from unittest.mock import patch
 from PIL import Image
 
-from app import app, precomputed
+
 
 
 
