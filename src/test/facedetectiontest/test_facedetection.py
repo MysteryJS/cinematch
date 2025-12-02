@@ -2,11 +2,18 @@ import subprocess
 import sys
 
 
-required_packages = ["numpy", "pillow", "scipy", "pytest", "deepface"]
+required_packages = [
+    "numpy",
+    "pillow",
+    "scipy",
+    "pytest",
+    "deepface",
+    "tf-keras"
+]
 
 for package in required_packages:
     try:
-        __import__(package)
+        __import__(package.replace("-", "_"))
     except ImportError:
         subprocess.check_call([sys.executable, "-m", "pip", "install", package])
 
