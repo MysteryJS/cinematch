@@ -55,10 +55,8 @@
         </section>
     </main>
 
-    <!-- Footer (ίδιο με index.html) -->
     <footer class="site-footer">
       <div class="footer-container">
-        <!-- Column 1: Logo + short tagline -->
         <div class="footer-col footer-brand">
           <a href="/" class="logo-link" title="CineMatch">
             <img src="/logo.png" alt="CineMatch logo" class="logo-img footer-logo">
@@ -66,7 +64,6 @@
           <p class="footer-tagline">Ανακάλυψε ταινίες με έξυπνες προτάσεις και μικρές περιγραφές.</p>
         </div>
 
-        <!-- Column 2: Short menu -->
         <div class="footer-col footer-nav">
           <h4 class="footer-title">Μενού</h4>
           <ul class="footer-menu">
@@ -79,7 +76,6 @@
           </ul>
         </div>
 
-        <!-- Column 3: Social + small extras -->
         <div class="footer-col footer-social">
           <h4 class="footer-title">Ακολούθησέ μας</h4>
           <div class="social-links">
@@ -154,11 +150,10 @@
             }).catch(() => { });
         }
 
-        // state
         let quizQuestions = [];
         let currentIndex = 0;
         let score = 0;
-        let answersLog = []; // { question, selectedIndex, correctIndex, answers }
+        let answersLog = [];
 
         const progressText = document.getElementById('progressText');
         const scoreText = document.getElementById('scoreText');
@@ -178,7 +173,7 @@
         }
 
         async function startQuiz() {
-            // reset state
+
             quizQuestions = [];
             currentIndex = 0;
             score = 0;
@@ -193,7 +188,7 @@
             nextBtn.hidden = true;
 
             try {
-                // Φέρνουμε 10 ερωτήσεις difficulty=easy (μπορείς να το αλλάξεις)
+               
                 quizQuestions = await fetchQuiz(10, 'easy');
 
                 if (quizQuestions.length === 0) {
@@ -216,7 +211,6 @@
             progressText.textContent = `Ερώτηση ${currentIndex + 1} / ${quizQuestions.length}`;
             scoreText.textContent = `Σκορ: ${score}`;
 
-            // Τα string από OpenTDB έχουν HTML entities (π.χ. &quot;), τα κάνουμε decode
             questionTitle.textContent = decodeHtml(item.question);
 
             choicesEl.innerHTML = '';
@@ -334,7 +328,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // safety helper
         function escapeHtml(unsafe) {
             if (!unsafe && unsafe !== '') return '';
             return String(unsafe)
@@ -345,19 +338,16 @@
                 .replace(/'/g, '&#039;');
         }
 
-        // decode HTML entities από OpenTDB (π.χ. &quot;, &#039;)
         function decodeHtml(html) {
             const txt = document.createElement('textarea');
             txt.innerHTML = html;
             return txt.value;
         }
 
-        // ξεκινάει αυτόματα όταν φορτώνει η σελίδα
         startQuiz();
     </script>
 
     <script>
-      // Ενημέρωση του έτους στο footer ώστε να είναι πάντα τρέχον
       (function updateFooterYear() {
         const y = new Date().getFullYear();
         const el = document.getElementById('year');

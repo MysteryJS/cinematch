@@ -22,7 +22,6 @@ body {
     padding-bottom: 2rem;
 }
 
-/* Navigation (reuse look) */
 .navbar {
     background: rgba(15, 23, 42, 0.95);
     backdrop-filter: blur(8px);
@@ -62,15 +61,12 @@ body {
     background: rgba(99,102,241,0.06);
 }
 
-/* Logo */
 .logo-img { height: 48px; width: auto; object-fit: contain; border-radius: 6px; }
 
-/* Page Header */
 .page-header { text-align: center; margin: 1.6rem 0 1rem; padding: 0 1rem; }
 .page-header h1 { font-size: 1.6rem; margin-bottom: 0.25rem; background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .page-header p { color: var(--text-secondary); }
 
-/* Layout */
 .quiz-container { max-width: 900px; margin: 0 auto; padding: 0 1rem; }
 .quiz-card {
     background: var(--bg-card);
@@ -80,16 +76,13 @@ body {
     box-shadow: 0 6px 18px rgba(2,6,23,0.4);
 }
 
-/* Top row */
 .top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; }
 .progress-text { color: var(--text-secondary); font-weight: 600; }
 .score-text { color: var(--text-secondary); font-weight: 600; }
 
-/* Question */
 .question-area { margin: 0.8rem 0; }
 #questionTitle { font-size: 1.15rem; margin-bottom: 0.6rem; }
 
-/* Choices */
 .choices { display: grid; grid-template-columns: 1fr; gap: 0.5rem; }
 .choice-btn {
     padding: 0.7rem 0.9rem;
@@ -109,7 +102,6 @@ body {
 
 .feedback { margin-top: 0.6rem; font-weight: 700; color: var(--text-secondary); }
 
-/* Controls */
 .controls { display: flex; gap: 0.6rem; justify-content: flex-end; margin-top: 0.9rem; }
 .btn {
     padding: 0.6rem 0.9rem;
@@ -123,7 +115,6 @@ body {
 .btn.primary { background: linear-gradient(90deg, var(--primary), var(--accent)); color: #fff; }
 .btn.ghost { background: transparent; color: var(--text-secondary); border: 1px solid rgba(255,255,255,0.03); }
 
-/* Results summary */
 .result-summary { margin-top: 1rem; color: var(--text-secondary); }
 .review { margin-top: 0.6rem; display: grid; gap: 0.6rem; }
 .review-item { padding: 0.6rem; border-radius: 8px; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.02); }
@@ -132,7 +123,6 @@ body {
 .r-ans .correct { color: var(--primary); font-weight: 700; }
 .r-ans.ok .user { color: var(--primary); }
 
-/* Footer (copied/adapted from style.css to match the site footer) */
 .site-footer {
   background: linear-gradient(180deg, rgba(15,23,42,0.95), rgba(14,20,34,0.98));
   border-top: 1px solid var(--border);
@@ -150,7 +140,6 @@ body {
   align-items: start;
 }
 
-/* Footer columns */
 .footer-col {
   min-width: 0;
 }
@@ -169,7 +158,6 @@ body {
   line-height: 1.4;
 }
 
-/* Footer titles and menu */
 .footer-title {
   color: var(--text-primary);
   font-size: 1rem;
@@ -196,7 +184,6 @@ body {
   transform: translateX(4px);
 }
 
-/* Social links */
 .social-links {
   display: flex;
   gap: 0.6rem;
@@ -228,7 +215,6 @@ body {
   transform: translateY(-2px);
 }
 
-/* small muted text */
 .small {
   font-size: 0.85rem;
 }
@@ -257,7 +243,6 @@ body {
   gap: 1rem;
 }
 
-/* Responsive adjustments for quiz layout + footer */
 @media (max-width: 900px) {
   .footer-container {
     grid-template-columns: 1fr 1fr;
@@ -289,12 +274,10 @@ body {
   }
 }
 
-/* Footer utility */
 .text-muted {
   color: var(--text-secondary);
 }
 
-/* Responsive */
 @media (max-width: 640px) {
     .controls { justify-content: center; flex-direction: column; }
     .top-row { flex-direction: column; gap: 0.4rem; align-items: flex-start; }
