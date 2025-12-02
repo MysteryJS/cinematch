@@ -150,7 +150,6 @@ input:focus{
 }
 .btn:hover{ transform: translateY(-3px); }
 
-/* Primary / Muted styles */
 .primary{
   background: linear-gradient(90deg, var(--primary), var(--accent));
   color:#fff;

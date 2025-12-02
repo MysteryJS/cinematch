@@ -21,8 +21,8 @@ public class KpiService {
 
         double actorPopularity = actor.getPopularity() != null
                 ? actor.getPopularity()
-                : 10.0; // default
-
+                : 10.0;
+                
         return (avgRating * 0.6)
                 + (movieCount * 0.3)
                 + (actorPopularity * 0.1);
