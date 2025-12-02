@@ -1,15 +1,13 @@
 import torch
-import pandas as pd
 from flask import Flask, request, jsonify
-
+from datasets import load_dataset
 from transformers import AutoTokenizer, AutoConfig, XLMRobertaForSequenceClassification, PreTrainedModel
 from torch import nn
 from torch.nn import Dropout
 
 app = Flask(__name__)
-df = pd.read_csv("movieswithplotsandgenres.csv")
+dataset = load_dataset("archich/movieswithplotsandgenres", split="train")
 
-# Define the CustomModel class which is predicting Both SENTIMENT POLARITY &  EMOTIONS
 class CustomModel(XLMRobertaForSequenceClassification):
     def __init__(self, config, num_emotion_labels):
         super(CustomModel, self).__init__(config)
@@ -52,13 +50,11 @@ model = CustomModel.from_pretrained(model_dir, config=config, num_emotion_labels
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.to(device)
 
-# Function to predict emotion
 def predict(texts):
 
     inputs = tokenizer(texts, padding=True, truncation=True, return_tensors="pt", max_length=512)
     inputs = {k: v.to(device) for k, v in inputs.items()}
     
-    # Get model predictions
     model.eval()
     with torch.no_grad():
         outputs = model(**inputs)
@@ -117,11 +113,11 @@ def recommend():
         common = movie_genres & desired_genres
         return len(common) >= 1
 
-    filtered_df = df[df['Genres'].apply(at_least_two_from_analysis)]
+    filtered = [row for row in dataset if at_least_two_from_analysis(row['Genres'])]
 
-    num_titles = min(num_titles, len(filtered_df))
-    random_titles = filtered_df['Film_title'].sample(n=num_titles, random_state=None).tolist()
-
+    num_titles = min(num_titles, len(filtered))
+    random_titles = random.sample([row['Film_title'] for row in filtered], num_titles)
+    
     return jsonify({
         "genres": genres_from_analysis,
         "emotion_probabilities": emotion_results,
