@@ -163,8 +163,8 @@
         const restartBtn = document.getElementById('restartBtn');
         const resultSummary = document.getElementById('resultSummary');
 
-        async function fetchQuiz(amount = 10, difficulty = 'easy') {
-            const res = await fetch(`/api/quiz?amount=${amount}&difficulty=${difficulty}`);
+        async function fetchQuiz() {
+            const res = await fetch(`/api/quiz?amount=10&difficulty=easy`);
             if (!res.ok) {
                 throw new Error('HTTP error ' + res.status);
             }
@@ -189,7 +189,7 @@
 
             try {
                
-                quizQuestions = await fetchQuiz(10, 'easy');
+                quizQuestions = await fetchQuiz();
 
                 if (quizQuestions.length === 0) {
                     questionTitle.textContent = 'Δεν βρέθηκαν ερωτήσεις από το API.';
