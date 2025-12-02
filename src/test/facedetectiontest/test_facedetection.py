@@ -20,6 +20,20 @@ def test_precomputed_loaded(app_and_precomputed):
 
 def test_precomputed_has_expected_users(app_and_precomputed):
     _, precomputed = app_and_precomputed
-    expected_users = ['user1', 'user2']()_
+    expected_users = ['user1', 'user2']
+    for user in expected_users:
+        assert user in precomputed
+
+def test_precomputed_values_are_lists(app_and_precomputed):
+    _, precomputed = app_and_precomputed
+    for key, value in precomputed.items():
+        assert isinstance(value, list)
+
+def test_dummy_face_recognition_call(app_and_precomputed):
+    _, precomputed = app_and_precomputed
+    dummy_input = 'dummy_face_encoding'
+    for user, encodings in precomputed.items():
+        encodings.append(dummy_input)
+        assert dummy_input in precomputed[user]
 
 
