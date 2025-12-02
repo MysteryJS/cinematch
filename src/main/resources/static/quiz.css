@@ -1,4 +1,3 @@
-/* ====== QUIZ STYLES (consistent with CineMatch theme) ====== */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
     --primary: #0978c1;
@@ -228,7 +227,6 @@ body {
   margin-top: 0.6rem;
 }
 
-/* Footer bottom bar */
 .footer-bottom {
   border-top: 1px solid rgba(51,65,85,0.6);
   padding: 0.7rem 0;
