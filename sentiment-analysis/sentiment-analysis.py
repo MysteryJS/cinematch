@@ -4,6 +4,7 @@ from datasets import load_dataset
 from transformers import AutoTokenizer, AutoConfig, XLMRobertaForSequenceClassification, PreTrainedModel
 from torch import nn
 from torch.nn import Dropout
+import random
 
 app = Flask(__name__)
 dataset = load_dataset("archich/movieswithplotsandgenres", split="train")
