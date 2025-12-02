@@ -1,17 +1,18 @@
-import sys, os
-import subprocess
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../face detection")))
-subprocess.run([sys.executable, "-m", "pip", "install", "numpy", "pillow", "scipy"], check=True)
-
-from app import app, precomputed
-
+import sys
+import os
+import pytest
+import numpy as np
+from PIL import Image
 import io
 from unittest.mock import patch
-from PIL import Image
 
 
+CURRENT_DIR = os.path.dirname(__file__)
+PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, "../../.."))
+sys.path.append(PROJECT_ROOT)
 
+
+from face_detection.face_detection import app, precomputed
 
 
 def make_fake_image():
@@ -22,7 +23,6 @@ def make_fake_image():
     return buffer
 
 
-
 def test_match_missing_photo():
     client = app.test_client()
     resp = client.post("/match")
@@ -31,15 +31,12 @@ def test_match_missing_photo():
     assert b"Missing 'photo'" in resp.data
 
 
-
-@patch("app.DeepFace.represent")
+@patch("face_detection.face_detection.DeepFace.represent")
 def test_match_success(mock_represent):
-
 
     mock_represent.return_value = [{
         "embedding": np.array([0.1, 0.2, 0.3])
     }]
-
 
     precomputed.clear()
     precomputed.extend([
@@ -63,8 +60,7 @@ def test_match_success(mock_represent):
     assert "score" in json_data
 
 
-
-@patch("app.DeepFace.represent")
+@patch("face_detection.face_detection.DeepFace.represent")
 def test_match_no_embedding(mock_represent):
     mock_represent.return_value = [{}]  # missing "embedding"
 
@@ -81,8 +77,7 @@ def test_match_no_embedding(mock_represent):
     assert b"No face embedding found" in resp.data
 
 
-
-@patch("app.DeepFace.represent")
+@patch("face_detection.face_detection.DeepFace.represent")
 def test_match_deepface_exception(mock_represent):
     mock_represent.side_effect = RuntimeError("DeepFace failed")
 
