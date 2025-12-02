@@ -1,5 +1,10 @@
-import io
+import subprocess, sys
+subprocess.run([sys.executable, "-m", "pip", "install", "numpy pillow scipy"], check=True)
+
 import numpy as np
+
+
+import io
 from unittest.mock import patch
 from PIL import Image
 
