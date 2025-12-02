@@ -1,7 +1,7 @@
 package com.project.cinematch.Model;
 
 import jakarta.persistence.*;
-        import java.time.LocalDateTime;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "search_history")
@@ -20,7 +20,6 @@ public class SearchHistory {
     @Column(name = "searched_at")
     private LocalDateTime searchedAt = LocalDateTime.now();
 
-    // Getters & Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

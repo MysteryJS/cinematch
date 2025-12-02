@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/history")
-public class SearchHistoryController {
 
+public class SearchHistoryController {
     @Autowired
     private SearchHistoryService service;
 

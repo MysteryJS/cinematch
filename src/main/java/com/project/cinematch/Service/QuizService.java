@@ -9,12 +9,10 @@ public class QuizService {
 
     private final RestTemplate restTemplate;
 
-    // Used in tests
     public QuizService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
-    // Used by Spring Boot at runtime
     public QuizService() {
         this.restTemplate = new RestTemplate();
     }
