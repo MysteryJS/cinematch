@@ -1,9 +1,21 @@
+import subprocess
 import sys
+
+
+required_packages = ["numpy", "pillow", "scipy", "pytest", "deepface"]
+
+for package in required_packages:
+    try:
+        __import__(package)
+    except ImportError:
+        subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+
 import os
-import pytest
+import io
 import numpy as np
 from PIL import Image
-import io
+import pytest
 from unittest.mock import patch
 
 
@@ -23,20 +35,16 @@ def make_fake_image():
     return buffer
 
 
+
 def test_match_missing_photo():
     client = app.test_client()
     resp = client.post("/match")
-
     assert resp.status_code == 400
     assert b"Missing 'photo'" in resp.data
 
-
 @patch("face_detection.face_detection.DeepFace.represent")
 def test_match_success(mock_represent):
-
-    mock_represent.return_value = [{
-        "embedding": np.array([0.1, 0.2, 0.3])
-    }]
+    mock_represent.return_value = [{"embedding": np.array([0.1, 0.2, 0.3])}]
 
     precomputed.clear()
     precomputed.extend([
@@ -54,15 +62,13 @@ def test_match_success(mock_represent):
     )
 
     json_data = resp.get_json()
-
     assert resp.status_code == 200
     assert json_data["closest_celebrity"] == "CelebrityA"
     assert "score" in json_data
 
-
 @patch("face_detection.face_detection.DeepFace.represent")
 def test_match_no_embedding(mock_represent):
-    mock_represent.return_value = [{}]  # missing "embedding"
+    mock_represent.return_value = [{}]
 
     client = app.test_client()
     image = make_fake_image()
@@ -75,7 +81,6 @@ def test_match_no_embedding(mock_represent):
 
     assert resp.status_code == 400
     assert b"No face embedding found" in resp.data
-
 
 @patch("face_detection.face_detection.DeepFace.represent")
 def test_match_deepface_exception(mock_represent):
@@ -92,3 +97,4 @@ def test_match_deepface_exception(mock_represent):
 
     assert resp.status_code == 500
     assert b"DeepFace failed" in resp.data
+
