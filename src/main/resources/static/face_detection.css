@@ -1,4 +1,3 @@
-/* ====== BASE STYLES ====== */
 * {
     margin: 0;
     padding: 0;
@@ -27,7 +26,6 @@ body {
     line-height: 1.6;
 }
 
-/* Navigation */
 .navbar {
     background: rgba(15, 23, 42, 0.95);
     backdrop-filter: blur(8px);
@@ -72,7 +70,6 @@ body {
     background: rgba(99, 102, 241, 0.06);
 }
 
-/* Logo */
 .logo-img {
     height: 56px;
     width: auto;
@@ -80,7 +77,6 @@ body {
     border-radius: 6px;
 }
 
-/* Page Header */
 .page-header {
     text-align: center;
     margin: 2rem 0 1.5rem;
@@ -99,7 +95,6 @@ body {
     color: var(--text-secondary);
 }
 
-/* Layout */
 .face-ui {
     max-width: 1100px;
     margin: 0 auto;
@@ -109,7 +104,6 @@ body {
     gap: 1.2rem;
 }
 
-/* Upload panel */
 .upload-panel {
     background: var(--bg-card);
     padding: 1rem;
@@ -148,7 +142,6 @@ body {
 
 .camera-icon { color: var(--primary); opacity: 0.95; }
 
-/* Preview & actions */
 .preview-and-actions {
     display: flex;
     gap: 1rem;
@@ -213,7 +206,6 @@ body {
     border: 1px solid rgba(255,255,255,0.03);
 }
 
-/* Results column */
 .results {
     background: var(--bg-card);
     padding: 1rem;
@@ -234,7 +226,6 @@ body {
     padding: 2rem;
 }
 
-/* Match card */
 .match-card {
     display: flex;
     justify-content: space-between;
@@ -274,7 +265,6 @@ body {
     font-size: 0.9rem;
 }
 
-/* Other matches */
 .other-matches {
     margin-top: 1rem;
 }
@@ -316,7 +306,6 @@ body {
     font-size: 0.95rem;
 }
 
-/* Messages */
 .error {
     color: var(--danger);
     text-align: center;
@@ -329,7 +318,6 @@ body {
     padding: 1rem;
 }
 
-/* Footer styles (copied/adapted from style.css so this file contains same footer) */
 .site-footer {
   background: linear-gradient(180deg, rgba(15,23,42,0.95), rgba(14,20,34,0.98));
   border-top: 1px solid var(--border);
@@ -347,7 +335,6 @@ body {
   align-items: start;
 }
 
-/* Footer columns */
 .footer-col {
   min-width: 0;
 }
@@ -393,7 +380,6 @@ body {
   transform: translateX(4px);
 }
 
-/* Social links */
 .social-links {
   display: flex;
   gap: 0.6rem;
@@ -425,7 +411,6 @@ body {
   transform: translateY(-2px);
 }
 
-/* small muted text */
 .small {
   font-size: 0.85rem;
 }
@@ -439,7 +424,6 @@ body {
   margin-top: 0.6rem;
 }
 
-/* Footer bottom bar */
 .footer-bottom {
   border-top: 1px solid rgba(51,65,85,0.6);
   padding: 0.7rem 0;
@@ -454,7 +438,6 @@ body {
   gap: 1rem;
 }
 
-/* Responsive adjustments for footer + face layout */
 @media (max-width: 900px) {
   .footer-container {
     grid-template-columns: 1fr 1fr;
@@ -486,12 +469,10 @@ body {
   }
 }
 
-/* small utility */
 .text-muted {
   color: var(--text-secondary);
 }
 
-/* Responsive */
 @media (max-width: 980px) {
     .face-ui {
         grid-template-columns: 1fr;
