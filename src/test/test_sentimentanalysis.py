@@ -3,7 +3,8 @@ import os
 import pytest
 
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../../sentiment_analysis")))
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
+sys.path.insert(0, ROOT_DIR)
 
 from sentiment_analysis import sentiment_analysis
 
