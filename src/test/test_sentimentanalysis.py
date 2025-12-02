@@ -1,20 +1,15 @@
-
-
 import sys
 import os
 import pytest
-
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from sentiment_analysis.sentiment_analysis import app, predict, emotion_to_genre
 
-
 @pytest.fixture
 def client():
     app.testing = True
     return app.test_client()
-
 
 def test_predict_returns_emotions():
     result = predict("I feel happy and excited today")
@@ -23,18 +18,15 @@ def test_predict_returns_emotions():
     for label in result.keys():
         assert label in emotion_to_genre
 
-
 def test_predict_empty_text():
     result = predict("")
     assert isinstance(result, dict)
     assert len(result) == 0
 
-
 def test_predict_negative_emotion():
     result = predict("I am very sad and disappointed")
     assert isinstance(result, dict)
     assert "sadness" in result or "disappointment" in result
-
 
 def test_api_recommend_basic(client):
     response = client.post("/recommend", json={
@@ -46,7 +38,6 @@ def test_api_recommend_basic(client):
     assert isinstance(data["genres"], list)
     assert isinstance(data["emotion_probabilities"], dict)
     assert isinstance(data["titles"], list)
-
 
 def test_api_returns_different_genres_for_different_emotions(client):
     response1 = client.post("/recommend", json={
@@ -62,3 +53,4 @@ def test_api_returns_different_genres_for_different_emotions(client):
     genres1 = set(response1.get_json()["genres"])
     genres2 = set(response2.get_json()["genres"])
     assert genres1 != genres2
+
