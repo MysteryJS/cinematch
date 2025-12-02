@@ -71,7 +71,6 @@
         </section>
     </main>
 
-    <!-- Footer: same layout & classes as index.html footer -->
     <footer class="site-footer" aria-label="Footer">
       <div class="footer-container">
         <!-- Column 1: Logo + short tagline -->
@@ -82,7 +81,6 @@
           <p class="footer-tagline">Ανακάλυψε ταινίες με έξυπνες προτάσεις και μικρές περιγραφές.</p>
         </div>
 
-        <!-- Column 2: Short menu -->
         <div class="footer-col footer-nav">
           <h4 class="footer-title">Μενού</h4>
           <ul class="footer-menu">
@@ -95,7 +93,6 @@
           </ul>
         </div>
 
-        <!-- Column 3: Social + small extras -->
         <div class="footer-col footer-social">
           <h4 class="footer-title">Ακολούθησέ μας</h4>
           <div class="social-links">
@@ -124,7 +121,6 @@
     </footer>
 
     <script>
-        // Ελληνικά UI: upload, preview, send to backend, show results
         const dropzone = document.getElementById('dropzone');
         const photoInput = document.getElementById('photoInput');
         const chooseBtn = document.getElementById('chooseBtn');
@@ -264,7 +260,6 @@
                 .replace(/'/g, '&#039;');
         }
 
-        // Ενημέρωση του έτους στο footer ώστε να είναι πάντα τρέχον
         (function updateFooterYear() {
           const y = new Date().getFullYear();
           const el = document.getElementById('year');
