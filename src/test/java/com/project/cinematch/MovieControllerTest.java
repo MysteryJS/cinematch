@@ -1,31 +1,38 @@
 package com.project.cinematch;
 
+import com.project.cinematch.Controller.MovieController;
 import com.project.cinematch.Service.OmdbService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-public class MovieControllerTest {
+@ExtendWith(MockitoExtension.class)
+class MovieControllerTest {
 
-    @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @Mock
     private OmdbService omdbService;
 
+    @InjectMocks
+    private MovieController movieController;
+
+    @BeforeEach
+    void setup() {
+        mockMvc = MockMvcBuilders.standaloneSetup(movieController).build();
+    }
+
     @Test
-    public void testMovieFound() throws Exception {
+    void testMovieFound() throws Exception {
         String mockJson = """
             {
               "Title": "Inception",
@@ -34,7 +41,7 @@ public class MovieControllerTest {
             }
             """;
 
-        Mockito.when(omdbService.getMovieByTitle("Inception"))
+        when(omdbService.getMovieByTitle("Inception"))
                 .thenReturn(mockJson);
 
         mockMvc.perform(get("/api/movie/search")
@@ -43,7 +50,7 @@ public class MovieControllerTest {
     }
 
     @Test
-    public void testMovieNotFound() throws Exception {
+    void testMovieNotFound() throws Exception {
         String notFoundJson = """
             {
               "Response":"False",
@@ -51,7 +58,7 @@ public class MovieControllerTest {
             }
             """;
 
-        Mockito.when(omdbService.getMovieByTitle("wrong"))
+        when(omdbService.getMovieByTitle("wrong"))
                 .thenReturn(notFoundJson);
 
         mockMvc.perform(get("/api/movie/search")
@@ -60,9 +67,10 @@ public class MovieControllerTest {
     }
 
     @Test
-    public void testEmptyTitle() throws Exception {
+    void testEmptyTitle() throws Exception {
         mockMvc.perform(get("/api/movie/search")
                         .param("title", ""))
                 .andExpect(status().isBadRequest());
     }
 }
+
