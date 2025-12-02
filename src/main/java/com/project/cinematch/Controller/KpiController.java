@@ -25,7 +25,6 @@ public class KpiController {
         this.quizHistoryRepository = quizHistoryRepository;
     }
 
-    // 1) Star Power Index (actor)
     @GetMapping("/actor/starpower/{actorName}")
     public double getActorStarPower(@PathVariable String actorName) {
         Actor actor = omdbService.getActorById(actorName);
@@ -33,21 +32,18 @@ public class KpiController {
         return kpiService.calculateStarPower(actor, movies);
     }
 
-    // 2) Box Office Popularity Proxy (movie)
     @GetMapping("/movie/boxoffice/{movieId}")
     public double getMovieBoxOfficeKpi(@PathVariable String movieId) {
         Movie movie = omdbService.getMovieById(movieId);
         return kpiService.calculateBoxOfficeProxy(movie);
     }
 
-    // 3) Awards Potential (movie)
     @GetMapping("/movie/awards/{movieId}")
     public double getMovieAwardsKpi(@PathVariable String movieId) {
         Movie movie = omdbService.getMovieById(movieId);
         return kpiService.calculateAwardsPotential(movie);
     }
 
-    // 4) Audience Engagement (quiz)
     @GetMapping("/quiz/audience")
     public double getQuizAudienceEngagement() {
 
