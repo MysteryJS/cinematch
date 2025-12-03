@@ -97,18 +97,10 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      // Πού θα εμφανιστεί το fun fact; Δημιουργούμε ένα div στην αρχή της homepage
+      
       const homeSection = document.getElementById("home");
       const factBox = document.createElement("div");
       factBox.id = "fun-fact";
-      factBox.style.margin = "2rem auto";
-      factBox.style.background = "#fef8dd";
-      factBox.style.borderRadius = "8px";
-      factBox.style.padding = "1.2rem";
-      factBox.style.maxWidth = "500px";
-      factBox.style.textAlign = "center";
-      factBox.style.fontSize = "1.2em";
-      factBox.style.boxShadow = "0 2px 8px rgba(0,0,0,0.07)";
       homeSection.appendChild(factBox);
 
       fetch("https://opentdb.com/api.php?amount=10&category=11&type=multiple")

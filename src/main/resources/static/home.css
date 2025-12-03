@@ -305,27 +305,14 @@ body {
 }
 
 #fun-fact {
-  background: var(--bg-card);
-  color: var(--text-primary);
-  border-radius: 10px;
-  box-shadow: 0 2px 12px rgba(9,45,92,0.15);
-  padding: 1.4rem 1.2rem;
-  margin-bottom: 2rem;
-  border: 1px solid var(--border);
-  font-size: 1.13em;
-  max-width: 540px;
+  background: none;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+  margin: 2rem auto;
+  max-width: 500px;
   text-align: center;
-  margin-top: 2rem;
-  margin-left: auto;
-  margin-right: auto;
-  transition: box-shadow 0.3s;
-}
-
-#fun-fact strong {
-  color: var(--accent);
-}
-
-#fun-fact b, #fun-fact span {
-  color: var(--accent);
-  font-weight: bold;
+  font-size: 1.2em;
+  color: #fff;
 }
