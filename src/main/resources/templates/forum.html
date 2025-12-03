@@ -1,11 +1,211 @@
 <!DOCTYPE html>
 <html lang="el">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forum!</title>
+    <title>CineMatch Forum</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #222;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-right: 15px;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* Page Layout */
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 15px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #222;
+        }
+
+        /* Categories */
+        .categories {
+            margin-top: 30px;
+        }
+
+        .category-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .category {
+            background: white;
+            padding: 12px 18px;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+
+        .category:hover {
+            background: #eee;
+        }
+
+        /* Posts */
+        .posts {
+            margin-top: 40px;
+        }
+
+        .post-card {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .post-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+
+        .post-meta {
+            color: #666;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        /* Create Post */
+        .create-post {
+            margin-top: 40px;
+            background: white;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .create-post input,
+        .create-post textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .create-post button {
+            padding: 10px 20px;
+            background-color: #222;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .create-post button:hover {
+            background-color: #444;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 40px;
+            padding: 15px;
+            text-align: center;
+            color: #555;
+        }
+    </style>
+
 </head>
+
 <body>
-    <h1>Forum!</h1>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <a href="/" class="logo">Cinematch</a>
+    <div class="nav-links">
+        <a href="/search">Search</a>
+        <a href="/trtrending">Trending</a>
+        <a href="/quiz">Quiz</a>
+        <a href="/sentiment">Sentiment</a>
+        <a href="/face">Face Detection</a>
+        <a href="/forum" style="text-decoration: underline;">Forum</a>
+    </div>
+</nav>
+
+<div class="container">
+
+    <h1>CineMatch Forum</h1>
+
+    <!-- Categories -->
+    <section class="categories">
+        <h2>Κατηγορίες</h2>
+        <div class="category-list">
+            <div class="category">Ταινίες Τρόμου</div>
+            <div class="category">Κωμωδίες</div>
+            <div class="category">Δράμα</div>
+            <div class="category">Περιπέτεια</div>
+            <div class="category">Σειρές</div>
+            <div class="category">Προτάσεις Χρηστών</div>
+        </div>
+    </section>
+
+    <!-- Posts -->
+    <section class="posts">
+        <h2>Τελευταίες Συζητήσεις</h2>
+
+        <div class="post-card">
+            <div class="post-title">Ποια είναι η αγαπημένη σας ταινία τρόμου;</div>
+            <div class="post-meta">Χρήστης: Guest | Ημερομηνία: —</div>
+            <p>Ξεκινάω μια συζήτηση για τις καλύτερες ταινίες τρόμου!</p>
+        </div>
+
+        <div class="post-card">
+            <div class="post-title">Προτάσεις για κωμωδίες;</div>
+            <div class="post-meta">Χρήστης: User123 | Ημερομηνία: —</div>
+            <p>Ψάχνω μια καλή κωμωδία για να δω το βράδυ!</p>
+        </div>
+
+    </section>
+
+    <!-- Create Post -->
+    <section class="create-post">
+        <h2>Δημιούργησε νέο θέμα</h2>
+
+        <input type="text" placeholder="Τίτλος θέματος">
+        <textarea rows="5" placeholder="Το μήνυμά σας..."></textarea>
+
+        <button>Δημοσίευση</button>
+    </section>
+
+</div>
+
+<footer>
+    CineMatch © 2025 — Forum UI placeholder.
+</footer>
+
 </body>
+
 </html>
