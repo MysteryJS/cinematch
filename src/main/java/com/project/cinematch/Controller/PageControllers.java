@@ -26,5 +26,8 @@ public class PageControllers {
 
     @GetMapping("/face")
     public String face() { return "face_detection"; }
-    
+
+    @GetMapping("/kpi")
+    public String kpi() {  return "kpi"; }
+
 }
