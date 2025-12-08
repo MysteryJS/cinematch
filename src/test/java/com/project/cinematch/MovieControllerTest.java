@@ -1,5 +1,6 @@
 package com.project.cinematch;
 
+import com.project.cinematch.Service.SearchHistoryService;
 import com.project.cinematch.Controller.MovieController;
 import com.project.cinematch.Service.OmdbService;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +23,9 @@ class MovieControllerTest {
 
     @Mock
     private OmdbService omdbService;
+
+    @Mock
+    private SearchHistoryService searchHistoryService;
 
     @InjectMocks
     private MovieController movieController;
