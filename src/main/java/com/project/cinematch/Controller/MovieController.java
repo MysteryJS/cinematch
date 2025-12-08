@@ -5,16 +5,22 @@ import com.project.cinematch.Service.OmdbService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.project.cinematch.Service.SearchHistoryService;
+
 
 @RestController
 @RequestMapping("/api/movie")
 public class MovieController {
 
     private final OmdbService omdbService;
+    private final SearchHistoryService searchHistoryService;
 
-    public MovieController(OmdbService omdbService) {
+
+    public MovieController(OmdbService omdbService, SearchHistoryService searchHistoryService) {
         this.omdbService = omdbService;
+        this.searchHistoryService = searchHistoryService;
     }
+
 
     // Search movie by title (returns raw JSON from OMDB)
     @GetMapping("/search")
@@ -24,6 +30,10 @@ public class MovieController {
         }
 
         String response = omdbService.getMovieByTitle(title);
+        // ❗ TODO: Όταν γίνει το authentication, θα περνάμε το πραγματικό userId.
+        // Προς το παρόν χρησιμοποιούμε userId = 1 για testing.
+        searchHistoryService.addHistory(1L, title);
+
 
         // OMDB returns "Response":"False" inside JSON if movie not found
         if (response.contains("\"Response\":\"False\"")) {
