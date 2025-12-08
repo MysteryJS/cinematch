@@ -60,6 +60,7 @@
             <li><a href="/quiz" class="footer-link">Quiz</a></li>
             <li><a href="/sentiment" class="footer-link">Sentiment Analysis</a></li>
             <li><a href="/face" class="footer-link">Face Detection</a></li>
+            <li><a href="/kpi" class="nav-link">KPIs</a></li>
           </ul>
         </div>
 
@@ -103,7 +104,7 @@
                 return;
             }
 
-            fetch(`http://localhost:8080/api/movie/${encodeURIComponent(title)}`)
+            fetch(`http://localhost:8080/api/movie/search?title=${encodeURIComponent(title)}`)
                 .then(res => res.text())
                 .then(txt => {
                     const data = JSON.parse(txt);
