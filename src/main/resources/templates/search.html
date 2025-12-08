@@ -103,7 +103,7 @@
                 return;
             }
 
-            fetch(`http://localhost:8080/api/movie/${encodeURIComponent(title)}`)
+            fetch(`http://localhost:8080/api/movie/search?title=${encodeURIComponent(title)}`)
                 .then(res => res.text())
                 .then(txt => {
                     const data = JSON.parse(txt);
