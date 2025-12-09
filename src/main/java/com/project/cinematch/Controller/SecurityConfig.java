@@ -14,11 +14,13 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/login", "/logo.png", "/css/**").permitAll()
                 .requestMatchers("/quiz").authenticated()
+                .requestMatchers("/search").authenticated()
                 .anyRequest().permitAll()
             )
             .formLogin(form -> form
                 .loginPage("/login")
                 .defaultSuccessUrl("/quiz", true)
+                .defaultSuccessUrl("/search", true)
                 .permitAll()
             );
         return http.build();
