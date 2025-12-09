@@ -30,4 +30,7 @@ public class PageControllers {
     @GetMapping("/kpi")
     public String kpi() {  return "kpi"; }
 
+    @GetMapping("/TOU")
+    public String TOU() {  return "TOU"; }
+
 }
