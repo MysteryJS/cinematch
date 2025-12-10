@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.project.cinematch.Service.SearchHistoryService;
 
-
 @RestController
 @RequestMapping("/api/movie")
 public class MovieController {
@@ -15,14 +14,11 @@ public class MovieController {
     private final OmdbService omdbService;
     private final SearchHistoryService searchHistoryService;
 
-
     public MovieController(OmdbService omdbService, SearchHistoryService searchHistoryService) {
         this.omdbService = omdbService;
         this.searchHistoryService = searchHistoryService;
     }
 
-
-    // Search movie by title (returns raw JSON from OMDB)
     @GetMapping("/search")
     public ResponseEntity<String> searchMovieByTitle(@RequestParam String title) {
 
@@ -34,20 +30,27 @@ public class MovieController {
 
         String response = omdbService.getMovieByTitle(title);
 
-        // save history
-        searchHistoryService.addHistory(1L, title);
+        if (response.contains("\"Response\":\"False\"")) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Movie not found");
+        }
 
-        // ALWAYS return JSON
-        if (response == null || response.isEmpty() || response.contains("\"Response\":\"False\"")) {
-            return ResponseEntity.ok("{\"Response\":\"False\",\"Error\":\"Movie not found\"}");
+        String imdbId = null;
+        int idx = response.indexOf("\"imdbID\":\"");
+        if (idx != -1) {
+            int start = idx + 10;
+            int end = response.indexOf("\"", start);
+            if (end != -1) {
+                imdbId = response.substring(start, end);
+            }
+        }
+
+        if (imdbId != null) {
+            searchHistoryService.addHistory(1L, imdbId);
         }
 
         return ResponseEntity.ok(response);
     }
 
-
-
-    // Search movie by IMDb ID (returns Movie object)
     @GetMapping("/id")
     public ResponseEntity<Movie> getMovieById(@RequestParam String imdbId) {
         if (imdbId == null || imdbId.trim().isEmpty()) {
