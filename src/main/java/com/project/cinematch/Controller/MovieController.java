@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.project.cinematch.Service.SearchHistoryService;
 
-
 @RestController
 @RequestMapping("/api/movie")
 public class MovieController {
@@ -21,8 +20,6 @@ public class MovieController {
         this.searchHistoryService = searchHistoryService;
     }
 
-
-    // Search movie by title (returns raw JSON from OMDB)
     @GetMapping("/search")
     public ResponseEntity<String> searchMovieByTitle(@RequestParam String title) {
         if (title == null || title.trim().isEmpty()) {
@@ -30,12 +27,9 @@ public class MovieController {
         }
 
         String response = omdbService.getMovieByTitle(title);
-        // ❗ TODO: Όταν γίνει το authentication, θα περνάμε το πραγματικό userId.
-        // Προς το παρόν χρησιμοποιούμε userId = 1 για testing.
+
         searchHistoryService.addHistory(1L, title);
 
-
-        // OMDB returns "Response":"False" inside JSON if movie not found
         if (response.contains("\"Response\":\"False\"")) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Movie not found");
         }
@@ -43,7 +37,6 @@ public class MovieController {
         return ResponseEntity.ok(response);
     }
 
-    // Search movie by IMDb ID (returns Movie object)
     @GetMapping("/id")
     public ResponseEntity<Movie> getMovieById(@RequestParam String imdbId) {
         if (imdbId == null || imdbId.trim().isEmpty()) {
