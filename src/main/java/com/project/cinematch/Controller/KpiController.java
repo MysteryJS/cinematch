@@ -20,20 +20,25 @@ public class KpiController {
     private final QuizHistoryRepository quizHistoryRepository;
 
     public KpiController(KpiService kpiService,
-                         OmdbService omdbService,
-                         QuizHistoryRepository quizHistoryRepository) {
+            OmdbService omdbService,
+            QuizHistoryRepository quizHistoryRepository) {
         this.kpiService = kpiService;
         this.omdbService = omdbService;
         this.quizHistoryRepository = quizHistoryRepository;
     }
 
     @GetMapping("")
-    @ResponseBody
-    public Map<String, Object> getKpi() {
+    public Map<String, Object> getKpi(@RequestParam String imdbId) {
+        Movie movie = omdbService.getMovieById(imdbId);
+
+        double boxOfficeProxy = kpiService.calculateBoxOfficeProxy(movie);
+        double awardsPotential = kpiService.calculateAwardsPotential(movie);
+
+
         Map<String, Object> kpi = new HashMap<>();
-        kpi.put("popularity", 87);
-        kpi.put("searchCount", 142);
-        kpi.put("ratingInfluence", 73);
+        kpi.put("boxOfficeProxy", boxOfficeProxy);
+        kpi.put("awardsPotential", awardsPotential);
+
         return kpi;
     }
 
@@ -71,7 +76,6 @@ public class KpiController {
                 starts,
                 completions,
                 avgScore,
-                maxScore
-        );
+                maxScore);
     }
 }

@@ -9,7 +9,6 @@ import java.util.List;
 @Service
 public class KpiService {
 
-
     public double calculateStarPower(Actor actor, List<Movie> movies) {
 
         double avgRating = movies.stream()
@@ -22,22 +21,27 @@ public class KpiService {
         double actorPopularity = actor.getPopularity() != null
                 ? actor.getPopularity()
                 : 10.0;
-                
+
         return (avgRating * 0.6)
                 + (movieCount * 0.3)
                 + (actorPopularity * 0.1);
     }
 
-
     public double calculateBoxOfficeProxy(Movie movie) {
-
         double rating = movie.getImdbRating();
-        long votes = movie.getImdbVotes() != null ? movie.getImdbVotes() : 0;
+        long votes = 0;
+        try {
+            String votesStr = movie.getImdbVotes();
+            if (votesStr != null) {
+                votes = Long.parseLong(votesStr.replaceAll(",", ""));
+            }
+        } catch (NumberFormatException e) {
+            votes = 0;
+        }
 
         double normalizedVotes = Math.log10(votes + 1);
         return (rating * 0.5) + (normalizedVotes * 0.5);
     }
-
 
     public double calculateAwardsPotential(Movie movie) {
 
@@ -54,7 +58,8 @@ public class KpiService {
             if (!t.isBlank()) {
                 try {
                     numbersSum += Integer.parseInt(t);
-                } catch (NumberFormatException ignored) {}
+                } catch (NumberFormatException ignored) {
+                }
             }
         }
 
@@ -63,24 +68,25 @@ public class KpiService {
         return base + bonus;
     }
 
-
     public double calculateAudienceEngagement(int quizStarts,
-                                              int quizCompletions,
-                                              double avgScore,
-                                              double maxScore) {
+            int quizCompletions,
+            double avgScore,
+            double maxScore) {
 
         if (quizStarts <= 0 || maxScore <= 0) {
             return 0.0;
         }
 
         double completionRate = (double) quizCompletions / quizStarts;
-        if (completionRate > 1) completionRate = 1;
+        if (completionRate > 1)
+            completionRate = 1;
 
         double normalizedScore = avgScore / maxScore;
-        if (normalizedScore > 1) normalizedScore = 1;
+        if (normalizedScore > 1)
+            normalizedScore = 1;
 
         double engagement = (completionRate * 0.6) + (normalizedScore * 0.4);
 
-        return engagement * 100.0; 
+        return engagement * 100.0;
     }
 }
