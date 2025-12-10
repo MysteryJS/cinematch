@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS search_history (
   id SERIAL PRIMARY KEY,
   user_id INT REFERENCES users(id) ON DELETE CASCADE,
-  movie_id INT NOT NULL,
+  movie_id VARCHAR(50) NOT NULL,
   searched_at TIMESTAMP DEFAULT NOW()
 );
 
