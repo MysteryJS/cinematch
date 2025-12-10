@@ -25,23 +25,25 @@ public class MovieController {
     // Search movie by title (returns raw JSON from OMDB)
     @GetMapping("/search")
     public ResponseEntity<String> searchMovieByTitle(@RequestParam String title) {
+
         if (title == null || title.trim().isEmpty()) {
-            return ResponseEntity.badRequest().body("Title cannot be empty");
+            return ResponseEntity.ok("{\"Response\":\"False\",\"Error\":\"Title cannot be empty\"}");
         }
 
         String response = omdbService.getMovieByTitle(title);
-        // ❗ TODO: Όταν γίνει το authentication, θα περνάμε το πραγματικό userId.
-        // Προς το παρόν χρησιμοποιούμε userId = 1 για testing.
+
+        // save history
         searchHistoryService.addHistory(1L, title);
 
-
-        // OMDB returns "Response":"False" inside JSON if movie not found
-        if (response.contains("\"Response\":\"False\"")) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Movie not found");
+        // ALWAYS return JSON
+        if (response == null || response.isEmpty() || response.contains("\"Response\":\"False\"")) {
+            return ResponseEntity.ok("{\"Response\":\"False\",\"Error\":\"Movie not found\"}");
         }
 
         return ResponseEntity.ok(response);
     }
+
+
 
     // Search movie by IMDb ID (returns Movie object)
     @GetMapping("/id")

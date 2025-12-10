@@ -6,23 +6,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 public class SearchHistoryService {
+
     @Autowired
-    private SearchHistoryRepository repo;
+    private SearchHistoryRepository searchHistoryRepository;
 
-    public SearchHistory addHistory(Long userId, String query) {
-        SearchHistory entry = new SearchHistory();
-        entry.setUserId(userId);
-        entry.setQuery(query);
-        entry.setSearchedAt(LocalDateTime.now());
+    public void addHistory(Long userId, String query) {
+        try {
+            SearchHistory history = new SearchHistory();
+            history.setUserId(userId);
+            history.setQuery(query); // ✔ ΠΡΕΠΕΙ να υπάρχει
+            history.setSearchedAt(LocalDateTime.now());
 
-        return repo.save(entry);
-    }
+            searchHistoryRepository.save(history);
 
-    public List<SearchHistory> getUserHistory(Long userId) {
-        return repo.findByUserId(userId);
+        } catch (Exception e) {
+            System.out.println("⚠ Could not save search history: " + e.getMessage());
+        }
     }
 }
+

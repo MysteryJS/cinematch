@@ -27,9 +27,6 @@ public class PageControllers {
     @GetMapping("/face")
     public String face() { return "face_detection"; }
 
-    @GetMapping("/kpi")
-    public String kpi() {  return "kpi"; }
-
     @GetMapping("/TOU")
     public String TOU() {  return "TOU"; }
 

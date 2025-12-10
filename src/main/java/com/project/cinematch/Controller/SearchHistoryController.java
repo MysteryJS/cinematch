@@ -1,4 +1,4 @@
-package com.project.cinematch.Controller;
+/*package com.project.cinematch.Controller;
 
 import com.project.cinematch.Service.SearchHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,3 +21,4 @@ public class SearchHistoryController {
         return service.getUserHistory(userId);
     }
 }
+*/
