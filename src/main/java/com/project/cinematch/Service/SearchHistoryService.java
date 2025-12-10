@@ -3,6 +3,7 @@ package com.project.cinematch.Service;
 import com.project.cinematch.Model.SearchHistory;
 import com.project.cinematch.Repository.SearchHistoryRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -27,3 +28,4 @@ public class SearchHistoryService {
         return searchHistoryRepository.findByUserId(userId);
     }
 }
+

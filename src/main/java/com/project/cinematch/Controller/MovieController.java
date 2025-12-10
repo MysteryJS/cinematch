@@ -21,8 +21,11 @@ public class MovieController {
 
     @GetMapping("/search")
     public ResponseEntity<String> searchMovieByTitle(@RequestParam String title) {
+
         if (title == null || title.trim().isEmpty()) {
-            return ResponseEntity.badRequest().body("Title cannot be empty");
+            return ResponseEntity
+                    .badRequest()
+                    .body("{\"Response\":\"False\",\"Error\":\"Title cannot be empty\"}");
         }
 
         String response = omdbService.getMovieByTitle(title);

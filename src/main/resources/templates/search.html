@@ -39,6 +39,8 @@
         </div>
 
         <div id="movieResults" class="results-container"></div>
+        <!-- KPI RESULTS AREA -->
+        <div id="kpiResults" class="kpi-container"></div>
 
     </section>
 
@@ -109,9 +111,10 @@
             }
 
             fetch(`http://localhost:8080/api/movie/search?title=${encodeURIComponent(title)}`)
-                .then(res => res.text())
-                .then(txt => {
-                    const data = JSON.parse(txt);
+                .then(res => res.json())
+                .then(data => {
+                 console.log(data);
+
                     if (data.Response === "False") {
                         results.innerHTML = "<p class='error'>Δεν βρέθηκε ταινία.</p>";
                         return;
@@ -128,6 +131,26 @@
                         <p><strong>Πλοκή:</strong> ${data.Plot}</p>
                     </div>
                 </div>`;
+                // Μετά την εμφάνιση της ταινίας, εμφάνισε και τα KPI
+                fetch("http://localhost:8080/api/kpi")
+                  .then(res => res.json())
+                  .then(kpi => {
+                     const kpiDiv = document.getElementById("kpiResults");
+
+                     kpiDiv.innerHTML = `
+                       <div class="kpi-box">
+                         <h3>📊 KPIs για την ταινία:</h3>
+                         <p><strong>Popularity Score:</strong> ${kpi.popularity}</p>
+                         <p><strong>Search Count:</strong> ${kpi.searchCount}</p>
+                         <p><strong>Rating Influence:</strong> ${kpi.ratingInfluence}</p>
+                       </div>
+                 `;
+           })
+           .catch(() => {
+              document.getElementById("kpiResults").innerHTML =
+               "<p class='error'>⚠️ Δεν ήταν δυνατή η λήψη των KPI.</p>";
+           });
+
                 })
                 .catch(err => {
                     results.innerHTML = "<p class='error'>Σφάλμα σύνδεσης.</p>";

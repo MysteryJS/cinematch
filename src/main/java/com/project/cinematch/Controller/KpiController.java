@@ -7,6 +7,8 @@ import com.project.cinematch.Service.KpiService;
 import com.project.cinematch.Service.OmdbService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -23,6 +25,16 @@ public class KpiController {
         this.kpiService = kpiService;
         this.omdbService = omdbService;
         this.quizHistoryRepository = quizHistoryRepository;
+    }
+
+    @GetMapping("")
+    @ResponseBody
+    public Map<String, Object> getKpi() {
+        Map<String, Object> kpi = new HashMap<>();
+        kpi.put("popularity", 87);
+        kpi.put("searchCount", 142);
+        kpi.put("ratingInfluence", 73);
+        return kpi;
     }
 
     @GetMapping("/actor/starpower/{actorName}")

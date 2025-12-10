@@ -1,4 +1,4 @@
-package com.project.cinematch.Controller;
+/*package com.project.cinematch.Controller;
 
 import com.project.cinematch.Model.SearchHistory;
 import com.project.cinematch.Service.SearchHistoryService;
@@ -25,3 +25,4 @@ public class SearchHistoryController {
         return service.getUserHistory(userId);
     }
 }
+*/
