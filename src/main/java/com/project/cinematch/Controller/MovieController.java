@@ -14,7 +14,6 @@ public class MovieController {
     private final OmdbService omdbService;
     private final SearchHistoryService searchHistoryService;
 
-
     public MovieController(OmdbService omdbService, SearchHistoryService searchHistoryService) {
         this.omdbService = omdbService;
         this.searchHistoryService = searchHistoryService;
@@ -28,10 +27,22 @@ public class MovieController {
 
         String response = omdbService.getMovieByTitle(title);
 
-        searchHistoryService.addHistory(1L, title);
-
         if (response.contains("\"Response\":\"False\"")) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Movie not found");
+        }
+
+        String imdbId = null;
+        int idx = response.indexOf("\"imdbID\":\"");
+        if (idx != -1) {
+            int start = idx + 10;
+            int end = response.indexOf("\"", start);
+            if (end != -1) {
+                imdbId = response.substring(start, end);
+            }
+        }
+
+        if (imdbId != null) {
+            searchHistoryService.addHistory(1L, imdbId);
         }
 
         return ResponseEntity.ok(response);
