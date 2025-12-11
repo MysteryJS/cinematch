@@ -5,23 +5,3 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
-jobs:
-
-  cinematch-face_detection:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-  
-      - name: Build face_detection image
-        run: docker build -t ghcr.io/mysteryjs/face_detection:latest ./face_detection
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GHCR_TOKEN  }}
-
-      - name: Push face_detection image
-        run: docker push ghcr.io/mysteryjs/face_detection:latest
