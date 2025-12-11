@@ -1,0 +1,45 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  cinematch-face_detection:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+  
+      - name: Build face_detection image
+        run: docker build -t mysteryjs/face_detection:latest ./face_detection
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.Cinematch-Dockers  }}
+
+      - name: Push face_detection image
+        run: docker push ghcr.io/mysteryjs/face_detection:latest
+
+  cinematch-sentiment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+  
+      - name: Build sentiment_analysis image
+        run: docker build -t mysteryjs/sentiment_analysis:latest ./sentiment_analysis
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.Cinematch-Dockers  }}
+
+      - name: Push sentiment_analysis image
+        run: docker push ghcr.io/mysteryjs/sentiment_analysis:latest
