@@ -16,7 +16,6 @@ public class MovieController {
         this.omdbService = omdbService;
     }
 
-    // Search movie by title (returns raw JSON from OMDB)
     @GetMapping("/search")
     public ResponseEntity<String> searchMovieByTitle(@RequestParam String title) {
         if (title == null || title.trim().isEmpty()) {
@@ -25,7 +24,6 @@ public class MovieController {
 
         String response = omdbService.getMovieByTitle(title);
 
-        // OMDB returns "Response":"False" inside JSON if movie not found
         if (response.contains("\"Response\":\"False\"")) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Movie not found");
         }
@@ -33,7 +31,6 @@ public class MovieController {
         return ResponseEntity.ok(response);
     }
 
-    // Search movie by IMDb ID (returns Movie object)
     @GetMapping("/id")
     public ResponseEntity<Movie> getMovieById(@RequestParam String imdbId) {
         if (imdbId == null || imdbId.trim().isEmpty()) {
