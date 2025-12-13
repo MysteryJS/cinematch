@@ -12,13 +12,12 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/login", "/logo.png", "/css/**").permitAll()
+                .requestMatchers("/", "/login", "/logo.png", "/css/**","/search").permitAll()
                 .requestMatchers("/quiz").authenticated()
                 .anyRequest().permitAll()
             )
             .formLogin(form -> form
                 .loginPage("/login")
-                .defaultSuccessUrl("/quiz", true)
                 .permitAll()
             );
         return http.build();
