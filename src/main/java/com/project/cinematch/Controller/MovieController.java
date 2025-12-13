@@ -5,27 +5,47 @@ import com.project.cinematch.Service.OmdbService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.project.cinematch.Service.SearchHistoryService;
 
 @RestController
 @RequestMapping("/api/movie")
 public class MovieController {
 
     private final OmdbService omdbService;
+    private final SearchHistoryService searchHistoryService;
 
-    public MovieController(OmdbService omdbService) {
+    public MovieController(OmdbService omdbService, SearchHistoryService searchHistoryService) {
         this.omdbService = omdbService;
+        this.searchHistoryService = searchHistoryService;
     }
 
     @GetMapping("/search")
     public ResponseEntity<String> searchMovieByTitle(@RequestParam String title) {
+
         if (title == null || title.trim().isEmpty()) {
-            return ResponseEntity.badRequest().body("Title cannot be empty");
+            return ResponseEntity
+                    .badRequest()
+                    .body("{\"Response\":\"False\",\"Error\":\"Title cannot be empty\"}");
         }
 
         String response = omdbService.getMovieByTitle(title);
 
         if (response.contains("\"Response\":\"False\"")) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Movie not found");
+        }
+
+        String imdbId = null;
+        int idx = response.indexOf("\"imdbID\":\"");
+        if (idx != -1) {
+            int start = idx + 10;
+            int end = response.indexOf("\"", start);
+            if (end != -1) {
+                imdbId = response.substring(start, end);
+            }
+        }
+
+        if (imdbId != null) {
+            searchHistoryService.addHistory(1L, imdbId);
         }
 
         return ResponseEntity.ok(response);

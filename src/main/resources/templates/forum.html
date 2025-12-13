@@ -13,7 +13,6 @@
             background: #f4f4f4;
         }
 
-        /* Navbar */
         .navbar {
             background-color: #222;
             padding: 10px 20px;
@@ -37,7 +36,6 @@
             gap: 15px;
         }
 
-        /* Page Layout */
         .container {
             max-width: 1000px;
             margin: 30px auto;
@@ -49,7 +47,6 @@
             color: #222;
         }
 
-        /* Categories */
         .categories {
             margin-top: 30px;
         }
@@ -73,7 +70,6 @@
             background: #eee;
         }
 
-        /* Posts */
         .posts {
             margin-top: 40px;
         }
@@ -98,7 +94,6 @@
             margin-bottom: 5px;
         }
 
-        /* Create Post */
         .create-post {
             margin-top: 40px;
             background: white;
@@ -128,26 +123,17 @@
         .create-post button:hover {
             background-color: #444;
         }
-
-        /* Footer */
-        footer {
-            margin-top: 40px;
-            padding: 15px;
-            text-align: center;
-            color: #555;
-        }
     </style>
 
 </head>
 
 <body>
 
-<!-- Navbar -->
 <nav class="navbar">
     <a href="/" class="logo">Cinematch</a>
     <div class="nav-links">
         <a href="/search">Search</a>
-        <a href="/trtrending">Trending</a>
+        <a href="/trending">Trending</a>
         <a href="/quiz">Quiz</a>
         <a href="/sentiment">Sentiment</a>
         <a href="/face">Face Detection</a>
@@ -159,7 +145,6 @@
 
     <h1>CineMatch Forum</h1>
 
-    <!-- Categories -->
     <section class="categories">
         <h2>Κατηγορίες</h2>
         <div class="category-list">
@@ -172,7 +157,6 @@
         </div>
     </section>
 
-    <!-- Posts -->
     <section class="posts">
         <h2>Τελευταίες Συζητήσεις</h2>
 
@@ -190,7 +174,6 @@
 
     </section>
 
-    <!-- Create Post -->
     <section class="create-post">
         <h2>Δημιούργησε νέο θέμα</h2>
 
@@ -202,9 +185,13 @@
 
 </div>
 
-<footer>
-    CineMatch © 2025 — Forum UI placeholder.
-</footer>
+<div class="footer-bottom">
+    <div class="footer-container" style="text-align:center; padding:20px; color:#555;">
+        <p class="small">&copy; <span id="year">2025</span> CineMatch — Όλα τα δικαιώματα διατηρούνται.</p>
+        <p class="small muted">Σχεδιασμένο με ❤ για κινηματογραφόφιλους.</p>
+        <a href="/TOU" class="footer-link" style="margin-top:10px; display:inline-block;">Όροι Χρήσης</a>
+    </div>
+</div>
 
 </body>
 

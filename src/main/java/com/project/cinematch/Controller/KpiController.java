@@ -7,6 +7,8 @@ import com.project.cinematch.Service.KpiService;
 import com.project.cinematch.Service.OmdbService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -18,11 +20,26 @@ public class KpiController {
     private final QuizHistoryRepository quizHistoryRepository;
 
     public KpiController(KpiService kpiService,
-                         OmdbService omdbService,
-                         QuizHistoryRepository quizHistoryRepository) {
+            OmdbService omdbService,
+            QuizHistoryRepository quizHistoryRepository) {
         this.kpiService = kpiService;
         this.omdbService = omdbService;
         this.quizHistoryRepository = quizHistoryRepository;
+    }
+
+    @GetMapping("")
+    public Map<String, Object> getKpi(@RequestParam String imdbId) {
+        Movie movie = omdbService.getMovieById(imdbId);
+
+        double boxOfficeProxy = kpiService.calculateBoxOfficeProxy(movie);
+        double awardsPotential = kpiService.calculateAwardsPotential(movie);
+
+
+        Map<String, Object> kpi = new HashMap<>();
+        kpi.put("boxOfficeProxy", boxOfficeProxy);
+        kpi.put("awardsPotential", awardsPotential);
+
+        return kpi;
     }
 
     @GetMapping("/actor/starpower/{actorName}")
@@ -59,7 +76,6 @@ public class KpiController {
                 starts,
                 completions,
                 avgScore,
-                maxScore
-        );
+                maxScore);
     }
 }

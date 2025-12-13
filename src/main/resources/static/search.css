@@ -301,3 +301,92 @@ body {
 .text-muted {
   color: var(--text-secondary);
 }
+
+/* ----- KPI BOX STYLE ----- */
+.kpi-container {
+    margin-top: 20px;
+    padding: 15px;
+}
+
+.kpi-box {
+    background: #1f1f1f;
+    padding: 20px;
+    border-radius: 12px;
+    color: #fff;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+.kpi-box h3 {
+    margin-bottom: 12px;
+    font-size: 22px;
+    color: #f7ca18;
+}
+
+.kpi-box p {
+    font-size: 16px;
+    margin: 6px 0;
+    line-height: 1.4;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.kpi-container {
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  padding: 0;
+}
+
+.kpi-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.2rem 1.5rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.09);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 200px;
+  transition: box-shadow 0.2s;
+  animation: fadeIn 0.35s;
+}
+
+.kpi-box:hover {
+  box-shadow: 0 4px 20px 0px #0978c130;
+}
+
+.kpi-title {
+  font-size: 1.13rem;
+  margin-bottom: 0.7rem;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.01em;
+}
+
+.kpi-label {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin-right: 8px;
+}
+
+.kpi-value {
+  display: inline-block;
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: var(--primary);
+  margin-top: 2px;
+  margin-bottom: 14px;
+  letter-spacing: 0.02em;
+}
+
+.kpi-star-power .kpi-value { color: #f7ca18; }
+.kpi-awards .kpi-value { color: #e586e8; }
+.kpi-engagement .kpi-value { color: #60e6b0; }
+.kpi-boxoffice .kpi-value { color: #12d4fd; }
+
+.kpi-box:last-child {margin-bottom: 0;}

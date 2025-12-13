@@ -50,5 +50,10 @@ public class PageControllers {
     public String face() {
         return "face_detection";
     }
+    
+    @GetMapping("/TOU")
+    public String TOU() {  
+        return "TOU"; 
+    }
 
 }

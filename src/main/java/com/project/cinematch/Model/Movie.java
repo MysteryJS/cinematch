@@ -7,7 +7,7 @@ public class Movie {
     private String year;
     private String director;
     private double imdbRating;
-    private Long imdbVotes;
+    private String imdbVotes;
     private String poster;
     private String awards;
 
@@ -19,7 +19,7 @@ public class Movie {
                  String year,
                  String director,
                  double imdbRating,
-                 Long imdbVotes,
+                 String imdbVotes,
                  String poster,
                  String awards) {
         this.id = id;
@@ -72,11 +72,11 @@ public class Movie {
         this.imdbRating = imdbRating;
     }
 
-    public Long getImdbVotes() {
+    public String getImdbVotes() {
         return imdbVotes;
     }
 
-    public void setImdbVotes(Long imdbVotes) {
+    public void setImdbVotes(String imdbVotes) {
         this.imdbVotes = imdbVotes;
     }
 

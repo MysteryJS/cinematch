@@ -1,8 +1,10 @@
-FROM python
+FROM python:3.13-slim
 
 WORKDIR /app
 
 COPY requirements.txt .
+
+RUN apt-get update
 
 RUN pip install -r requirements.txt
 
