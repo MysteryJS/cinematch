@@ -9,40 +9,54 @@
 </head>
 
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="/" class="logo-link" title="CineMatch">
-                <img src="/logo.png" alt="CineMatch logo" class="logo-img">
-            </a>
-            <ul class="nav-menu" role="menubar">
-                <li><a href="/" data-page="home" class="nav-link">Home</a></li>
-                <li><a href="/search" class="nav-link">Search</a></li>
-                <li><a href="/trending" class="nav-link">Trending Movies</a></li>
-                <li><a href="/quiz" class="nav-link active">Quiz</a></li>
-                <li><a href="/sentiment" class="nav-link">Sentiment Analysis</a></li>
-                <li><a href="/face" class="nav-link">Face Detection</a></li>
-                <li th:if="${isLoggedIn}">
-                    <a href="/logout" class="nav-link">Logout</a>
-                </li>
-                <li th:unless="${isLoggedIn}">
-                    <a href="/login" class="nav-link">Login</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
 
-    <section class="page active">
-        <div class="page-header">
-            <h1>Αναζήτηση Ταινιών</h1>
-            <p>Πληκτρολογήστε μια ταινία και δείτε λεπτομέρειες από το OMDb API</p>
-        </div>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="/" class="logo-link" title="CineMatch">
+        <img src="/logo.png" alt="CineMatch logo" class="logo-img">
+      </a>
+      <ul class="nav-menu">
+        <li><a href="/" data-page="home" class="nav-link">Home</a></li>
+        <li><a href="/search" class="nav-link active">Search</a></li>
+        <li><a href="/trending" class="nav-link">Trending Movies</a></li>
+        <li><a href="/quiz" class="nav-link">Quiz</a></li>
+        <li><a href="/sentiment" class="nav-link">Sentiment Analysis</a></li>
+        <li><a href="/face" class="nav-link">Face Detection</a></li>
+        <li th:if="${isLoggedIn}">
+          <a href="/logout" class="nav-link">Logout</a>
+        </li>
+        <li th:unless="${isLoggedIn}">
+          <a href="/login" class="nav-link">Login</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
 
-        <div class="search-container">
-            <input id="searchInput" type="text" placeholder="Πληκτρολόγησε τίτλο ταινίας...">
-            <button id="searchBtn">Αναζήτηση</button>
-        </div>
 
-        <div id="movieResults" class="results-container"></div>
+  <section class="page active">
+    <div class="page-header">
+      <h1>Αναζήτηση Ταινιών</h1>
+      <p>Πληκτρολογήστε μια ταινία και δείτε λεπτομέρειες από το OMDb API</p>
+    </div>
+
+    <div class="search-container">
+      <input id="searchInput" type="text" placeholder="Πληκτρολόγησε τίτλο ταινίας...">
+      <button id="searchBtn">Αναζήτηση</button>
+    </div>
+
+    <div id="movieResults" class="results-container"></div>
+    <div id="kpiResults" class="kpi-container"></div>
+
+  </section>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-col footer-brand">
+        <a href="/" class="logo-link" title="CineMatch">
+          <img src="/logo.png" alt="CineMatch logo" class="logo-img footer-logo">
+        </a>
+        <p class="footer-tagline">Ανακάλυψε ταινίες με έξυπνες προτάσεις και μικρές περιγραφές.</p>
+      </div>
 
       <div class="footer-col footer-nav">
         <h4 class="footer-title">Μενού</h4>

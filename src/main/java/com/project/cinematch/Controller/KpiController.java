@@ -34,7 +34,6 @@ public class KpiController {
         double boxOfficeProxy = kpiService.calculateBoxOfficeProxy(movie);
         double awardsPotential = kpiService.calculateAwardsPotential(movie);
 
-
         Map<String, Object> kpi = new HashMap<>();
         kpi.put("boxOfficeProxy", boxOfficeProxy);
         kpi.put("awardsPotential", awardsPotential);
