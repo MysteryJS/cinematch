@@ -27,4 +27,3 @@ public class SearchHistoryService {
         return searchHistoryRepository.findByUserId(userId);
     }
 }
-
