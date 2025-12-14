@@ -1,11 +1,15 @@
 package com.project.cinematch.Controller;
 
 import com.project.cinematch.Model.Movie;
+import com.project.cinematch.Model.User;
 import com.project.cinematch.Service.OmdbService;
+import com.project.cinematch.Service.SearchHistoryService;
+import com.project.cinematch.Service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
-import com.project.cinematch.Service.SearchHistoryService;
 
 @RestController
 @RequestMapping("/api/movie")
@@ -13,15 +17,20 @@ public class MovieController {
 
     private final OmdbService omdbService;
     private final SearchHistoryService searchHistoryService;
+    private final UserService userService;
 
-    public MovieController(OmdbService omdbService, SearchHistoryService searchHistoryService) {
+    public MovieController(OmdbService omdbService,
+            SearchHistoryService searchHistoryService,
+            UserService userService) {
         this.omdbService = omdbService;
         this.searchHistoryService = searchHistoryService;
+        this.userService = userService;
     }
 
     @GetMapping("/search")
-    public ResponseEntity<String> searchMovieByTitle(@RequestParam String title) {
-
+    public ResponseEntity<String> searchMovieByTitle(
+            @RequestParam String title,
+            Authentication authentication) {
         if (title == null || title.trim().isEmpty()) {
             return ResponseEntity
                     .badRequest()
@@ -30,22 +39,21 @@ public class MovieController {
 
         String response = omdbService.getMovieByTitle(title);
 
-        if (response.contains("\"Response\":\"False\"")) {
+        if (response.contains("\"Response\":\"False\""))
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Movie not found");
-        }
 
         String imdbId = null;
         int idx = response.indexOf("\"imdbID\":\"");
         if (idx != -1) {
             int start = idx + 10;
             int end = response.indexOf("\"", start);
-            if (end != -1) {
-                imdbId = response.substring(start, end);
-            }
+            if (end != -1) imdbId = response.substring(start, end);
         }
 
-        if (imdbId != null) {
-            searchHistoryService.addHistory(1L, imdbId);
+        if (imdbId != null && authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken)) {
+            String username = authentication.getName();
+            User user = userService.findByUsername(username).orElse(null);
+            if (user != null) searchHistoryService.addHistory(user.getId(), imdbId);
         }
 
         return ResponseEntity.ok(response);
@@ -53,16 +61,15 @@ public class MovieController {
 
     @GetMapping("/id")
     public ResponseEntity<Movie> getMovieById(@RequestParam String imdbId) {
-        if (imdbId == null || imdbId.trim().isEmpty()) {
+
+        if (imdbId == null || imdbId.trim().isEmpty())
             return ResponseEntity.badRequest().build();
-        }
 
         Movie movie = omdbService.getMovieById(imdbId);
-
-        if (movie == null) {
+        if (movie == null)
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
 
         return ResponseEntity.ok(movie);
+
     }
 }
