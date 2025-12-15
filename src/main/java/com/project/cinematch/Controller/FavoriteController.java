@@ -1,6 +1,7 @@
 package com.project.cinematch.Controller;
 
 import com.project.cinematch.Model.Favorite;
+import com.project.cinematch.Model.FavoriteId;
 import com.project.cinematch.Model.User;
 import com.project.cinematch.Repository.FavoriteRepository;
 import com.project.cinematch.Repository.UserRepository;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class FavoriteController {
@@ -31,18 +33,19 @@ public class FavoriteController {
             return "redirect:/login";
         }
 
-        User user = userRepository.findByEmail(auth.getName());
-        if (user == null) {
+        Optional<User> optionalUser = userRepository.findByUsername(auth.getName());
+        if (optionalUser.isEmpty()) {
             return "redirect:/login";
         }
+        User user = optionalUser.get();
 
-        if (favoriteRepository.existsByUserAndMovieId(user, movieId)) {
+        FavoriteId favoriteId = new FavoriteId(user.getId().intValue(), movieId);
+        if (favoriteRepository.existsById(favoriteId)) {
             return "redirect:/";
         }
 
         Favorite favorite = new Favorite();
-        favorite.setUser(user);
-        favorite.setMovieId(movieId);
+        favorite.setId(favoriteId);
         favorite.setMovieTitle(movieTitle);
         favoriteRepository.save(favorite);
 
@@ -56,8 +59,13 @@ public class FavoriteController {
             return "redirect:/login";
         }
 
-        User user = userRepository.findByEmail(auth.getName());
-        List<Favorite> favorites = favoriteRepository.findByUser(user);
+        Optional<User> optionalUser = userRepository.findByUsername(auth.getName());
+        if (optionalUser.isEmpty()) {
+            return "redirect:/login";
+        }
+        User user = optionalUser.get();
+
+        List<Favorite> favorites = favoriteRepository.findByIdUserId(user.getId().intValue());
         model.addAttribute("favorites", favorites);
 
         return "favorites";
