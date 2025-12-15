@@ -1,47 +1,78 @@
 package com.project.cinematch.Controller;
 
+import com.project.cinematch.Model.Favorite;
 import com.project.cinematch.Model.Movie;
-import com.project.cinematch.Service.FavoriteService;
-import com.project.cinematch.Service.OmdbService;
-import com.project.cinematch.Security.UserPrincipal;
-import org.springframework.http.ResponseEntity;
+import com.project.cinematch.Model.User;
+import com.project.cinematch.Repository.FavoriteRepository;
+import com.project.cinematch.Repository.MovieRepository;
+import com.project.cinematch.Repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/favorites")
+@Controller
 public class FavoriteController {
 
-    private final FavoriteService favoriteService;
-    private final OmdbService omdbService;
+    @Autowired
+    private UserRepository userRepository;
 
-    public FavoriteController(FavoriteService favoriteService, OmdbService omdbService) {
-        this.favoriteService = favoriteService;
-        this.omdbService = omdbService;
+    @Autowired
+    private MovieRepository movieRepository;
+
+    @Autowired
+    private FavoriteRepository favoriteRepository;
+
+    @PostMapping("/favorite")
+    public String favoriteMovie(@RequestParam Long movieId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || auth.getName().equals("anonymousUser")) {
+            return "redirect:/login";
+        }
+
+        String email = auth.getName();
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        Movie movie = movieRepository.findById(movieId).orElse(null);
+        if (movie == null) {
+            return "redirect:/";
+        }
+
+        if (favoriteRepository.existsByUserAndMovie(user, movie)) {
+            return "redirect:/";
+        }
+
+        Favorite favorite = new Favorite();
+        favorite.setUser(user);
+        favorite.setMovie(movie);
+        favoriteRepository.save(favorite);
+
+        return "redirect:/favorites";
     }
 
-    @PostMapping("/{movieId}")
-    public ResponseEntity<Void> addFavorite(@PathVariable String movieId, Authentication auth) {
-        UserPrincipal user = (UserPrincipal) auth.getPrincipal();
-        favoriteService.addFavorite(user.getId(), movieId);
-        return ResponseEntity.ok().build();
-    }
+    @GetMapping("/favorites")
+    public String showFavorites(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || auth.getName().equals("anonymousUser")) {
+            return "redirect:/login";
+        }
 
-    @DeleteMapping("/{movieId}")
-    public ResponseEntity<Void> removeFavorite(@PathVariable String movieId, Authentication auth) {
-        UserPrincipal user = (UserPrincipal) auth.getPrincipal();
-        favoriteService.removeFavorite(user.getId(), movieId);
-        return ResponseEntity.ok().build();
-    }
+        String email = auth.getName();
+        User user = userRepository.findByEmail(email);
 
-    @GetMapping
-    public List<Movie> getFavorites(Authentication auth) {
-        UserPrincipal user = (UserPrincipal) auth.getPrincipal();
-        List<String> ids = favoriteService.getUserFavorites(user.getId());
-        return ids.stream()
-                .map(omdbService::getMovieById)
-                .toList();
+        List<Favorite> favorites = favoriteRepository.findByUser(user);
+        model.addAttribute("favorites", favorites);
+
+        return "favorites";
     }
 }
+
