@@ -390,3 +390,53 @@ body {
 .kpi-boxoffice .kpi-value { color: #12d4fd; }
 
 .kpi-box:last-child {margin-bottom: 0;}
+
+/* ----- Watch/Search History Button ----- */
+#historyBtn {
+    padding: 0.7rem 1.3rem;
+    background: var(--accent);
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+    margin: 1rem auto;
+    display: block;
+}
+
+#historyBtn:hover {
+    background: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.35);
+}
+
+/* ----- History Container ----- */
+#historyContainer {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#historyContainer div {
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--border);
+    animation: fadeIn 0.35s ease-in-out;
+}
+
+#historyContainer div:last-child {
+    border-bottom: none;
+}
+
+#historyContainer p {
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    margin: 0.2rem 0;
+}

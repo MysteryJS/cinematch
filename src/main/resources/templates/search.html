@@ -239,7 +239,8 @@ historyBtn.addEventListener("click", () => {
       data.forEach(item => {
         const div = document.createElement("div");
         div.innerHTML = `
-          <p><strong>Movie ID:</strong> ${item.movieId}</p>
+         <p><strong>Movie:</strong> ${item.movieTitle}</p>
+
           <p><small>${item.searchedAt}</small></p>
         `;
         historyContainer.appendChild(div);
@@ -247,6 +248,8 @@ historyBtn.addEventListener("click", () => {
     })
     .catch(() => alert("Πρέπει να είσαι συνδεδεμένος"));
 });
+
+
 
   </script>
 </body>
