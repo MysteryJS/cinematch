@@ -236,8 +236,7 @@ historyBtn.addEventListener("click", () => {
         return;
       }
 
-      data.forEach(item => {
-  // fetch movie details using the movieId
+     data.forEach(item => {
   fetch(`/api/movie/${item.movieId}`)
     .then(res => res.json())
     .then(movie => {
@@ -250,15 +249,14 @@ historyBtn.addEventListener("click", () => {
     })
     .catch(() => {
       const div = document.createElement("div");
-      div.innerHTML = `<p><strong>Movie:</strong> (Unknown)</p>
-                       <p><small>${new Date(item.searchedAt).toLocaleString()}</small></p>`;
+      div.innerHTML = `
+        <p><strong>Movie:</strong> (Unknown)</p>
+        <p><small>${new Date(item.searchedAt).toLocaleString()}</small></p>
+      `;
       historyContainer.appendChild(div);
     });
 });
 
-    })
-    .catch(() => alert("Πρέπει να είσαι συνδεδεμένος"));
-});
 
 
 
