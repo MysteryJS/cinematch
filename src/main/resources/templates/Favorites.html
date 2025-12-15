@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My Favorites</title>
+</head>
+<body>
+<h1>My Favorite Movies</h1>
+<div id="favorites"></div>
+
+<script>
+    fetch("/api/favorites")
+        .then(res => res.json())
+        .then(movies => {
+            const container = document.getElementById("favorites");
+            movies.forEach(movie => {
+                const div = document.createElement("div");
+                div.innerHTML = `
+        <h3>${movie.title}</h3>
+        <img src="${movie.poster}" alt="${movie.title}" />
+        <p>${movie.plot}</p>
+      `;
+                container.appendChild(div);
+            });
+        });
+</script>
+</body>
+</html>
