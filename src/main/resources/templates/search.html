@@ -237,14 +237,25 @@ historyBtn.addEventListener("click", () => {
       }
 
       data.forEach(item => {
-        const div = document.createElement("div");
-        div.innerHTML = `
-         <p><strong>Movie:</strong> ${item.movieTitle}</p>
+  // fetch movie details using the movieId
+  fetch(`/api/movie/${item.movieId}`)
+    .then(res => res.json())
+    .then(movie => {
+      const div = document.createElement("div");
+      div.innerHTML = `
+        <p><strong>Movie:</strong> ${movie.Title}</p>
+        <p><small>${new Date(item.searchedAt).toLocaleString()}</small></p>
+      `;
+      historyContainer.appendChild(div);
+    })
+    .catch(() => {
+      const div = document.createElement("div");
+      div.innerHTML = `<p><strong>Movie:</strong> (Unknown)</p>
+                       <p><small>${new Date(item.searchedAt).toLocaleString()}</small></p>`;
+      historyContainer.appendChild(div);
+    });
+});
 
-          <p><small>${item.searchedAt}</small></p>
-        `;
-        historyContainer.appendChild(div);
-      });
     })
     .catch(() => alert("Πρέπει να είσαι συνδεδεμένος"));
 });
