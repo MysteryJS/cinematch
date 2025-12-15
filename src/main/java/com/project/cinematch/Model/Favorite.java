@@ -1,28 +1,31 @@
 package com.project.cinematch.Model;
 
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "favorites")
 public class Favorite {
 
-    @EmbeddedId
-    private FavoriteId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public Favorite() {}
+    @ManyToOne
+    private User user;
 
-    public Favorite(FavoriteId id) {
-        this.id = id;
-    }
+    private String movieId;
+    private String movieTitle;
 
-    public FavoriteId getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setId(FavoriteId id) {
-        this.id = id;
-    }
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
+
+    public String getMovieId() { return movieId; }
+    public void setMovieId(String movieId) { this.movieId = movieId; }
+
+    public String getMovieTitle() { return movieTitle; }
+    public void setMovieTitle(String movieTitle) { this.movieTitle = movieTitle; }
 }
+
 

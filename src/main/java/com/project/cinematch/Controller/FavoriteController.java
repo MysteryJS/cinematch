@@ -1,10 +1,8 @@
 package com.project.cinematch.Controller;
 
 import com.project.cinematch.Model.Favorite;
-import com.project.cinematch.Model.Movie;
 import com.project.cinematch.Model.User;
 import com.project.cinematch.Repository.FavoriteRepository;
-import com.project.cinematch.Repository.MovieRepository;
 import com.project.cinematch.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -24,36 +22,28 @@ public class FavoriteController {
     private UserRepository userRepository;
 
     @Autowired
-    private MovieRepository movieRepository;
-
-    @Autowired
     private FavoriteRepository favoriteRepository;
 
     @PostMapping("/favorite")
-    public String favoriteMovie(@RequestParam Long movieId) {
+    public String favoriteMovie(@RequestParam String movieId, @RequestParam String movieTitle) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || auth.getName().equals("anonymousUser")) {
             return "redirect:/login";
         }
 
-        String email = auth.getName();
-        User user = userRepository.findByEmail(email);
+        User user = userRepository.findByEmail(auth.getName());
         if (user == null) {
             return "redirect:/login";
         }
 
-        Movie movie = movieRepository.findById(movieId).orElse(null);
-        if (movie == null) {
-            return "redirect:/";
-        }
-
-        if (favoriteRepository.existsByUserAndMovie(user, movie)) {
+        if (favoriteRepository.existsByUserAndMovieId(user, movieId)) {
             return "redirect:/";
         }
 
         Favorite favorite = new Favorite();
         favorite.setUser(user);
-        favorite.setMovie(movie);
+        favorite.setMovieId(movieId);
+        favorite.setMovieTitle(movieTitle);
         favoriteRepository.save(favorite);
 
         return "redirect:/favorites";
@@ -66,9 +56,7 @@ public class FavoriteController {
             return "redirect:/login";
         }
 
-        String email = auth.getName();
-        User user = userRepository.findByEmail(email);
-
+        User user = userRepository.findByEmail(auth.getName());
         List<Favorite> favorites = favoriteRepository.findByUser(user);
         model.addAttribute("favorites", favorites);
 
