@@ -44,7 +44,13 @@
       <button id="searchBtn">Αναζήτηση</button>
     </div>
 
-    <div id="movieResults" class="results-container"></div>
+      <div class="history-section">
+          <button id="historyBtn">Show Search History</button>
+          <div id="historyContainer"></div>
+      </div>
+
+
+      <div id="movieResults" class="results-container"></div>
     <div id="kpiResults" class="kpi-container"></div>
 
   </section>
@@ -213,6 +219,36 @@
       const el = document.getElementById('year');
       if (el) el.textContent = y;
     })();
+
+      const historyBtn = document.getElementById("historyBtn");
+const historyContainer = document.getElementById("historyContainer");
+
+historyBtn.addEventListener("click", () => {
+  fetch("/api/history/mine")
+    .then(res => {
+      if (!res.ok) throw new Error();
+      return res.json();
+    })
+    .then(data => {
+      historyContainer.innerHTML = "";
+
+      if (data.length === 0) {
+        historyContainer.innerHTML = "<p>Δεν υπάρχει ιστορικό.</p>";
+        return;
+      }
+
+      data.forEach(item => {
+        const div = document.createElement("div");
+        div.innerHTML = `
+          <p><strong>Movie ID:</strong> ${item.movieId}</p>
+          <p><small>${item.searchedAt}</small></p>
+        `;
+        historyContainer.appendChild(div);
+      });
+    })
+    .catch(() => alert("Πρέπει να είσαι συνδεδεμένος"));
+});
+
   </script>
 </body>
 
