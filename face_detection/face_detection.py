@@ -5,40 +5,39 @@ from datasets import load_dataset
 import numpy as np
 from PIL import Image
 import io
-import pickle
+import os
 
 app = Flask(__name__)
 
-hf = load_dataset("SaladSlayer00/celebrity_lookalike")
-raw_celebrities = hf["train"]
+embeddings_path = 'embeddings.npy'
+labels_path = 'labels.npy'
 
-CACHE_FILE = "embeddings_cache.pkl"
-
-try:
-    with open(CACHE_FILE, "rb") as f:
-        precomputed = pickle.load(f)
-    print(f"Loaded {len(precomputed)} celebrity embeddings from cache.")
-except FileNotFoundError:
-    print("Cache not found. Precomputing celebrity embeddings...")
-    precomputed = []
-    for entry in raw_celebrities:
+if not (os.path.exists(embeddings_path) and os.path.exists(labels_path)):
+    ds = load_dataset("SaladSlayer00/celebrity_lookalike", split="train")
+    embeddings = []
+    labels = []
+    for i, entry in enumerate(ds):
         img = entry["image"]
-        embedding_result = DeepFace.represent(
-            img_path=np.array(img),
-            model_name="VGG-Face",
-            enforce_detection=False
-        )
-        if embedding_result and "embedding" in embedding_result[0]:
-            embedding = embedding_result[0]["embedding"]
-            precomputed.append({
-                "name": entry["label"],
-                "embedding": embedding
-            })
-        else:
-            print(f"Missing embedding for {entry['label']}")
-    with open(CACHE_FILE, "wb") as f:
-        pickle.dump(precomputed, f)
-    print(f"Saved {len(precomputed)} celebrity embeddings to cache.")
+        if not isinstance(img, Image.Image):
+            img = Image.fromarray(img)
+        img = img.convert("RGB")
+        arr = np.array(img)
+        try:
+            face_embs = DeepFace.represent(img_path=arr, model_name="VGG-Face", detector_backend="skip")
+            embeddings.append(face_embs[0]['embedding'])
+            labels.append(entry['label'])
+        except Exception as e:
+            print(f"Sample {i}: Σφάλμα DeepFace: {e}")
+        if (i + 1) % 100 == 0:
+            print(f"Processed {i + 1} samples...")
+    np.save(embeddings_path, np.array(embeddings))
+    np.save(labels_path, np.array(labels))
+    print(f"Έγινε αποθήκευση {len(embeddings)} embeddings/labels!\n")
+else:
+    print("Embeddings/labels ήδη υπάρχουν... συνεχίζω.")
+
+celebrity_embeddings = np.load(embeddings_path)
+celebrity_labels = np.load(labels_path)
 
 @app.route("/match", methods=["POST"])
 def match_celebrity():
@@ -51,26 +50,24 @@ def match_celebrity():
         result = DeepFace.represent(
             img_path=img_array,
             model_name="VGG-Face",
+            detector_backend="skip",
             enforce_detection=False
         )
         if not result or "embedding" not in result[0]:
             return jsonify({"error": "No face embedding found in uploaded photo"}), 400
         query_embedding = result[0]["embedding"]
 
-        best_name, best_score = None, float("inf")
-        for entry in precomputed:
-            emb = np.array(entry["embedding"])
-            score = cosine(query_embedding, emb)
-            if score < best_score:
-                best_score = score
-                best_name = entry["name"]
+        scores = [cosine(query_embedding, emb) for emb in celebrity_embeddings]
+        best_idx = np.argmin(scores)
+        best_name = celebrity_labels[best_idx]
+        best_score = scores[best_idx]
 
         return jsonify({
-            "closest_celebrity": best_name,
-            "score": best_score
+            "closest_celebrity": str(best_name),
+            "score": float(best_score)
         })
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5001)
+    app.run(host="0.0.0.0", port=7860)
