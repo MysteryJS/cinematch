@@ -16,10 +16,10 @@ public class SearchHistoryService {
         this.searchHistoryRepository = searchHistoryRepository;
     }
 
-    public void addHistory(Long userId, String movieId) {
+    public void addHistory(Long userId, String movieTitle) {
         SearchHistory history = new SearchHistory();
         history.setUserId(userId);
-        history.setMovieId(movieId);
+        history.setMovieTitle(movieTitle);
         searchHistoryRepository.save(history);
     }
 

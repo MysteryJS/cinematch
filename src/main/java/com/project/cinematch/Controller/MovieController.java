@@ -43,17 +43,34 @@ public class MovieController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Movie not found");
 
         String imdbId = null;
-        int idx = response.indexOf("\"imdbID\":\"");
-        if (idx != -1) {
-            int start = idx + 10;
+        int idxId = response.indexOf("\"imdbID\":\"");
+        if (idxId != -1) {
+            int start = idxId + 10;
             int end = response.indexOf("\"", start);
-            if (end != -1) imdbId = response.substring(start, end);
+            if (end != -1)
+                imdbId = response.substring(start, end);
         }
 
-        if (imdbId != null && authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken)) {
+        String movieTitle = null;
+        int idxTitle = response.indexOf("\"Title\":\"");
+        if (idxTitle != -1) {
+            int start = idxTitle + 9;
+            int end = response.indexOf("\"", start);
+            if (end != -1)
+                movieTitle = response.substring(start, end);
+        }
+
+        if (imdbId != null
+                && movieTitle != null
+                && !movieTitle.isEmpty()
+                && authentication != null
+                && authentication.isAuthenticated()
+                && !(authentication instanceof AnonymousAuthenticationToken)) {
             String username = authentication.getName();
             User user = userService.findByUsername(username).orElse(null);
-            if (user != null) searchHistoryService.addHistory(user.getId(), imdbId);
+            if (user != null) {
+                searchHistoryService.addHistory(user.getId(), movieTitle);
+            }
         }
 
         return ResponseEntity.ok(response);

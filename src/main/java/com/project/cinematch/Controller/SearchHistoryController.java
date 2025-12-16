@@ -23,7 +23,7 @@ public class SearchHistoryController {
     private UserService userService;
 
     @PostMapping("/add")
-    public ResponseEntity<?> addHistory(@RequestParam String movieId, Authentication authentication) {
+    public ResponseEntity<?> addHistory(@RequestParam String movieTitle, Authentication authentication) {
         if (authentication == null
                 || !authentication.isAuthenticated()
                 || authentication instanceof AnonymousAuthenticationToken) {
@@ -33,7 +33,7 @@ public class SearchHistoryController {
         User user = userService.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found!"));
         Long userId = user.getId();
-        service.addHistory(userId, movieId);
+        service.addHistory(userId, movieTitle);
         return ResponseEntity.ok().build();
     }
 

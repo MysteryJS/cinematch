@@ -15,8 +15,8 @@ public class SearchHistory {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column(name = "movie_id", nullable = false)
-    private String movieId;
+    @Column(name = "movie_title", nullable = false)
+    private String movieTitle;
 
     @Column(name = "searched_at")
     private LocalDateTime searchedAt = LocalDateTime.now();
@@ -37,12 +37,12 @@ public class SearchHistory {
         this.userId = userId;
     }
 
-    public String getMovieId() {
-        return movieId;
+    public String getMovieTitle() {
+        return movieTitle;
     }
 
-    public void setMovieId(String movieId2) {
-        this.movieId = movieId2;
+    public void setMovieTitle(String movieTitle) { 
+        this.movieTitle = movieTitle;
     }
 
     public LocalDateTime getSearchedAt() {
