@@ -1,0 +1,6 @@
+langchain-core
+langchain-groq
+google-generativeai
+pydantic
+langchain
+flask

@@ -57,12 +57,20 @@ const restartBtn = document.getElementById('restartBtn');
 const resultSummary = document.getElementById('resultSummary');
 
 async function fetchQuiz() {
-    const res = await fetch(`/api/quiz?amount=10&difficulty=easy`);
-    if (!res.ok) {
-        throw new Error('HTTP error ' + res.status);
-    }
+    const res = await fetch("https://mysterygre-quiz.hf.space/quiz", {
+        method: "POST",
+        headers: { "Content-Type": "application/json",
+                   "Authorization": "Bearer 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"
+         },
+        body: JSON.stringify({ context: "Inception, Interstellar, The Matrix" })
+    });
+    if (!res.ok) throw new Error('HTTP error ' + res.status);
     const data = await res.json();
-    return data.questions || [];
+    return (data.quiz || []).map(q => ({
+        question: q.question,
+        answers: q.options,
+        correctIndex: q.options.findIndex(opt => opt === q.answer)
+    }));
 }
 
 async function startQuiz() {
