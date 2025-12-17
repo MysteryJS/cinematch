@@ -24,3 +24,4 @@ public class ForumPostDTO {
     public String getUsername() { return username; }
     public LocalDateTime getCreatedAt() { return createdAt; }
 }
+//forum

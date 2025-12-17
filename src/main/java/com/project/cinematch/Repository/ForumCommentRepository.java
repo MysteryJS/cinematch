@@ -9,3 +9,4 @@ public interface ForumCommentRepository extends JpaRepository<ForumComment, Long
 
     List<ForumComment> findByPostId(Long postId);
 }
+//forum
