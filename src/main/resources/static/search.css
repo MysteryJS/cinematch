@@ -47,6 +47,7 @@ body {
     display: flex;
     list-style: none;
     gap: 1rem;
+    flex-wrap: wrap;
 }
 
 .nav-link {

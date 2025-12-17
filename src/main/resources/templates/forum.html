@@ -5,185 +5,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CineMatch Forum</title>
-
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f4f4;
-        }
-
-        .navbar {
-            background-color: #222;
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            margin-right: 15px;
-        }
-
-        .navbar a:hover {
-            text-decoration: underline;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 15px;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 30px auto;
-            padding: 15px;
-        }
-
-        h1 {
-            text-align: center;
-            color: #222;
-        }
-
-        .categories {
-            margin-top: 30px;
-        }
-
-        .category-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .category {
-            background: white;
-            padding: 12px 18px;
-            border-radius: 6px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            cursor: pointer;
-        }
-
-        .category:hover {
-            background: #eee;
-        }
-
-        .posts {
-            margin-top: 40px;
-        }
-
-        .post-card {
-            background: white;
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .post-title {
-            font-weight: bold;
-            margin-bottom: 8px;
-            font-size: 18px;
-        }
-
-        .post-meta {
-            color: #666;
-            font-size: 12px;
-            margin-bottom: 5px;
-        }
-
-        .create-post {
-            margin-top: 40px;
-            background: white;
-            padding: 20px;
-            border-radius: 6px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .create-post input,
-        .create-post textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #aaa;
-            border-radius: 5px;
-            margin-bottom: 15px;
-        }
-
-        .create-post button {
-            padding: 10px 20px;
-            background-color: #222;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .create-post button:hover {
-            background-color: #444;
-        }
-    </style>
-
+    <link rel="stylesheet" href="/home.css">
 </head>
 
 <body>
 
 <nav class="navbar">
-    <a href="/" class="logo">Cinematch</a>
-    <div class="nav-links">
-        <a href="/search">Search</a>
-        <a href="/trending">Trending</a>
-        <a href="/quiz">Quiz</a>
-        <a href="/sentiment">Sentiment</a>
-        <a href="/face">Face Detection</a>
-        <a href="/forum" style="text-decoration: underline;">Forum</a>
+    <div class="nav-container">
+        <a href="/" class="logo-link" title="CineMatch">
+            <img src="/logo.png" alt="CineMatch logo" class="logo-img">
+        </a>
+        <ul class="nav-menu">
+            <li><a href="/" class="nav-link">Home</a></li>
+            <li><a href="/search" class="nav-link">Search</a></li>
+            <li><a href="/trending" class="nav-link">Trending Movies</a></li>
+            <li><a href="/quiz" class="nav-link">Quiz</a></li>
+            <li><a href="/sentiment" class="nav-link">Sentiment Analysis</a></li>
+            <li><a href="/face" class="nav-link">Face Detection</a></li>
+            <li><a href="/forum" class="nav-link active">Forum</a></li>
+        </ul>
     </div>
 </nav>
 
-<div class="container">
+<section class="page active">
+    <div class="container">
 
     <h1>CineMatch Forum</h1>
 
     <section class="categories">
         <h2>Κατηγορίες</h2>
-        <div class="category-list">
-            <div class="category">Ταινίες Τρόμου</div>
-            <div class="category">Κωμωδίες</div>
-            <div class="category">Δράμα</div>
-            <div class="category">Περιπέτεια</div>
-            <div class="category">Σειρές</div>
-            <div class="category">Προτάσεις Χρηστών</div>
-        </div>
-    </section>
-
-    <section class="posts">
-        <h2>Τελευταίες Συζητήσεις</h2>
-
-        <div class="post-card">
-            <div class="post-title">Ποια είναι η αγαπημένη σας ταινία τρόμου;</div>
-            <div class="post-meta">Χρήστης: Guest | Ημερομηνία: —</div>
-            <p>Ξεκινάω μια συζήτηση για τις καλύτερες ταινίες τρόμου!</p>
-        </div>
-
-        <div class="post-card">
-            <div class="post-title">Προτάσεις για κωμωδίες;</div>
-            <div class="post-meta">Χρήστης: User123 | Ημερομηνία: —</div>
-            <p>Ψάχνω μια καλή κωμωδία για να δω το βράδυ!</p>
+        <div class="kpi-container">
+            <div class="kpi-box">Ταινίες Τρόμου</div>
+            <div class="kpi-box">Κωμωδίες</div>
+            <div class="kpi-box">Δράμα</div>
+            <div class="kpi-box">Περιπέτεια</div>
+            <div class="kpi-box">Σειρές</div>
+            <div class="kpi-box">Προτάσεις Χρηστών</div>
         </div>
 
     </section>
 
-    <section class="create-post">
+        <section class="posts" id="posts">
+            <h2>Τελευταίες Συζητήσεις</h2>
+        </section>
+
+        <section class="search-container">
         <h2>Δημιούργησε νέο θέμα</h2>
 
-        <input type="text" placeholder="Τίτλος θέματος">
-        <textarea rows="5" placeholder="Το μήνυμά σας..."></textarea>
+        <input type="text" id="postTitle" placeholder="Τίτλος θέματος">
+        <textarea rows="5" id="postContent" placeholder="Το μήνυμα σας..."></textarea>
 
-        <button>Δημοσίευση</button>
+        <button id="submitPost">Δημοσίευση</button>
     </section>
 
 </div>
+</section>
 
 <div class="footer-bottom">
     <div class="footer-container" style="text-align:center; padding:20px; color:#555;">
@@ -192,6 +68,126 @@
         <a href="/TOU" class="footer-link" style="margin-top:10px; display:inline-block;">Όροι Χρήσης</a>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+      loadPosts();
+      document.getElementById("submitPost").addEventListener("click", createPost);
+    });
+
+    async function loadPosts() {
+      const res = await fetch("/api/forum/posts");
+      const posts = await res.json();
+
+      const container = document.getElementById("posts");
+      container.innerHTML = "<h2>Τελευταίες Συζητήσεις</h2>";
+
+      if (!posts.length) {
+        container.innerHTML += "<p>Δεν υπάρχουν ακόμη θέματα.</p>";
+        return;
+      }
+
+      posts.forEach(post => {
+        const created = post.createdAt
+          ? new Date(post.createdAt).toLocaleString()
+          : "";
+
+        const username = post.username ?? "unknown";
+
+        container.innerHTML += `
+          <div class="movie-card">
+            <div class="post-title">${post.title}</div>
+            <div class="post-meta">
+              Χρήστης: ${username} | ${created}
+            </div>
+            <p>${post.content}</p>
+
+            <div id="comments-${post.id}">
+              <small>Φόρτωση σχολίων...</small>
+            </div>
+
+            <textarea id="comment-input-${post.id}" placeholder="Γράψε σχόλιο..."></textarea>
+            <button onclick="addComment(${post.id})">Σχόλιο</button>
+          </div>
+        `;
+
+        loadComments(post.id);
+      });
+    }
+
+    async function loadComments(postId) {
+      const res = await fetch(`/api/forum/comments/${postId}`);
+      const comments = await res.json();
+
+      const div = document.getElementById(`comments-${postId}`);
+      div.innerHTML = "";
+
+      if (!comments.length) {
+        div.innerHTML = "<small>Δεν υπάρχουν σχόλια.</small>";
+        return;
+      }
+
+      comments.forEach(c => {
+        div.innerHTML += `
+          <div class="comment">
+            <small>${new Date(c.createdAt).toLocaleString()}</small>
+            <p>${c.content}</p>
+          </div>
+        `;
+      });
+    }
+
+    async function addComment(postId) {
+      const textarea = document.getElementById(`comment-input-${postId}`);
+      const content = textarea.value.trim();
+
+      if (!content) {
+        alert("Γράψε σχόλιο");
+        return;
+      }
+
+      const res = await fetch(`/api/forum/comments/${postId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content })
+      });
+
+      if (!res.ok) {
+        alert("Σφάλμα στο σχόλιο");
+        return;
+      }
+
+      textarea.value = "";
+      loadComments(postId);
+    }
+
+    async function createPost() {
+  const title = document.getElementById("postTitle").value.trim();
+  const content = document.getElementById("postContent").value.trim();
+
+  if (!title || !content) {
+    alert("Συμπλήρωσε τίτλο και μήνυμα");
+    return;
+  }
+
+  const res = await fetch("/api/forum/post", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ title, content })
+  });
+
+  if (!res.ok) {
+    alert("Σφάλμα στη δημοσίευση");
+    return;
+  }
+
+  document.getElementById("postTitle").value = "";
+  document.getElementById("postContent").value = "";
+
+  loadPosts();
+}
+
+</script>
 
 </body>
 
