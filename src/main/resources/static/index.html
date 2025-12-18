@@ -8,6 +8,37 @@
   <link rel="stylesheet" href="home.css">
 </head>
 
+<style>
+.lang-switcher {
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.lang-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid #fff;
+  color: white;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.3s;
+}
+
+.lang-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.lang-btn img {
+  width: 20px;
+  height: auto;
+  border-radius: 2px;
+}
+</style>
+
 <body>
 
   <nav class="navbar">
@@ -23,6 +54,12 @@
         <li><a href="/sentiment" class="nav-link">Sentiment Analysis</a></li>
         <li><a href="/face" class="nav-link">Face Detection</a></li>
       </ul>
+      <div class="lang-switcher">
+  <button id="lang-btn" class="lang-btn">
+    <img id="lang-flag" src="https://flagcdn.com/w40/gb.png" alt="English">
+    <span id="lang-text">EN</span>
+  </button>
+</div>
     </div>
   </nav>
 
@@ -98,31 +135,75 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      
-      const homeSection = document.getElementById("home");
-      const factBox = document.createElement("div");
-      factBox.id = "fun-fact";
-      homeSection.appendChild(factBox);
+    const langBtn = document.getElementById("lang-btn");
+    const langFlag = document.getElementById("lang-flag");
+    const langText = document.getElementById("lang-text");
 
-      fetch("https://opentdb.com/api.php?amount=10&category=11&type=multiple")
+    const translations = {
+        en: {
+            home: "Home", search: "Search", trending: "Trending Movies",
+            quiz: "Quiz", sentiment: "Sentiment Analysis", face: "Face Detection",
+            welcome: "Welcome to CineMatch!", subtitle: "Discover movies with AI-Powered tools",
+            tagline: "Discover movies with smart suggestions and short descriptions.",
+            menu: "Menu", follow: "Follow us",
+            flag: "https://flagcdn.com/w40/gr.png", btnText: "GR"
+        },
+        el: {
+            home: "Αρχική", search: "Αναζήτηση", trending: "Τάσεις",
+            quiz: "Κουίζ", sentiment: "Συναίσθημα", face: "Πρόσωπο",
+            welcome: "Καλώς ήρθατε στο CineMatch!", subtitle: "Ανακαλύψτε ταινίες με AI εργαλεία",
+            tagline: "Ανακαλύψτε ταινίες με έξυπνες προτάσεις.",
+            menu: "Μενού", follow: "Ακολουθήστε μας",
+            flag: "https://flagcdn.com/w40/gb.png", btnText: "EN"
+        }
+    };
+
+    let currentLang = "en";
+
+    langBtn.addEventListener("click", () => {
+        currentLang = currentLang === "en" ? "el" : "en";
+        const t = translations[currentLang];
+
+        // Ενημέρωση κειμένων
+        const links = document.querySelectorAll(".nav-link");
+        links[0].textContent = t.home;
+        links[1].textContent = t.search;
+        links[2].textContent = t.trending;
+        links[3].textContent = t.quiz;
+        links[4].textContent = t.sentiment;
+        links[5].textContent = t.face;
+
+        document.querySelector(".hero-main-title").textContent = t.welcome;
+        document.querySelector(".hero-subtitle").textContent = t.subtitle;
+        document.querySelector(".footer-tagline").textContent = t.tagline;
+        document.querySelector(".footer-nav .footer-title").textContent = t.menu;
+        document.querySelector(".footer-social .footer-title").textContent = t.follow;
+
+        // Αλλαγή σημαίας και κειμένου κουμπιού
+        langFlag.src = t.flag;
+        langText.textContent = t.btnText;
+    });
+
+    // --- Κώδικας για το Fun Fact (όπως τον είχες) ---
+    const homeSection = document.getElementById("home");
+    const factBox = document.createElement("div");
+    factBox.id = "fun-fact";
+    homeSection.appendChild(factBox);
+
+    fetch("https://opentdb.com/api.php?amount=10&category=11&type=multiple")
         .then(response => response.json())
         .then(data => {
-          if (data.results.length > 0) {
-            const q = data.results[Math.floor(Math.random() * data.results.length)];
-            const decode = s => {
-              const txt = document.createElement("textarea");
-              txt.innerHTML = s;
-              return txt.value;
-            };
-            factBox.innerHTML = `<strong>Did you know?</strong> ${decode(q.question)} <br><b>${decode(q.correct_answer)}</b>`;
-          } else {
-            factBox.textContent = "Δεν βρέθηκαν κινηματογραφικά fun facts αυτή τη στιγμή!";
-          }
-        })
-        .catch(() => {
-          factBox.textContent = "Δεν ήταν δυνατή η ανάκτηση fun facts.";
+            if (data.results.length > 0) {
+                const q = data.results[Math.floor(Math.random() * data.results.length)];
+                const decode = s => {
+                    const txt = document.createElement("textarea");
+                    txt.innerHTML = s;
+                    return txt.value;
+                };
+                factBox.innerHTML = `<strong>Did you know?</strong> ${decode(q.question)} <br><b>${decode(q.correct_answer)}</b>`;
+            }
         });
-    });
+});
   </script>
 </body>
 
