@@ -5,7 +5,7 @@ const searchBtn = document.getElementById("searchBtn");
     searchBtn.addEventListener("click", () => {
       const title = input.value.trim();
       if (!title) {
-        results.innerHTML = "<p class='error'>Γράψε μια ταινία πρώτα.</p>";
+        results.innerHTML = "<p class='error'>Write a movie first.</p>";
         return;
       }
 
@@ -18,7 +18,7 @@ const searchBtn = document.getElementById("searchBtn");
           console.log(data);
 
           if (data.Response === "False") {
-            results.innerHTML = "<p class='error'>Δεν βρέθηκε ταινία.</p>";
+            results.innerHTML = "<p class='error'>No movie found.</p>";
             return;
           }
           results.innerHTML = `
@@ -26,11 +26,11 @@ const searchBtn = document.getElementById("searchBtn");
                     <img src="${data.Poster}" alt="Poster">
                     <div class="movie-info">
                         <h2>${data.Title} (${data.Year})</h2>
-                        <p><strong>Ηθοποιοί:</strong> ${data.Actors}</p>
-                        <p><strong>Σκηνοθέτης:</strong> ${data.Director}</p>
-                        <p><strong>Είδος:</strong> ${data.Genre}</p>
+                        <p><strong>Actors:</strong> ${data.Actors}</p>
+                        <p><strong>Director:</strong> ${data.Director}</p>
+                        <p><strong>Kind:</strong> ${data.Genre}</p>
                         <p><strong>IMDB Rating:</strong> 🌟 ${data.imdbRating}</p>
-                        <p><strong>Πλοκή:</strong> ${data.Plot}</p>
+                        <p><strong>Plot:</strong> ${data.Plot}</p>
                     </div>
                 </div>`;
 
@@ -79,7 +79,7 @@ const searchBtn = document.getElementById("searchBtn");
 
         })
         .catch(err => {
-          results.innerHTML = "<p class='error'>Σφάλμα σύνδεσης.</p>";
+          results.innerHTML = "<p class='error'>Connection error.</p>";
         });
     });
 
@@ -109,7 +109,7 @@ const searchBtn = document.getElementById("searchBtn");
           historyContainer.innerHTML = "";
 
           if (data.length === 0) {
-            historyContainer.innerHTML = "<p>Δεν υπάρχει ιστορικό.</p>";
+            historyContainer.innerHTML = "<p>There is no history.</p>";
             return;
           }
 
@@ -122,5 +122,5 @@ const searchBtn = document.getElementById("searchBtn");
     `;
             historyContainer.appendChild(div);
           });
-        }).catch(() => alert("Πρέπει να είσαι συνδεδεμένος"));
+        }).catch(() => alert("You must be logged in."));
     });

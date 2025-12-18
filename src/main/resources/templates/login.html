@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Εγγραφή / Σύνδεση</title>
+  <title>Sign up / Login</title>
   <link rel="stylesheet" href="/login/login.css">
 </head>
 
@@ -12,41 +12,41 @@
   <a href="/" class="logo-link" title="CineMatch">
     <img src="/logo.png" alt="CineMatch logo" class="logo-img">
   </a>
-  <h1>Εγγραφή / Σύνδεση</h1>
+  <h1>Sign up / Login</h1>
   <div id="feedback" class="msg hidden"></div>
 
   <section>
-    <h2>Εγγραφή</h2>
+    <h2>sign up</h2>
     <form id="registerForm" autocomplete="off">
       <label>Username</label>
       <input type="text" id="regName" pattern="^[a-z_]+$" maxlength="30" required />
-      <small>Μόνο μικρά και "_", χωρίς κενά ή κεφαλαία</small>
+      <small>Only lowercase and "_", no spaces or uppercase</small>
       <label>Email</label>
       <input type="email" id="regEmail" maxlength="255" required />
-      <label>Κωδικός (τουλάχιστον 6 χαρακτήρες)</label>
+      <label>Password (at least 6 characters)</label>
       <input type="password" id="regPassword" minlength="6" required />
-      <button type="submit">Εγγραφή</button>
+      <button type="submit">sign up</button>
     </form>
   </section>
 
   <section>
-    <h2>Σύνδεση</h2>
+    <h2>Login</h2>
     <form method="post" action="/login">
       <label>Username</label>
       <input type="text" name="username" maxlength="30" required />
-      <label>Κωδικός</label>
+      <label>Password</label>
       <input type="password" name="password" required />
-      <button type="submit">Σύνδεση</button>
-      <div th:if="${param.error}" style="color: red;">Λάθος στοιχεία!</div>
-      <div th:if="${param.logout}" style="color: green;">Αποσυνδεθήκατε!</div>
+      <button type="submit">Login</button>
+      <div th:if="${param.error}" style="color: red;">Wrong Username or password!</div>
+      <div th:if="${param.logout}" style="color: green;">You have been disconnected!</div>
     </form>
   </section>
 
   <div class="footer-bottom">
     <div class="footer-container">
-      <p class="small">&copy; <span id="year">2025</span> CineMatch — Όλα τα δικαιώματα διατηρούνται.</p>
-      <p class="small muted">Σχεδιασμένο με ❤ για κινηματογραφόφιλους.</p>
-      <a href="/TOU" class="footer-link" style="margin-top:10px; display:inline-block;">Όροι Χρήσης</a>
+      <p class="small">&copy; <span id="year">2025</span> CineMatch — All rights reserved.</p>
+      <p class="small muted">Designed with ❤ for movie lovers.</p>
+      <a href="/TOU" class="footer-link" style="margin-top:10px; display:inline-block;">Terms of Use</a>
     </div>
   </div>
 

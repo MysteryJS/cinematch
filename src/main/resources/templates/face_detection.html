@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ποιος ηθοποιός μοιάζεις; — CineMatch</title>
+    <title>Which actor do you resemble? — CineMatch</title>
     <link rel="stylesheet" href="/face/face_detection.css">
 </head>
 
@@ -28,8 +28,8 @@
 
     <main class="page active">
         <div class="page-header">
-            <h1>Βρες ποιος ηθοποιός μοιάζει με εσένα</h1>
-            <p>Φόρτωσε μια φωτογραφία και θα σου δείξουμε τον πιο κοντινό ηθοποιό και άλλες προτάσεις.</p>
+            <h1>Find out which actor looks like you</h1>
+            <p>Upload a photo and we'll show you the closest actor and other suggestions.</p>
         </div>
 
         <section class="face-ui">
@@ -46,27 +46,27 @@
                             <circle cx="12" cy="13" r="3" stroke="currentColor" stroke-width="1.2"
                                 stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
-                        <p>Κάνε κλικ ή σύρε μια φωτογραφία εδώ</p>
-                        <small>Υποστηρίζονται JPG / PNG. Μέγιστο μέγεθος 8MB.</small>
+                        <p>Click or drag a photo here</p>
+                        <small>JPG / PNG supported. Maximum size 8MB.</small>
                     </div>
                 </label>
 
                 <div class="preview-and-actions">
                     <div class="preview" id="preview">
-                        <img id="previewImg" src="" alt="Προεπισκόπηση" hidden>
-                        <div class="preview-empty">Δεν έχει φορτωθεί εικόνα</div>
+                        <img id="previewImg" src="" alt="Preview" hidden>
+                        <div class="preview-empty">No image loaded.</div>
                     </div>
 
                     <div class="actions">
-                        <button id="chooseBtn" class="btn" type="button">Επίλεξε αρχείο</button>
-                        <button id="sendBtn" class="btn primary" type="button" disabled>Ανάλυση &amp; Σύγκριση</button>
-                        <button id="clearBtn" class="btn ghost" type="button" disabled>Καθαρισμός</button>
+                        <button id="chooseBtn" class="btn" type="button">Select file</button>
+                        <button id="sendBtn" class="btn primary" type="button" disabled>Analysis &amp; Comparison</button>
+                        <button id="clearBtn" class="btn ghost" type="button" disabled>Cleaning</button>
                     </div>
                 </div>
             </div>
 
             <div class="results" id="results">
-                <div class="results-empty">Εδώ θα εμφανιστούν τα αποτελέσματα της σύγκρισης.</div>
+                <div class="results-empty">The results of the comparison will appear here..</div>
             </div>
         </section>
     </main>
@@ -78,11 +78,11 @@
           <a href="/" class="logo-link" title="CineMatch">
             <img src="/logo.png" alt="CineMatch logo" class="logo-img footer-logo">
           </a>
-          <p class="footer-tagline">Ανακάλυψε ταινίες με έξυπνες προτάσεις και μικρές περιγραφές.</p>
+          <p class="footer-tagline">Discover movies with smart suggestions and short descriptions.</p>
         </div>
 
         <div class="footer-col footer-nav">
-          <h4 class="footer-title">Μενού</h4>
+          <h4 class="footer-title">Menu</h4>
           <ul class="footer-menu">
             <li><a href="/" class="footer-link">Home</a></li>
             <li><a href="/search" class="footer-link">Search</a></li>
@@ -94,7 +94,7 @@
         </div>
 
         <div class="footer-col footer-social">
-          <h4 class="footer-title">Ακολούθησέ μας</h4>
+          <h4 class="footer-title">Follow us</h4>
           <div class="social-links">
             <a href="https://facebook.com/" class="social-link" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M22 12.07C22 6.48 17.52 2 11.93 2S2 6.48 2 12.07c0 4.99 3.66 9.13 8.44 9.93v-7.03H7.9v-2.9h2.54V9.41c0-2.5 1.49-3.88 3.77-3.88 1.09 0 2.23.2 2.23.2v2.45h-1.25c-1.23 0-1.61.76-1.61 1.54v1.85h2.74l-.44 2.9h-2.3v7.03C18.34 21.2 22 17.06 22 12.07z" fill="currentColor"/></svg>
@@ -114,12 +114,12 @@
 
         <div class="footer-bottom">
             <div class="footer-container">
-                <p class="small">&copy; <span id="year">2025</span> CineMatch — Όλα τα δικαιώματα διατηρούνται.</p>
-                <p class="small muted">Σχεδιασμένο με ❤ για κινηματογραφόφιλους.</p>
+                <p class="small">&copy; <span id="year">2025</span> CineMatch — All rights reserved.</p>
+                <p class="small muted">Designed with ❤ for movie lovers.</p>
 
 
                 <a href="/TOU" class="footer-link" style="margin-top:10px; display:inline-block;">
-                    Όροι Χρήσης
+                    Terms of Use
                 </a>
             </div>
         </div>

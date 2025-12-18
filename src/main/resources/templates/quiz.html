@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Quiz — CineMatch (Ταινίες)</title>
+    <title>Quiz — CineMatch (Movies)</title>
     <link rel="stylesheet" href="quiz/quiz.css" />
 </head>
 
@@ -35,27 +35,26 @@
 
     <main class="page" id="main">
         <header class="page-header">
-            <h1>Quiz Ταινιών — 10 Τυχαίες Ερωτήσεις</h1>
-            <p>Επίλεξε μία από τις 5 απαντήσεις για κάθε ερώτηση. Θα λάβεις άμεση ανατροφοδότηση και στο τέλος το
-                συνολικό σκορ.</p>
+            <h1>Movie Quiz — 10 Random Questions</h1>
+            <p>Choose one of the 5 answers for each question. You will receive immediate feedback and at the end the total score.</p>
         </header>
 
         <section class="quiz-container" aria-labelledby="quiz-heading">
             <div class="quiz-card" role="application" aria-live="polite">
                 <div class="top-row">
-                    <div id="progressText" class="progress-text">Ερώτηση 1 / 10</div>
-                    <div id="scoreText" class="score-text">Σκορ: 0</div>
+                    <div id="progressText" class="progress-text">Question 1 / 10</div>
+                    <div id="scoreText" class="score-text">Score: 0</div>
                 </div>
 
                 <div id="questionArea" class="question-area" aria-atomic="true">
-                    <h2 id="questionTitle">Φόρτωση ερώτησης...</h2>
+                    <h2 id="questionTitle">Loading question...</h2>
                 </div>
 
-                <div id="choices" class="choices" role="listbox" aria-label="Επιλογές"></div>
+                <div id="choices" class="choices" role="listbox" aria-label="Options"></div>
 
                 <div class="controls">
-                    <button id="nextBtn" class="btn primary" disabled aria-disabled="true">Επόμενη Ερώτηση</button>
-                    <button id="restartBtn" class="btn ghost" hidden>Ξεκίνα ξανά</button>
+                    <button id="nextBtn" class="btn primary" disabled aria-disabled="true">Next Question</button>
+                    <button id="restartBtn" class="btn ghost" hidden>Start again</button>
                 </div>
 
                 <div id="resultSummary" class="result-summary" hidden aria-live="polite"></div>
@@ -69,11 +68,11 @@
                 <a href="/" class="logo-link" title="CineMatch">
                     <img src="/logo.png" alt="CineMatch logo" class="logo-img footer-logo">
                 </a>
-                <p class="footer-tagline">Ανακάλυψε ταινίες με έξυπνες προτάσεις και μικρές περιγραφές.</p>
+                <p class="footer-tagline">Discover movies with smart suggestions and short descriptions.</p>
             </div>
 
             <div class="footer-col footer-nav">
-                <h4 class="footer-title">Μενού</h4>
+                <h4 class="footer-title">Menu</h4>
                 <ul class="footer-menu">
                     <li><a href="/" class="footer-link">Home</a></li>
                     <li><a href="/search" class="footer-link">Search</a></li>
@@ -85,7 +84,7 @@
             </div>
 
             <div class="footer-col footer-social">
-                <h4 class="footer-title">Ακολούθησέ μας</h4>
+                <h4 class="footer-title">Follow us</h4>
                 <div class="social-links">
                     <a href="https://facebook.com" class="social-link" aria-label="Facebook">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -117,8 +116,8 @@
 
         <div class="footer-bottom">
             <div class="footer-container">
-                <p class="small">&copy; <span id="year">2025</span> CineMatch — Όλα τα δικαιώματα διατηρούνται.</p>
-                <p class="small muted">Σχεδιασμένο με ❤ για κινηματογραφόφιλους.</p>
+                <p class="small">&copy; <span id="year">2025</span> CineMatch — All rights reserved.</p>
+                <p class="small muted">Designed with ❤ for movie lovers.</p>
             </div>
         </div>
     </footer>
