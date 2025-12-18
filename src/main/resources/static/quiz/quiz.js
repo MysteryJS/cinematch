@@ -11,9 +11,9 @@ async function loadLeaderboard() {
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Όνομα χρηστή</th>
-                    <th>Καλύτερο Σκορ</th>
-                    <th>Παιχνίδια</th>
+                    <th>Name</th>
+                    <th>Best score</th>
+                    <th>Games</th>
                 </tr>
             </thead>
             <tbody>`;
@@ -72,9 +72,9 @@ async function startQuiz() {
     score = 0;
     answersLog = [];
 
-    progressText.textContent = 'Φόρτωση...';
-    scoreText.textContent = 'Σκορ: 0';
-    questionTitle.textContent = 'Φόρτωση ερώτησης...';
+    progressText.textContent = 'Loading...';
+    scoreText.textContent = 'Score: 0';
+    questionTitle.textContent = 'Loading question...';
     choicesEl.innerHTML = '';
     resultSummary.hidden = true;
     restartBtn.hidden = true;
@@ -85,7 +85,7 @@ async function startQuiz() {
         quizQuestions = await fetchQuiz();
 
         if (quizQuestions.length === 0) {
-            questionTitle.textContent = 'Δεν βρέθηκαν ερωτήσεις από το API.';
+            questionTitle.textContent = 'Error from API.';
             return;
         }
 
@@ -94,15 +94,15 @@ async function startQuiz() {
     } catch (err) {
         console.error(err);
         questionTitle.textContent =
-            'Προέκυψε σφάλμα κατά τη φόρτωση των ερωτήσεων από το API.';
+            'Error from API.';
     }
 }
 
 function renderQuestion() {
     const item = quizQuestions[currentIndex];
 
-    progressText.textContent = `Ερώτηση ${currentIndex + 1} / ${quizQuestions.length}`;
-    scoreText.textContent = `Σκορ: ${score}`;
+    progressText.textContent = `question ${currentIndex + 1} / ${quizQuestions.length}`;
+    scoreText.textContent = `Score: ${score}`;
 
     questionTitle.textContent = decodeHtml(item.question);
 
@@ -154,7 +154,7 @@ function onChoiceClick(e) {
         selectedBtn.classList.add('chosen-correct');
         score++;
         correctNow = true;
-        scoreText.textContent = `Σκορ: ${score}`;
+        scoreText.textContent = `Score: ${score}`;
     } else {
         selectedBtn.classList.add('chosen-wrong');
     }
@@ -188,15 +188,15 @@ nextBtn.addEventListener('click', () => {
 restartBtn.addEventListener('click', () => startQuiz());
 
 function showSummary() {
-    progressText.textContent = 'Ολοκληρώθηκε';
-    questionTitle.textContent = `Τελικό σκορ: ${score} / ${quizQuestions.length}`;
+    progressText.textContent = 'Finish';
+    questionTitle.textContent = `Final score: ${score} / ${quizQuestions.length}`;
     choicesEl.innerHTML = '';
     nextBtn.hidden = true;
     restartBtn.hidden = false;
     resultSummary.hidden = false;
 
-    let html = `<h3>Αποτελέσματα</h3>`;
-    html += `<p>Σύνολο σωστών: <strong>${score}</strong> από ${quizQuestions.length}</p>`;
+    let html = `<h3>Results</h3>`;
+    html += `<p>Total correct answers: <strong>${score}</strong> από ${quizQuestions.length}</p>`;
     html += `<div class="review">`;
 
     answersLog.forEach((a, i) => {
@@ -210,7 +210,7 @@ function showSummary() {
                         <div class="r-q"><strong>Q${i + 1}:</strong> ${escapeHtml(decodeHtml(a.question))}</div>
                         <div class="r-ans ${ok ? 'ok' : 'bad'}">
                             <div>Η δική σου απάντηση: <span class="user">${escapeHtml(selectedText)}</span></div>
-                            <div>Σωστή απάντηση: <span class="correct">${escapeHtml(correctText)}</span></div>
+                            <div>Corre answer: <span class="correct">${escapeHtml(correctText)}</span></div>
                         </div>
                      </div>`;
     });
