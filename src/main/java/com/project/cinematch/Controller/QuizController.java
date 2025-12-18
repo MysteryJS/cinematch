@@ -1,24 +1,31 @@
 package com.project.cinematch.Controller;
 
 import org.springframework.web.bind.annotation.*;
-import com.project.cinematch.Service.QuizService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.util.Map;
+import java.security.Principal;
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/quiz")
+@RequestMapping("/api")
 public class QuizController {
 
-    private final QuizService quizService;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
-    public QuizController(QuizService quizService) {
-        this.quizService = quizService;
-    }
+    @GetMapping("/quiz")
+    public List<String> getFavoritesForCurrentUser(Principal principal) {
+        Long userId = jdbcTemplate.queryForObject(
+            "SELECT id FROM users WHERE username = ?",
+            Long.class,
+            principal.getName()
+        );
 
-    @GetMapping
-    public Map<String, Object> getQuiz(
-            @RequestParam(defaultValue = "5") int amount,
-            @RequestParam(defaultValue = "easy") String difficulty) {
-        return quizService.fetchQuiz(amount, difficulty);
+        return jdbcTemplate.queryForList(
+            "SELECT movie_name FROM favorites WHERE user_id = ?",
+            String.class,
+            userId
+        );
     }
 }
