@@ -43,11 +43,11 @@ sendBtn.addEventListener('click', () => {
 function handleFile(file) {
     const maxMB = 8;
     if (!file.type.startsWith('image/')) {
-        showError('Παρακαλώ επίλεξε αρχείο εικόνας.');
+        showError('Please select an image file.');
         return;
     }
     if (file.size > maxMB * 1024 * 1024) {
-        showError(`Το αρχείο είναι πολύ μεγάλο. Μέγιστο ${maxMB}MB.`);
+        showError(`The file is too large. Maximum ${maxMB}MB.`);
         return;
     }
 
@@ -59,7 +59,7 @@ function handleFile(file) {
 
     sendBtn.disabled = false;
     clearBtn.disabled = false;
-    results.innerHTML = '<div class="results-empty">Ετοιμοί για ανάλυση. Πάτησε "Ανάλυση &amp; Σύγκριση".</div>';
+    results.innerHTML = '<div class="results-empty">Ready for analysis. Click "Analysis &amp; Compare".</div>';
 }
 
 function clearSelection() {
@@ -69,7 +69,7 @@ function clearSelection() {
     preview.querySelector('.preview-empty').hidden = false;
     sendBtn.disabled = true;
     clearBtn.disabled = true;
-    results.innerHTML = '<div class="results-empty">Εδώ θα εμφανιστούν τα αποτελέσματα της σύγκρισης.</div>';
+    results.innerHTML = '<div class="results-empty">The results of the comparison will appear here.</div>';
 }
 
 function showError(message) {
@@ -77,7 +77,7 @@ function showError(message) {
 }
 
 function showLoading() {
-    results.innerHTML = `<div class="loading">Ανάλυση εικόνας…</div>`;
+    results.innerHTML = `<div class="loading">Image analysis…</div>`;
 }
 
 function renderResults(data) {
@@ -93,21 +93,21 @@ function renderResults(data) {
     }
 
     if (similarity !== undefined && similarity < 15) {
-        results.innerHTML = `<div class="no-match">Δεν βρέθηκε αρκετά κοντινό πρόσωπο (ομοιότητα μόνο ${Math.round(similarity)}%).</div>`;
+        results.innerHTML = `<div class="no-match">No close enough person was found (similarity only ${Math.round(similarity)}%).</div>`;
         return;
     }
 
     if (data.closest_celebrity && data.score !== undefined) {
         results.innerHTML = `
             <div class="result-card">
-                <h3>Αποτέλεσμα</h3>
-                <p><strong>Ηθοποιός:</strong> ${escapeHtml(data.closest_celebrity)}</p>
-                <p><strong>Ομοιότητα:</strong> ${Math.round(similarity)}%</p>
+                <h3>Result</h3>
+                <p><strong>Actor:</strong> ${escapeHtml(data.closest_celebrity)}</p>
+                <p><strong>Similarity:</strong> ${Math.round(similarity)}%</p>
             </div>
         `;
         return;
     }
-    results.innerHTML = `<div class="no-match">Δεν βρέθηκε αποτέλεσμα.</div>`;
+    results.innerHTML = `<div class="no-match">No result found..</div>`;
 }
 
 async function analyzePhoto(file) {
