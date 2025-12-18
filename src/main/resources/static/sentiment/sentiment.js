@@ -12,11 +12,11 @@ document.getElementById('analyzeBtn').onclick = async function () {
     resultDiv.innerHTML = '';
 
     if (!text) {
-        resultDiv.innerHTML = "<span class='error'>Συμπλήρωσε κείμενο.</span>";
+        resultDiv.innerHTML = "<span class='error'>Write text</span>";
         return;
     }
 
-    resultDiv.innerHTML = "Γίνεται αποστολή στο API...";
+    resultDiv.innerHTML = "Send to API...";
 
     try {
         const response = await fetch("https://mysterygre-cinematch-sentiment-analysis.hf.space/recommend", {
@@ -29,7 +29,7 @@ document.getElementById('analyzeBtn').onclick = async function () {
         });
 
         if (!response.ok) {
-            resultDiv.innerHTML = "<span class='error'>Σφάλμα API / δεν είναι διαθέσιμο.</span>";
+            resultDiv.innerHTML = "<span class='error'>Error from API</span>";
             return;
         }
 
@@ -37,7 +37,7 @@ document.getElementById('analyzeBtn').onclick = async function () {
         try {
             data = await response.json();
         } catch (parseErr) {
-            resultDiv.innerHTML = "<span class='error'>Το API επέστρεψε μη αναγνωρίσιμο JSON.</span>";
+            resultDiv.innerHTML = "<span class='error'>The API returned unrecognizable JSON.</span>";
             return;
         }
 
@@ -45,7 +45,7 @@ document.getElementById('analyzeBtn').onclick = async function () {
 
         if (data.genres && Array.isArray(data.genres)) {
             genresDiv.innerHTML =
-                "<strong>Είδη (Genres):</strong> <ul>" +
+                "<strong>Genres:</strong> <ul>" +
                 data.genres.map(g => `<li>${g}</li>`).join('') +
                 "</ul>";
         } else {
@@ -58,9 +58,9 @@ document.getElementById('analyzeBtn').onclick = async function () {
                 rows += `<tr><td>${emotion}</td><td>${prob.toFixed(2)}%</td></tr>`;
             }
             emotionsDiv.innerHTML =
-                `<strong>Πιθανότητες συναισθημάτων:</strong>
+                `<strong>Emotion possibilities:</strong>
                 <table class="emotions-table">
-                  <thead><tr><th>Συναίσθημα</th><th>Πιθανότητα</th></tr></thead>
+                  <thead><tr><th>Feeling</th><th>Chance</th></tr></thead>
                   <tbody>${rows}</tbody>
                 </table>`;
         } else {
@@ -78,7 +78,7 @@ document.getElementById('analyzeBtn').onclick = async function () {
         }
 
         if (data.titles && Array.isArray(data.titles)) {
-            titlesDiv.innerHTML = "<strong>Αναλυτικά αποτελέσματα ταινιών:</strong>";
+            titlesDiv.innerHTML = "<strong>Detailed movie results:</strong>";
             const list = document.createElement("ul");
             list.className = 'movie-list';
             titlesDiv.appendChild(list);
@@ -109,8 +109,8 @@ document.getElementById('analyzeBtn').onclick = async function () {
                onerror="this.onerror=null;this.src='/placeholder-poster.png'">
           <div class="movie-meta">
             <h3 class="movie-title">${escapeHtml(details.Title || title)} ${details.Year ? '(' + escapeHtml(details.Year) + ')' : ''}</h3>
-            <p><strong>Σκηνοθέτης:</strong> ${escapeHtml(details.Director || '—')}</p>
-            <p><strong>Είδος:</strong> ${escapeHtml(details.Genre || '—')}</p>
+            <p><strong>Director:</strong> ${escapeHtml(details.Director || '—')}</p>
+            <p><strong>Kind:</strong> ${escapeHtml(details.Genre || '—')}</p>
             <p><strong>IMDB:</strong> ${escapeHtml(details.imdbRating || '—')}</p>
             <p class="movie-plot">${escapeHtml(details.Plot || '')}</p>
           </div>
@@ -123,11 +123,11 @@ document.getElementById('analyzeBtn').onclick = async function () {
                 list.appendChild(li);
             });
         } else {
-            titlesDiv.innerHTML = "<strong>Ταινίες:</strong> —";
+            titlesDiv.innerHTML = "<strong>Movies:</strong> —";
         }
 
     } catch (err) {
-        resultDiv.innerHTML = "<span class='error'>Σφάλμα επικοινωνίας με το API!</span>";
+        resultDiv.innerHTML = "<span class='error'>Error from API!</span>";
         console.error(err);
     }
 };
