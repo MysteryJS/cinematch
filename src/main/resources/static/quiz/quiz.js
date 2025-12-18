@@ -56,15 +56,24 @@ const nextBtn = document.getElementById('nextBtn');
 const restartBtn = document.getElementById('restartBtn');
 const resultSummary = document.getElementById('resultSummary');
 
-async function fetchQuiz() {
+async function getFavoritesForCurrentUser() {
+    const res = await fetch('/api/quiz');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    return data;
+}
+async function fetchQuizForUserFavorites() {
+    const favoriteTitles = await getFavoritesForCurrentUser();
+    const contextText = favoriteTitles.join(', ');
     const res = await fetch("https://mysterygre-quiz.hf.space/quiz", {
         method: "POST",
-        headers: { "Content-Type": "application/json",
-                   "Authorization": "Bearer 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"
-         },
-        body: JSON.stringify({ context: "Inception, Interstellar, The Matrix" })
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer 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"
+        },
+        body: JSON.stringify({ context: contextText })
     });
-    if (!res.ok) throw new Error('HTTP error ' + res.status);
+    if (!res.ok) throw new Error('Quiz fetch error ' + res.status);
     const data = await res.json();
     return (data.quiz || []).map(q => ({
         question: q.question,
@@ -72,7 +81,6 @@ async function fetchQuiz() {
         correctIndex: q.options.findIndex(opt => opt === q.answer)
     }));
 }
-
 async function startQuiz() {
 
     quizQuestions = [];
@@ -90,7 +98,7 @@ async function startQuiz() {
 
     try {
 
-        quizQuestions = await fetchQuiz();
+        quizQuestions = await fetchQuizForUserFavorites();
 
         if (quizQuestions.length === 0) {
             questionTitle.textContent = 'Δεν βρέθηκαν ερωτήσεις από το API.';
