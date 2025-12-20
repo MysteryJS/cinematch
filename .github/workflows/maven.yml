@@ -27,30 +27,5 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Export environment variables from secrets
-        run: |
-          echo "DB_URL=${{ secrets.DB_URL }}" >> $GITHUB_ENV
-          echo "DB_USER=${{ secrets.DB_USER }}" >> $GITHUB_ENV
-          echo "DB_PASS=${{ secrets.DB_PASS }}" >> $GITHUB_ENV
-          echo "OMDB_KEY=${{ secrets.OMDB_KEY }}" >> $GITHUB_ENV
-          echo "TRAKT_CLIENT_ID=${{ secrets.TRAKT_CLIENT_ID }}" >> $GITHUB_ENV
-
       - name: Build with Maven
         run: mvn clean package -DskipTests
-
-      - name: Log in to GHCR
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build Docker image
-        run: |
-          IMAGE_NAME=ghcr.io/${GITHUB_REPOSITORY,,}:latest
-          docker build -t $IMAGE_NAME .
-
-      - name: Push Docker image
-        run: |
-          IMAGE_NAME=ghcr.io/${GITHUB_REPOSITORY,,}:latest
-          docker push $IMAGE_NAME
