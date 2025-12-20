@@ -10,7 +10,23 @@ services:
       - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql 
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "cinematch", "-d", "cinematchdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+  app:
+    build: .
+    container_name: cinematch-app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - DB_URL=jdbc:postgresql://postgres:5432/cinematchdb
+      - DB_USER=cinematch
+      - DB_PASS=secret
+    ports:
+      - '8080:8080'
 volumes:
   postgres_data:
     driver: local
