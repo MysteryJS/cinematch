@@ -1,33 +1,15 @@
 services:
   postgres:
-    image: 'postgres:latest'
+    image: postgres:latest
     container_name: cinematch-postgres
     environment:
-      - 'POSTGRES_DB=cinematchdb'
-      - 'POSTGRES_PASSWORD=secret'
-      - 'POSTGRES_USER=cinematch'
+      POSTGRES_DB: cinematchdb
+      POSTGRES_USER: cinematch
+      POSTGRES_PASSWORD: secret
     ports:
-      - '5432:5432'
+      - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "cinematch", "-d", "cinematchdb"]
-      interval: 5s
-      timeout: 5s
-      retries: 12
-  app:
-    build: .
-    container_name: cinematch-app
-    depends_on:
-      postgres:
-        condition: service_healthy
-    environment:
-      - DB_URL=jdbc:postgresql://postgres:5432/cinematchdb
-      - DB_USER=cinematch
-      - DB_PASS=secret
-    ports:
-      - '8080:8080'
+      - postgres_data:/var/lib/postgresql/data
 volumes:
   postgres_data:
     driver: local
-    
