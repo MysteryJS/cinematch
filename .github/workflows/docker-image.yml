@@ -2,7 +2,7 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "102-add-project-dockerization" ]
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
