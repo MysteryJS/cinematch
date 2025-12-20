@@ -27,6 +27,14 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      - name: Export environment variables from secrets
+        run: |
+          echo "DB_URL=${{ secrets.DB_URL }}" >> $GITHUB_ENV
+          echo "DB_USER=${{ secrets.DB_USER }}" >> $GITHUB_ENV
+          echo "DB_PASS=${{ secrets.DB_PASS }}" >> $GITHUB_ENV
+          echo "OMDB_KEY=${{ secrets.OMDB_KEY }}" >> $GITHUB_ENV
+          echo "TRAKT_CLIENT_ID=${{ secrets.TRAKT_CLIENT_ID }}" >> $GITHUB_ENV
+
       - name: Build with Maven
         run: mvn clean package -DskipTests
 
