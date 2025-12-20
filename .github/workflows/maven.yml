@@ -28,12 +28,6 @@ jobs:
           cache: maven
 
       - name: Build with Maven
-        env:
-            OMDB_KEY: ${{ secrets.OMDB_KEY }}
-            TRAKT_CLIENT_ID: ${{ secrets.TRAKT_CLIENT_ID }}
-            DB_URL: ${{ secrets.DB_URL }}
-            DB_USER: ${{ secrets.DB_USER }}
-            DB_PASS: ${{ secrets.DB_PASS }}
         run: mvn clean package -DskipTests
 
       - name: Log in to GHCR
