@@ -43,7 +43,7 @@ searchBtn.addEventListener("click", () => {
       if (window.IS_LOGGED_IN) {
         setTimeout(() => {
           const btn = document.getElementById("favoriteBtn");
-          let watched = false;
+          let watched = false; // Αν δεν έχεις ξεκάθαρη πληροφορία για το status, απλά default = false
 
           btn.addEventListener("click", function () {
             btn.disabled = true;
@@ -180,7 +180,7 @@ document.addEventListener("DOMContentLoaded", function () {
       menu: "Menu", follow: "Follow us",
       rights: "All rights reserved.",
       tou: "Terms of Use",
-      flag: "🇬🇷", btnText: "GR"
+      flag: "https://flagcdn.com/w40/gr.png", btnText: "GR"
     },
     el: {
       home: "Αρχική", search: "Αναζήτηση", trending: "Τάσεις",
@@ -195,7 +195,7 @@ document.addEventListener("DOMContentLoaded", function () {
       menu: "Μενού", follow: "Ακολουθήστε μας",
       rights: "Με επιφύλαξη παντός δικαιώματος.",
       tou: "Όροι Χρήσης",
-      flag: "🇬🇧", btnText: "EN"
+      flag: "https://flagcdn.com/w40/gb.png", btnText: "EN"
     }
   };
 
@@ -241,7 +241,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelector(".footer-bottom .small").childNodes[2].textContent = " CineMatch — " + t.rights;
     document.querySelector(".footer-bottom a.footer-link").textContent = t.tou;
 
-    langFlag.textContent = t.flag;
+    langFlag.src = t.flag;
     langText.textContent = t.btnText;
   });
 });

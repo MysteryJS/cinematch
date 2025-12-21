@@ -1,6 +1,7 @@
 package com.project.cinematch.Controller;
 
 import com.project.cinematch.DTO.ForumPostDTO;
+import com.project.cinematch.Model.ForumMedia;
 import com.project.cinematch.Model.ForumPost;
 import com.project.cinematch.Model.User;
 import com.project.cinematch.Repository.ForumPostRepository;
@@ -25,8 +26,8 @@ public class ForumController {
     @GetMapping("/posts")
     public List<ForumPostDTO> getPosts(@RequestParam(required = false) String category) {
         List<ForumPost> posts = (category == null || category.isBlank())
-                ? postRepo.findAllByOrderByCreatedAtDesc()
-                : postRepo.findByCategoryOrderByCreatedAtDesc(category);
+                ? postRepo.findAllWithMedia()
+                : postRepo.findByCategoryWithMedia(category);
 
         return posts.stream()
                 .map(post -> {
@@ -38,12 +39,19 @@ public class ForumController {
                                 .orElse("unknown");
                     }
 
+                    List<String> mediaUrls = post.getMedia() == null
+                            ? null
+                            : post.getMedia().stream()
+                            .map(ForumMedia::getUrl)
+                            .collect(Collectors.toList());
+
                     return new ForumPostDTO(
                             post.getId(),
                             post.getTitle(),
                             post.getContent(),
                             username,
-                            post.getCreatedAt()
+                            post.getCreatedAt(),
+                            mediaUrls
                     );
                 })
                 .collect(Collectors.toList());

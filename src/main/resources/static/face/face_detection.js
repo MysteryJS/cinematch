@@ -9,6 +9,7 @@ const results = document.getElementById('results');
 
 let currentFile = null;
 
+// Drag and drop handlers
 ['dragenter', 'dragover'].forEach(evt => {
     dropzone.addEventListener(evt, (e) => {
         e.preventDefault();
@@ -92,6 +93,7 @@ async function getActorImage(actorName) {
             return `https://image.tmdb.org/t/p/w500${tmdbData.results[0].profile_path}`;
         }
 
+        // 2η Προσπάθεια (Fallback): Wikipedia API - Είναι ελεύθερο και έχει σχεδόν τους πάντες
         const wikiRes = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(cleanName.replace(/\b\w/g, l => l.toUpperCase()).replace(/ /g, '_'))}`);
         const wikiData = await wikiRes.json();
         
@@ -102,7 +104,7 @@ async function getActorImage(actorName) {
     } catch (err) {
         console.error("Error fetching image:", err);
     }
-    return null;
+    return null; // Αν αποτύχουν όλα
 }
 
 async function renderResults(data) {
@@ -128,6 +130,7 @@ async function renderResults(data) {
         showLoading(); 
         const imageUrl = await getActorImage(actorNameRaw);
 
+        // Χρησιμοποιούμε ένα πιο απλό και σίγουρο layout
         results.innerHTML = `
             <div class="result-card" style="text-align: center; padding: 20px;">
                 <h3 style="margin-bottom: 15px;">Result</h3>
@@ -166,7 +169,7 @@ async function analyzePhoto(file) {
             body: fd
         });
         const json = await res.json();
-        await renderResults(json);
+        await renderResults(json); // Προσοχή στο await εδώ!
     } catch (err) {
         showError('Network error: ' + (err && err.message ? err.message : err));
     }
@@ -188,6 +191,7 @@ function escapeHtml(unsafe) {
     if (el) el.textContent = y;
 })();
 
+// Η υπόλοιπη λειτουργία για τη μετάφραση παραμένει ίδια...
 document.addEventListener("DOMContentLoaded", function () {
     const langBtn = document.getElementById("lang-btn");
     const langFlag = document.getElementById("lang-flag");
@@ -208,7 +212,7 @@ document.addEventListener("DOMContentLoaded", function () {
             menu: "Menu", follow: "Follow us",
             rights: "All rights reserved.",
             tou: "Terms of Use",
-            flag: "🇬🇷", btnText: "GR"
+            flag: "https://flagcdn.com/w40/gr.png", btnText: "GR"
         },
         el: {
             home: "Αρχική", search: "Αναζήτηση", trending: "Τάσεις",
@@ -224,7 +228,7 @@ document.addEventListener("DOMContentLoaded", function () {
             menu: "Μενού", follow: "Ακολουθήστε μας",
             rights: "Με επιφύλαξη παντός δικαιώματος.",
             tou: "Όροι Χρήσης",
-            flag: "🇬🇧", btnText: "EN"
+            flag: "https://flagcdn.com/w40/gb.png", btnText: "EN"
         }
     };
 
@@ -267,7 +271,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".footer-bottom .small").childNodes[2].textContent = " CineMatch — " + t.rights;
         document.querySelector(".footer-bottom a.footer-link").textContent = t.tou;
 
-        langFlag.textContent = t.flag;
+        langFlag.src = t.flag;
         langText.textContent = t.btnText;
     });
 });
