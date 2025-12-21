@@ -190,7 +190,6 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".page-header p").textContent = t.desc;
         document.getElementById("reviewText").placeholder = t.placeholder;
         document.getElementById("analyzeBtn").textContent = t.analyze;
-        document.getElementById("clearBtn").textContent = t.clear;
 
         document.querySelector(".footer-tagline").textContent = t.tagline;
         document.querySelector(".footer-nav .footer-title").textContent = t.menu;
