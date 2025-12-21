@@ -43,7 +43,7 @@ searchBtn.addEventListener("click", () => {
       if (window.IS_LOGGED_IN) {
         setTimeout(() => {
           const btn = document.getElementById("favoriteBtn");
-          let watched = false; // Αν δεν έχεις ξεκάθαρη πληροφορία για το status, απλά default = false
+          let watched = false;
 
           btn.addEventListener("click", function () {
             btn.disabled = true;
