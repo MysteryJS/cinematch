@@ -14,11 +14,12 @@ jobs:
 
     - name: Create .env from secrets
       run: |
+        mkdir -p target
         echo "DB_URL=${{ secrets.DB_URL }}" >> .env
         echo "DB_USER=${{ secrets.DB_USER }}" >> .env
         echo "DB_PASS=${{ secrets.DB_PASS }}" >> .env
         echo "OMDB_KEY=${{ secrets.OMDB_KEY }}" >> .env
-        echo "TRAKT_CLIENT_ID=${{ secrets.TRAKT_CLIENT_ID }}" >> .env
+        echo "TRAKT_CLIENT_ID=${{ secrets.TRAKT_CLIENT_ID }}" >> target/.env
 
     - name: Log in to GHCR
       uses: docker/login-action@v3
