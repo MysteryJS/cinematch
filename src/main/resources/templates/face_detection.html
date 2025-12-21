@@ -8,37 +8,6 @@
     <link rel="stylesheet" href="/face/vface_detection.css">
 </head>
 
-<style>
-    .lang-switcher {
-      margin-left: 20px;
-      display: flex;
-      align-items: center;
-    }
-
-    .lang-btn {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid #fff;
-      color: white;
-      padding: 5px 10px;
-      cursor: pointer;
-      border-radius: 5px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: background 0.3s;
-    }
-
-    .lang-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    .lang-btn img {
-      width: 20px;
-      height: auto;
-      border-radius: 2px;
-    }
-</style>
-
 <body>
     <nav class="navbar">
         <div class="nav-container">
@@ -163,95 +132,6 @@
     </footer>
 
     <script src="/face/face_detection.js"></script>
-    <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const langBtn = document.getElementById("lang-btn");
-    const langFlag = document.getElementById("lang-flag");
-    const langText = document.getElementById("lang-text");
-
-    const translations = {
-        en: {
-            home: "Home", search: "Search", trending: "Trending Movies",
-            quiz: "Quiz", sentiment: "Sentiment Analysis", face: "Face Detection",
-            title: "Find out which actor looks like you",
-            desc: "Upload a photo and we'll show you the closest actor and other suggestions.",
-            dropzone: "Click or drag a photo here",
-            choose: "Select file",
-            send: "Analysis & Comparison",
-            clear: "Cleaning",
-            results: "The results of the comparison will appear here..",
-            tagline: "Discover movies with smart suggestions and short descriptions.",
-            menu: "Menu", follow: "Follow us",
-            rights: "All rights reserved.",
-            tou: "Terms of Use",
-            flag: "https://flagcdn.com/w40/gr.png", btnText: "GR"
-        },
-        el: {
-            home: "Αρχική", search: "Αναζήτηση", trending: "Τάσεις",
-            quiz: "Κουίζ", sentiment: "Ανάλυση Συναισθήματος", face: "Ανίχνευση Προσώπου",
-            title: "Μάθετε με ποιον ηθοποιό μοιάζετε",
-            desc: "Ανεβάστε μια φωτογραφία και θα σας δείξουμε τον πλησιέστερο ηθοποιό και άλλες προτάσεις.",
-            dropzone: "Κάντε κλικ ή σύρετε μια φωτογραφία εδώ",
-            choose: "Επιλογή αρχείου",
-            send: "Ανάλυση & Σύγκριση",
-            clear: "Καθαρισμός",
-            results: "Τα αποτελέσματα της σύγκρισης θα εμφανιστούν εδώ..",
-            tagline: "Ανακαλύψτε ταινίες με έξυπνες προτάσεις και σύντομες περιγραφές.",
-            menu: "Μενού", follow: "Ακολουθήστε μας",
-            rights: "Με επιφύλαξη παντός δικαιώματος.",
-            tou: "Όροι Χρήσης",
-            flag: "https://flagcdn.com/w40/gb.png", btnText: "EN"
-        }
-    };
-
-    let currentLang = "en";
-
-    langBtn.addEventListener("click", () => {
-        currentLang = currentLang === "en" ? "el" : "en";
-        const t = translations[currentLang];
-
-        // 1. Navbar
-        const navLinks = document.querySelectorAll(".nav-link");
-        navLinks[0].textContent = t.home;
-        navLinks[1].textContent = t.search;
-        navLinks[2].textContent = t.trending;
-        navLinks[3].textContent = t.quiz;
-        navLinks[4].textContent = t.sentiment;
-        navLinks[5].textContent = t.face;
-
-        // 2. Main Content
-        document.querySelector(".page-header h1").textContent = t.title;
-        document.querySelector(".page-header p").textContent = t.desc;
-        document.querySelector(".dz-content p").textContent = t.dropzone;
-        document.getElementById("chooseBtn").textContent = t.choose;
-        document.getElementById("sendBtn").textContent = t.send;
-        document.getElementById("clearBtn").textContent = t.clear;
-        
-        const resultsEmpty = document.querySelector(".results-empty");
-        if(resultsEmpty) resultsEmpty.textContent = t.results;
-
-        // 3. Footer
-        document.querySelector(".footer-tagline").textContent = t.tagline;
-        document.querySelector(".footer-nav .footer-title").textContent = t.menu;
-        document.querySelector(".footer-social .footer-title").textContent = t.follow;
-        
-        const footerLinks = document.querySelectorAll(".footer-menu .footer-link");
-        footerLinks[0].textContent = t.home;
-        footerLinks[1].textContent = t.search;
-        footerLinks[2].textContent = t.trending;
-        footerLinks[3].textContent = t.quiz;
-        footerLinks[4].textContent = t.sentiment;
-        footerLinks[5].textContent = t.face;
-
-        document.querySelector(".footer-bottom .small").childNodes[2].textContent = " CineMatch — " + t.rights;
-        document.querySelector(".footer-bottom a.footer-link").textContent = t.tou;
-
-        // 4. Button Update
-        langFlag.src = t.flag;
-        langText.textContent = t.btnText;
-    });
-});
-</script>
 </body>
 
 </html>

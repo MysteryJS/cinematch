@@ -137,3 +137,79 @@ document.getElementById('analyzeBtn').onclick = async function () {
     const el = document.getElementById('year');
     if (el) el.textContent = y;
 })();
+
+document.addEventListener("DOMContentLoaded", function () {
+    const langBtn = document.getElementById("lang-btn");
+    const langFlag = document.getElementById("lang-flag");
+    const langText = document.getElementById("lang-text");
+
+    const translations = {
+        en: {
+            home: "Home", search: "Search", trending: "Trending Movies",
+            quiz: "Quiz", sentiment: "Sentiment Analysis", face: "Face Detection",
+            title: "Analysis & Suggestions API",
+            desc: "Write your comment and get movie suggestions with emotions and genres!",
+            placeholder: "Write here...",
+            analyze: "Analyze Sentiment",
+            clear: "Clear",
+            tagline: "Discover movies with smart suggestions and short descriptions.",
+            menu: "Menu", follow: "Follow us",
+            rights: "All rights reserved.",
+            tou: "Terms of Use",
+            flag: "https://flagcdn.com/w40/gr.png", btnText: "GR"
+        },
+        el: {
+            home: "Αρχική", search: "Αναζήτηση", trending: "Τάσεις",
+            quiz: "Κουίζ", sentiment: "Ανάλυση Συναισθήματος", face: "Ανίχνευση Προσώπου",
+            title: "API Ανάλυσης & Προτάσεων",
+            desc: "Γράψτε το σχόλιό σας και λάβετε προτάσεις ταινιών με βάση τα συναισθήματα!",
+            placeholder: "Γράψτε εδώ...",
+            analyze: "Ανάλυση Συναισθήματος",
+            clear: "Καθαρισμός",
+            tagline: "Ανακαλύψτε ταινίες με έξυπνες προτάσεις και σύντομες περιγραφές.",
+            menu: "Μενού", follow: "Ακολουθήστε μας",
+            rights: "Με επιφύλαξη παντός δικαιώματος.",
+            tou: "Όροι Χρήσης",
+            flag: "https://flagcdn.com/w40/gb.png", btnText: "EN"
+        }
+    };
+
+    let currentLang = "en";
+
+    langBtn.addEventListener("click", () => {
+        currentLang = currentLang === "en" ? "el" : "en";
+        const t = translations[currentLang];
+
+        const navLinks = document.querySelectorAll(".nav-link");
+        navLinks[0].textContent = t.home;
+        navLinks[1].textContent = t.search;
+        navLinks[2].textContent = t.trending;
+        navLinks[3].textContent = t.quiz;
+        navLinks[4].textContent = t.sentiment;
+        navLinks[5].textContent = t.face;
+
+        document.querySelector(".page-header h2").textContent = t.title;
+        document.querySelector(".page-header p").textContent = t.desc;
+        document.getElementById("reviewText").placeholder = t.placeholder;
+        document.getElementById("analyzeBtn").textContent = t.analyze;
+        document.getElementById("clearBtn").textContent = t.clear;
+
+        document.querySelector(".footer-tagline").textContent = t.tagline;
+        document.querySelector(".footer-nav .footer-title").textContent = t.menu;
+        document.querySelector(".footer-social .footer-title").textContent = t.follow;
+
+        const footerLinks = document.querySelectorAll(".footer-menu .footer-link");
+        footerLinks[0].textContent = t.home;
+        footerLinks[1].textContent = t.search;
+        footerLinks[2].textContent = t.trending;
+        footerLinks[3].textContent = t.quiz;
+        footerLinks[4].textContent = t.sentiment;
+        footerLinks[5].textContent = t.face;
+
+        document.querySelector(".footer-bottom .small").childNodes[2].textContent = " CineMatch — " + t.rights;
+        document.querySelector(".footer-bottom a.footer-link").textContent = t.tou;
+
+        langFlag.src = t.flag;
+        langText.textContent = t.btnText;
+    });
+});
