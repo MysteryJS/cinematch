@@ -64,7 +64,7 @@ public class PageControllers {
                 && authentication.isAuthenticated()
                 && !(authentication instanceof org.springframework.security.authentication.AnonymousAuthenticationToken);
         model.addAttribute("isLoggedIn", isLoggedIn);
-        return "face";
+        return "face_detection";
     }
     
     @GetMapping("/TOU")
