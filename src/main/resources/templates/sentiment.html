@@ -8,6 +8,37 @@
   <link rel="stylesheet" href="/sentiment/sentiment.css">
 </head>
 
+<style>
+    .lang-switcher {
+      margin-left: 20px;
+      display: flex;
+      align-items: center;
+    }
+
+    .lang-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid #fff;
+      color: white;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.3s;
+    }
+
+    .lang-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .lang-btn img {
+      width: 20px;
+      height: auto;
+      border-radius: 2px;
+    }
+</style>
+
 <body>
 
   <nav class="navbar">
@@ -23,6 +54,13 @@
         <li><a href="/sentiment" class="nav-link active">Sentiment Analysis</a></li>
         <li><a href="/face" class="nav-link">Face Detection</a></li>
       </ul>
+      <div class="lang-switcher">
+          <button id="lang-btn" class="lang-btn">
+              <img id="lang-flag" src="https://flagcdn.com/w40/gb.png" alt="English">
+              <span id="lang-text">EN</span>
+          </button>
+        </div>
+      </div>
     </div>
   </nav>
 
@@ -111,6 +149,84 @@
   </footer>
 
   <script src="/sentiment/sentiment.js"></script>
+  <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const langBtn = document.getElementById("lang-btn");
+    const langFlag = document.getElementById("lang-flag");
+    const langText = document.getElementById("lang-text");
+
+    const translations = {
+        en: {
+            home: "Home", search: "Search", trending: "Trending Movies",
+            quiz: "Quiz", sentiment: "Sentiment Analysis", face: "Face Detection",
+            title: "Analysis & Suggestions API",
+            desc: "Write your comment and get movie suggestions with emotions and genres!",
+            placeholder: "Write here...",
+            analyzeBtn: "Send to API",
+            tagline: "Discover movies with smart suggestions and short descriptions.",
+            menu: "Menu", follow: "follow us",
+            rights: "All rights reserved.",
+            tou: "Terms of Use",
+            flag: "https://flagcdn.com/w40/gr.png", btnText: "GR"
+        },
+        el: {
+            home: "Αρχική", search: "Αναζήτηση", trending: "Τάσεις",
+            quiz: "Κουίζ", sentiment: "Ανάλυση Συναισθήματος", face: "Ανίχνευση Προσώπου",
+            title: "API Ανάλυσης & Προτάσεων",
+            desc: "Γράψτε το σχόλιό σας και λάβετε προτάσεις ταινιών με συναισθήματα και είδη!",
+            placeholder: "Γράψτε εδώ...",
+            analyzeBtn: "Αποστολή στο API",
+            tagline: "Ανακαλύψτε ταινίες με έξυπνες προτάσεις και σύντομες περιγραφές.",
+            menu: "Μενού", follow: "Ακολουθήστε μας",
+            rights: "Με επιφύλαξη παντός δικαιώματος.",
+            tou: "Όροι Χρήσης",
+            flag: "https://flagcdn.com/w40/gb.png", btnText: "EN"
+        }
+    };
+
+    let currentLang = "en";
+
+    langBtn.addEventListener("click", () => {
+        currentLang = currentLang === "en" ? "el" : "en";
+        const t = translations[currentLang];
+
+        // 1. Navbar
+        const navLinks = document.querySelectorAll(".nav-link");
+        navLinks[0].textContent = t.home;
+        navLinks[1].textContent = t.search;
+        navLinks[2].textContent = t.trending;
+        navLinks[3].textContent = t.quiz;
+        navLinks[4].textContent = t.sentiment;
+        navLinks[5].textContent = t.face;
+
+        // 2. Main Content (Sentiment Specific)
+        document.querySelector(".page-header h2").textContent = t.title;
+        document.querySelector(".page-header p").textContent = t.desc;
+        document.getElementById("reviewText").placeholder = t.placeholder;
+        document.getElementById("analyzeBtn").textContent = t.analyzeBtn;
+
+        // 3. Footer
+        document.querySelector(".footer-tagline").textContent = t.tagline;
+        document.querySelector(".footer-nav .footer-title").textContent = t.menu;
+        document.querySelector(".footer-social .footer-title").textContent = t.follow;
+        
+        const footerLinks = document.querySelectorAll(".footer-menu .footer-link");
+        footerLinks[0].textContent = t.home;
+        footerLinks[1].textContent = t.search;
+        footerLinks[2].textContent = t.trending;
+        footerLinks[3].textContent = t.quiz;
+        footerLinks[4].textContent = t.sentiment;
+        footerLinks[5].textContent = t.face;
+
+        document.querySelector(".footer-bottom .small").childNodes[2].textContent = " CineMatch — " + t.rights;
+        document.querySelector(".footer-bottom a.footer-link").textContent = t.tou;
+
+        // 4. Button Update
+        langFlag.src = t.flag;
+        langText.textContent = t.btnText;
+    });
+});
+</script>
 
 </body>
 
