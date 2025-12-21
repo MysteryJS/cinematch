@@ -18,17 +18,29 @@ public class PageControllers {
     }
 
     @GetMapping("/trending")
-    public String treanding() {
+     public String trenidng(Model model, Authentication authentication) {
+        boolean isLoggedIn = authentication != null
+                && authentication.isAuthenticated()
+                && !(authentication instanceof org.springframework.security.authentication.AnonymousAuthenticationToken);
+        model.addAttribute("isLoggedIn", isLoggedIn);
         return "trending";
     }
 
     @GetMapping("/forum")
-    public String forum() {
+     public String forum(Model model, Authentication authentication) {
+        boolean isLoggedIn = authentication != null
+                && authentication.isAuthenticated()
+                && !(authentication instanceof org.springframework.security.authentication.AnonymousAuthenticationToken);
+        model.addAttribute("isLoggedIn", isLoggedIn);
         return "forum";
     }
 
     @GetMapping("/sentiment")
-    public String sentiment() {
+     public String sentiment(Model model, Authentication authentication) {
+        boolean isLoggedIn = authentication != null
+                && authentication.isAuthenticated()
+                && !(authentication instanceof org.springframework.security.authentication.AnonymousAuthenticationToken);
+        model.addAttribute("isLoggedIn", isLoggedIn);
         return "sentiment";
     }
 
@@ -47,8 +59,12 @@ public class PageControllers {
     }
 
     @GetMapping("/face")
-    public String face() {
-        return "face_detection";
+    public String face(Model model, Authentication authentication) {
+        boolean isLoggedIn = authentication != null
+                && authentication.isAuthenticated()
+                && !(authentication instanceof org.springframework.security.authentication.AnonymousAuthenticationToken);
+        model.addAttribute("isLoggedIn", isLoggedIn);
+        return "face";
     }
     
     @GetMapping("/TOU")

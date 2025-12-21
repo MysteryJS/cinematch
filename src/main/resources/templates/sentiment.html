@@ -22,13 +22,20 @@
         <li><a href="/quiz" class="nav-link">Quiz</a></li>
         <li><a href="/sentiment" class="nav-link active">Sentiment Analysis</a></li>
         <li><a href="/face" class="nav-link">Face Detection</a></li>
+        <li><a href="/forum" class="footer-link">Forum</a></li>
+        <li th:if="${isLoggedIn}">
+          <a href="/logout" class="nav-link">Logout</a>
+        </li>
+        <li th:unless="${isLoggedIn}">
+          <a href="/login" class="nav-link">Login</a>
+        </li>
       </ul>
       <div class="lang-switcher">
         <button id="lang-btn" class="lang-btn">
-            <img id="lang-flag" src="https://flagcdn.com/w40/gb.png" alt="English">
-            <span id="lang-text">EN</span>
+          <img id="lang-flag" src="https://flagcdn.com/w40/gb.png" alt="English">
+          <span id="lang-text">EN</span>
         </button>
-    </div>
+      </div>
     </div>
   </nav>
 
@@ -69,6 +76,7 @@
           <li><a href="/quiz" class="footer-link">Quiz</a></li>
           <li><a href="/sentiment" class="footer-link">Sentiment Analysis</a></li>
           <li><a href="/face" class="footer-link">Face Detection</a></li>
+          <li><a href="/forum" class="footer-link">Forum</a></li>
         </ul>
       </div>
 
