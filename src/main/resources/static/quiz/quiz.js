@@ -275,7 +275,7 @@ document.addEventListener("DOMContentLoaded", function () {
             next: "Next Question", restart: "Start again", score: "Score", question: "Question",
             tagline: "Discover movies with smart suggestions and short descriptions.",
             menu: "Menu", follow: "Follow us", rights: "All rights reserved.",
-            flag: "https://flagcdn.com/w40/gr.png", btnText: "GR"
+            flag: "🇬🇷", btnText: "GR"
         },
         el: {
             home: "Αρχική", search: "Αναζήτηση", trending: "Τάσεις",
@@ -286,7 +286,8 @@ document.addEventListener("DOMContentLoaded", function () {
             next: "Επόμενη Ερώτηση", restart: "Ξεκινήστε ξανά", score: "Σκορ", question: "Ερώτηση",
             tagline: "Ανακαλύψτε ταινίες με έξυπνες προτάσεις και σύντομες περιγραφές.",
             menu: "Μενού", follow: "Ακολουθήστε μας", rights: "Με επιφύλαξη παντός δικαιώματος.",
-            flag: "https://flagcdn.com/w40/gb.png", btnText: "EN"
+            flag: "🇬🇧", btnText: "EN"
+
         }
     };
 
@@ -326,7 +327,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         document.querySelector(".footer-bottom .small").innerHTML = `&copy; 2025 CineMatch — ${t.rights}`;
 
-        langFlag.src = t.flag;
+        langFlag.textContent = t.flag;
         langText.textContent = t.btnText;
     });
 });

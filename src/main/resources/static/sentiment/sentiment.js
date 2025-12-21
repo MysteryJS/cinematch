@@ -154,7 +154,7 @@ document.addEventListener("DOMContentLoaded", function () {
             menu: "Menu", follow: "Follow us",
             rights: "All rights reserved.",
             tou: "Terms of Use",
-            flag: "https://flagcdn.com/w40/gr.png", btnText: "GR"
+            flag: "🇬🇷", btnText: "GR"
         },
         el: {
             home: "Αρχική", search: "Αναζήτηση", trending: "Τάσεις",
@@ -168,7 +168,7 @@ document.addEventListener("DOMContentLoaded", function () {
             menu: "Μενού", follow: "Ακολουθήστε μας",
             rights: "Με επιφύλαξη παντός δικαιώματος.",
             tou: "Όροι Χρήσης",
-            flag: "https://flagcdn.com/w40/gb.png", btnText: "EN"
+            flag: "🇬🇧", btnText: "EN"
         }
     };
 
@@ -207,7 +207,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".footer-bottom .small").childNodes[2].textContent = " CineMatch — " + t.rights;
         document.querySelector(".footer-bottom a.footer-link").textContent = t.tou;
 
-        langFlag.src = t.flag;
+        langFlag.textContent = t.flag;
         langText.textContent = t.btnText;
     });
 });

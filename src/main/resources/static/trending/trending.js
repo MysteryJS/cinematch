@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
             desc: "The most popular movies right now from API",
             tagline: "Discover movies with smart suggestions and short descriptions.",
             menu: "Menu", follow: "Follow us", rights: "All rights reserved.", tou: "Terms of Use",
-            flag: "https://flagcdn.com/w40/gr.png", btnText: "GR"
+            flag: "🇬🇷", btnText: "GR"
         },
         el: {
             home: "Αρχική", search: "Αναζήτηση", trending: "Τάσεις",
@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
             desc: "Οι πιο δημοφιλείς ταινίες αυτή τη στιγμή μέσω API",
             tagline: "Ανακαλύψτε ταινίες με έξυπνες προτάσεις και σύντομες περιγραφές.",
             menu: "Μενού", follow: "Ακολουθήστε μας", rights: "Με επιφύλαξη παντός δικαιώματος.", tou: "Όροι Χρήσης",
-            flag: "https://flagcdn.com/w40/gb.png", btnText: "EN"
+            flag: "🇬🇧", btnText: "EN"
         }
     };
 
@@ -88,7 +88,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (navLinks[3]) navLinks[3].textContent = t.quiz;
         if (navLinks[4]) navLinks[4].textContent = t.sentiment;
         if (navLinks[5]) navLinks[5].textContent = t.face;
-        if (navLinks[6]) navLinks[6].textContent = t.forum;
 
         document.querySelector(".page-header h1").textContent = t.title;
         document.querySelector(".page-header p").textContent = t.desc;
@@ -106,7 +105,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (footerLinks[3]) footerLinks[3].textContent = t.quiz;
         if (footerLinks[4]) footerLinks[4].textContent = t.sentiment;
         if (footerLinks[5]) footerLinks[5].textContent = t.face;
-        if (footerLinks[6]) footerLinks[6].textContent = t.forum;
 
         const footerBottom = document.querySelector(".footer-bottom .small");
         if (footerBottom) {
@@ -116,8 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const touLink = document.querySelector(".footer-bottom a.footer-link");
         if (touLink) touLink.textContent = t.tou;
 
-        langFlag.src = t.flag;
+        langFlag.textContent = t.flag;
         langText.textContent = t.btnText;
     });
 });
-})();

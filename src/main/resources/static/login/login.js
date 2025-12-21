@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
             rights: "All rights reserved.",
             designed: "Designed with ❤ for movie lovers.",
             tou: "Terms of Use",
-            flag: "https://flagcdn.com/w40/gr.png", btnText: "GR"
+            flag: "🇬🇷", btnText: "GR"
         },
         el: {
             mainTitle: "Εγγραφή / Σύνδεση",
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
             rights: "Με επιφύλαξη παντός δικαιώματος.",
             designed: "Σχεδιάστηκε με ❤ για τους λάτρεις του σινεμά.",
             tou: "Όροι Χρήσης",
-            flag: "https://flagcdn.com/w40/gb.png", btnText: "EN"
+            flag: "🇬🇧", btnText: "EN"
         }
     };
 
@@ -123,7 +123,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll(".footer-bottom .small")[1].textContent = t.designed;
         document.querySelector(".footer-link").textContent = t.tou;
 
-        langFlag.src = t.flag;
+        langFlag.textContent = t.flag;
         langText.textContent = t.btnText;
     });
 });
