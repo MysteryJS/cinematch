@@ -9,7 +9,6 @@ import jakarta.persistence.Column;
 
 import java.time.LocalDateTime;
 
-
 @Entity
 @Table(name = "forum_posts")
 public class ForumPost {
@@ -22,9 +21,57 @@ public class ForumPost {
     private String title;
     private String content;
 
+    @Column(nullable = false, length = 40)
+    private String category;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    // getters / setters
-}
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+}

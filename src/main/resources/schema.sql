@@ -14,8 +14,8 @@ CREATE TABLE IF NOT EXISTS search_history (
 
 CREATE TABLE IF NOT EXISTS favorites (
   user_id INT REFERENCES users(id) ON DELETE CASCADE,
-  movie_id VARCHAR(50),
-  PRIMARY KEY (user_id, movie_id)
+  movie_name VARCHAR(50),
+  PRIMARY KEY (user_id,movie_name)
 );
 
 CREATE TABLE IF NOT EXISTS quiz_history (

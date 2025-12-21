@@ -1,17 +1,15 @@
 services:
   postgres:
-    image: 'postgres:latest'
+    image: postgres:latest
     container_name: cinematch-postgres
     environment:
-      - 'POSTGRES_DB=cinematchdb'
-      - 'POSTGRES_PASSWORD=secret'
-      - 'POSTGRES_USER=cinematch'
+      POSTGRES_DB: cinematchdb
+      POSTGRES_USER: cinematch
+      POSTGRES_PASSWORD: secret
     ports:
-      - '5432:5432'
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql 
 volumes:
   postgres_data:
     driver: local
-    

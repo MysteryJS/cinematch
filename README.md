@@ -10,19 +10,6 @@ CineMatch, a movie recommendation application.
 - Actor look-alike (Face recognition)
 - Sentiment analysis text
 
-# 📔 Languages Used
-
-### Backend
-- [Java](https://www.oracle.com/java/technologies/downloads/#java21)
-- [Python](https://www.python.org/downloads/release/python-3139/)
-- [Docker](https://hub.docker.com/_/docker)
-- [Postgrel](https://www.postgresql.org/)
-
-### Frontend
-- [HTML](https://www.w3schools.com/html/html_basic.asp)
-- [CSS](https://www.w3schools.com/Css/)
-- [Javascript](https://www.w3schools.com/js/DEFAULT.asp)
-
 # 🤖 APIS
 
 - [Deepface](https://github.com/serengil/deepface) for face recognition.

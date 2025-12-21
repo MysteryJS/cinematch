@@ -3,5 +3,37 @@ name: Docker Image CI
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Create .env from secrets
+      run: |
+        mkdir -p target
+        echo "DB_URL=${{ secrets.DB_URL }}" >> .env
+        echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+        echo "DB_PASS=${{ secrets.DB_PASS }}" >> .env
+        echo "OMDB_KEY=${{ secrets.OMDB_KEY }}" >> .env
+        echo "TRAKT_CLIENT_ID=${{ secrets.TRAKT_CLIENT_ID }}" >> target/.env
+
+    - name: Log in to GHCR
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build Docker image
+      run: |
+        IMAGE_NAME=ghcr.io/${GITHUB_REPOSITORY,,}:latest
+        docker build -t $IMAGE_NAME .
+
+    - name: Push Docker image
+      run: |
+        IMAGE_NAME=ghcr.io/${GITHUB_REPOSITORY,,}:latest
+        docker push $IMAGE_NAME

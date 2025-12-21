@@ -193,3 +193,34 @@ input:focus{
   input{ padding:11px; border-radius:8px; }
   .btn{ width:100%; padding:12px; border-radius:8px; }
 }
+
+.lang-switcher {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+    }
+
+    .lang-btn {
+      background: rgba(0, 0, 0, 0.1);
+      border: 1px solid #333;
+      color: #333;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.3s;
+    }
+
+    .lang-btn:hover {
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .lang-btn img {
+      width: 20px;
+      height: auto;
+      border-radius: 2px;
+    }

@@ -56,15 +56,30 @@ const nextBtn = document.getElementById('nextBtn');
 const restartBtn = document.getElementById('restartBtn');
 const resultSummary = document.getElementById('resultSummary');
 
-async function fetchQuiz() {
-    const res = await fetch(`/api/quiz?amount=10&difficulty=easy`);
-    if (!res.ok) {
-        throw new Error('HTTP error ' + res.status);
-    }
+async function getFavoritesForCurrentUser() {
+    const res = await fetch('/api/quiz');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
-    return data.questions || [];
+    return data;
 }
-
+async function fetchQuizForUserFavorites() {
+    const favoriteTitles = await getFavoritesForCurrentUser();
+    const contextText = favoriteTitles.join(', ');
+    const res = await fetch("https://mysterygre-quiz.hf.space/quiz", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ context: contextText })
+    });
+    if (!res.ok) throw new Error('Quiz fetch error ' + res.status);
+    const data = await res.json();
+    return (data.quiz || []).map(q => ({
+        question: q.question,
+        answers: q.options,
+        correctIndex: q.options.findIndex(opt => opt === q.answer)
+    }));
+}
 async function startQuiz() {
 
     quizQuestions = [];
@@ -82,7 +97,7 @@ async function startQuiz() {
 
     try {
 
-        quizQuestions = await fetchQuiz();
+        quizQuestions = await fetchQuizForUserFavorites();
 
         if (quizQuestions.length === 0) {
             questionTitle.textContent = 'Error from API.';

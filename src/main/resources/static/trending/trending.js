@@ -120,3 +120,4 @@ document.addEventListener("DOMContentLoaded", function () {
         langText.textContent = t.btnText;
     });
 });
+})();
