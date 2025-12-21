@@ -9,6 +9,7 @@ const results = document.getElementById('results');
 
 let currentFile = null;
 
+// Drag and drop handlers
 ['dragenter', 'dragover'].forEach(evt => {
     dropzone.addEventListener(evt, (e) => {
         e.preventDefault();
@@ -80,8 +81,33 @@ function showLoading() {
     results.innerHTML = `<div class="loading">Image analysis…</div>`;
 }
 
-function renderResults(data) {
+async function getActorImage(actorName) {
+    const cleanName = actorName.replace(/_/g, ' ');
+    
+    try {
+        // 1η Προσπάθεια: TMDB API
+        const tmdbRes = await fetch(`https://api.themoviedb.org/3/search/person?api_key=15d1215d0473846104031f8b3617029b&query=${encodeURIComponent(cleanName)}`);
+        const tmdbData = await tmdbRes.json();
 
+        if (tmdbData.results && tmdbData.results.length > 0 && tmdbData.results[0].profile_path) {
+            return `https://image.tmdb.org/t/p/w500${tmdbData.results[0].profile_path}`;
+        }
+
+        // 2η Προσπάθεια (Fallback): Wikipedia API - Είναι ελεύθερο και έχει σχεδόν τους πάντες
+        const wikiRes = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(cleanName.replace(/\b\w/g, l => l.toUpperCase()).replace(/ /g, '_'))}`);
+        const wikiData = await wikiRes.json();
+        
+        if (wikiData.thumbnail && wikiData.thumbnail.source) {
+            return wikiData.thumbnail.source;
+        }
+
+    } catch (err) {
+        console.error("Error fetching image:", err);
+    }
+    return null; // Αν αποτύχουν όλα
+}
+
+async function renderResults(data) {
     if (data.error) {
         results.innerHTML = `<div class="no-match">${escapeHtml(data.error)}</div>`;
         return;
@@ -97,12 +123,34 @@ function renderResults(data) {
         return;
     }
 
-    if (data.closest_celebrity && data.score !== undefined) {
+    if (data.closest_celebrity) {
+        const actorNameRaw = data.closest_celebrity;
+        const actorNameDisplay = actorNameRaw.replace(/_/g, ' ');
+        
+        showLoading(); 
+        const imageUrl = await getActorImage(actorNameRaw);
+
+        // Χρησιμοποιούμε ένα πιο απλό και σίγουρο layout
         results.innerHTML = `
-            <div class="result-card">
-                <h3>Result</h3>
-                <p><strong>Actor:</strong> ${escapeHtml(data.closest_celebrity)}</p>
-                <p><strong>Similarity:</strong> ${Math.round(similarity)}%</p>
+            <div class="result-card" style="text-align: center; padding: 20px;">
+                <h3 style="margin-bottom: 15px;">Result</h3>
+                
+                ${imageUrl ? `
+                    <div class="match-photo" style="margin-bottom: 15px;">
+                        <img src="${imageUrl}" alt="${escapeHtml(actorNameDisplay)}" 
+                             style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); display: block; margin: 0 auto;">
+                    </div>` 
+                : '<p style="color: var(--muted);">Photo not found</p>'}
+                
+                <div class="match-main">
+                    <p style="font-size: 1.2rem; margin: 5px 0;">
+                        <strong>Actor:</strong> 
+                        <span style="text-transform: capitalize; color: var(--primary);">${escapeHtml(actorNameDisplay)}</span>
+                    </p>
+                    <p class="similarity" style="font-size: 1.1rem;">
+                        <strong>Similarity:</strong> ${Math.round(similarity)}%
+                    </p>
+                </div>
             </div>
         `;
         return;
@@ -121,7 +169,7 @@ async function analyzePhoto(file) {
             body: fd
         });
         const json = await res.json();
-        renderResults(json);
+        await renderResults(json); // Προσοχή στο await εδώ!
     } catch (err) {
         showError('Network error: ' + (err && err.message ? err.message : err));
     }
@@ -143,6 +191,7 @@ function escapeHtml(unsafe) {
     if (el) el.textContent = y;
 })();
 
+// Η υπόλοιπη λειτουργία για τη μετάφραση παραμένει ίδια...
 document.addEventListener("DOMContentLoaded", function () {
     const langBtn = document.getElementById("lang-btn");
     const langFlag = document.getElementById("lang-flag");
@@ -190,12 +239,12 @@ document.addEventListener("DOMContentLoaded", function () {
         const t = translations[currentLang];
 
         const navLinks = document.querySelectorAll(".nav-link");
-        navLinks[0].textContent = t.home;
-        navLinks[1].textContent = t.search;
-        navLinks[2].textContent = t.trending;
-        navLinks[3].textContent = t.quiz;
-        navLinks[4].textContent = t.sentiment;
-        navLinks[5].textContent = t.face;
+        if(navLinks[0]) navLinks[0].textContent = t.home;
+        if(navLinks[1]) navLinks[1].textContent = t.search;
+        if(navLinks[2]) navLinks[2].textContent = t.trending;
+        if(navLinks[3]) navLinks[3].textContent = t.quiz;
+        if(navLinks[4]) navLinks[4].textContent = t.sentiment;
+        if(navLinks[5]) navLinks[5].textContent = t.face;
 
         document.querySelector(".page-header h1").textContent = t.title;
         document.querySelector(".page-header p").textContent = t.desc;
@@ -212,17 +261,16 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".footer-social .footer-title").textContent = t.follow;
 
         const footerLinks = document.querySelectorAll(".footer-menu .footer-link");
-        footerLinks[0].textContent = t.home;
-        footerLinks[1].textContent = t.search;
-        footerLinks[2].textContent = t.trending;
-        footerLinks[3].textContent = t.quiz;
-        footerLinks[4].textContent = t.sentiment;
-        footerLinks[5].textContent = t.face;
+        if(footerLinks[0]) footerLinks[0].textContent = t.home;
+        if(footerLinks[1]) footerLinks[1].textContent = t.search;
+        if(footerLinks[2]) footerLinks[2].textContent = t.trending;
+        if(footerLinks[3]) footerLinks[3].textContent = t.quiz;
+        if(footerLinks[4]) footerLinks[4].textContent = t.sentiment;
+        if(footerLinks[5]) footerLinks[5].textContent = t.face;
 
         document.querySelector(".footer-bottom .small").childNodes[2].textContent = " CineMatch — " + t.rights;
         document.querySelector(".footer-bottom a.footer-link").textContent = t.tou;
 
-        // 4. Button Update
         langFlag.src = t.flag;
         langText.textContent = t.btnText;
     });
