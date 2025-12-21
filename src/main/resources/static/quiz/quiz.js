@@ -69,7 +69,6 @@ async function fetchQuizForUserFavorites() {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer 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"
         },
         body: JSON.stringify({ context: contextText })
     });

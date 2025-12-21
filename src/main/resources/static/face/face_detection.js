@@ -118,9 +118,6 @@ async function analyzePhoto(file) {
     try {
         const res = await fetch('https://mysterygre-cinematch-face-detection.hf.space/match', {
             method: 'POST',
-            headers: {
-                "Authorization": "Bearer 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"
-            },
             body: fd
         });
         const json = await res.json();
@@ -192,7 +189,6 @@ document.addEventListener("DOMContentLoaded", function () {
         currentLang = currentLang === "en" ? "el" : "en";
         const t = translations[currentLang];
 
-        // 1. Navbar
         const navLinks = document.querySelectorAll(".nav-link");
         navLinks[0].textContent = t.home;
         navLinks[1].textContent = t.search;
@@ -201,22 +197,20 @@ document.addEventListener("DOMContentLoaded", function () {
         navLinks[4].textContent = t.sentiment;
         navLinks[5].textContent = t.face;
 
-        // 2. Main Content
         document.querySelector(".page-header h1").textContent = t.title;
         document.querySelector(".page-header p").textContent = t.desc;
         document.querySelector(".dz-content p").textContent = t.dropzone;
         document.getElementById("chooseBtn").textContent = t.choose;
         document.getElementById("sendBtn").textContent = t.send;
         document.getElementById("clearBtn").textContent = t.clear;
-        
-        const resultsEmpty = document.querySelector(".results-empty");
-        if(resultsEmpty) resultsEmpty.textContent = t.results;
 
-        // 3. Footer
+        const resultsEmpty = document.querySelector(".results-empty");
+        if (resultsEmpty) resultsEmpty.textContent = t.results;
+
         document.querySelector(".footer-tagline").textContent = t.tagline;
         document.querySelector(".footer-nav .footer-title").textContent = t.menu;
         document.querySelector(".footer-social .footer-title").textContent = t.follow;
-        
+
         const footerLinks = document.querySelectorAll(".footer-menu .footer-link");
         footerLinks[0].textContent = t.home;
         footerLinks[1].textContent = t.search;

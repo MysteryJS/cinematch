@@ -23,7 +23,6 @@ document.getElementById('analyzeBtn').onclick = async function () {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer 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"
             },
             body: JSON.stringify({ text })
         });
@@ -100,7 +99,6 @@ document.getElementById('analyzeBtn').onclick = async function () {
                 li.className = 'movie-item';
 
                 if (details && details.Title) {
-                    // poster handling
                     let poster = details.Poster && details.Poster !== 'N/A' ? details.Poster : '/placeholder-poster.png';
 
                     li.innerHTML = `
