@@ -11,6 +11,7 @@ services:
       - POSTGRES_PASSWORD=${DB_PASS}
       - spring.datasource.username=${DB_USER}
       - spring.datasource.password=${DB_PASS}
+      - spring.datasource.url=${DB_URL}
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     env_file:
       .env
