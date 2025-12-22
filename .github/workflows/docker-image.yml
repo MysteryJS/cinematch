@@ -14,7 +14,6 @@ jobs:
 
     - name: Create .env from secrets
       run: |
-        mkdir -p target
         echo "DB_URL=${{ secrets.DB_URL }}" >> .env
         echo "DB_USER=${{ secrets.DB_USER }}" >> .env
         echo "DB_PASS=${{ secrets.DB_PASS }}" >> .env
