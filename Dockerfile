@@ -1,11 +1,9 @@
-FROM eclipse-temurin:21-jdk as build
-WORKDIR /app
-COPY . .
-RUN ./mvnw clean package -DskipTests
+FROM eclipse-temurin:21-jdk
 
-FROM eclipse-temurin:21-jre
-WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
+
+ARG JAR_FILE=target/*.jar
+
+COPY ${JAR_FILE} application.jar
 COPY .env .env
-EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+
+ENTRYPOINT ["java", "-Xmx2048M", "-jar", "/application.jar"]
