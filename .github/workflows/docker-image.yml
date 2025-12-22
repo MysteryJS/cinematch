@@ -19,7 +19,7 @@ jobs:
         echo "DB_USER=${{ secrets.DB_USER }}" >> .env
         echo "DB_PASS=${{ secrets.DB_PASS }}" >> .env
         echo "OMDB_KEY=${{ secrets.OMDB_KEY }}" >> .env
-        echo "TRAKT_CLIENT_ID=${{ secrets.TRAKT_CLIENT_ID }}" >> target/.env
+        echo "TRAKT_CLIENT_ID=${{ secrets.TRAKT_CLIENT_ID }}" >> .env
 
     - name: Log in to GHCR
       uses: docker/login-action@v3
