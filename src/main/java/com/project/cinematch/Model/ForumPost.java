@@ -1,13 +1,9 @@
 package com.project.cinematch.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
-
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "forum_posts")
@@ -26,6 +22,9 @@ public class ForumPost {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ForumMedia> media = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -73,5 +72,13 @@ public class ForumPost {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public List<ForumMedia> getMedia() {
+        return media;
+    }
+
+    public void setMedia(List<ForumMedia> media) {
+        this.media = media;
     }
 }
