@@ -1,6 +1,7 @@
 package com.project.cinematch.DTO;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class ForumPostDTO {
 
@@ -9,6 +10,7 @@ public class ForumPostDTO {
     private String content;
     private String username;
     private LocalDateTime createdAt;
+    private List<String> mediaUrls;
 
     public ForumPostDTO(Long id, String title, String content, String username, LocalDateTime createdAt) {
         this.id = id;
@@ -16,6 +18,16 @@ public class ForumPostDTO {
         this.content = content;
         this.username = username;
         this.createdAt = createdAt;
+        this.mediaUrls = null;
+    }
+
+    public ForumPostDTO(Long id, String title, String content, String username, LocalDateTime createdAt, List<String> mediaUrls) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.username = username;
+        this.createdAt = createdAt;
+        this.mediaUrls = mediaUrls;
     }
 
     public Long getId() { return id; }
@@ -23,5 +35,5 @@ public class ForumPostDTO {
     public String getContent() { return content; }
     public String getUsername() { return username; }
     public LocalDateTime getCreatedAt() { return createdAt; }
+    public List<String> getMediaUrls() { return mediaUrls; }
 }
-//forum
