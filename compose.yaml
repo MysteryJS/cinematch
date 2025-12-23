@@ -1,6 +1,6 @@
 services:
   app:
-    image: 'cinematch-app:latest'
+    image: ghcr.io/cinematch-app:latest
     build:
       context: .
     container_name: app
