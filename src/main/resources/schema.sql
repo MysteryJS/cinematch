@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS forum_posts (
     user_id INT REFERENCES users(id) ON DELETE CASCADE,
     title VARCHAR(255) NOT NULL,
     content TEXT NOT NULL,
+    category VARCHAR(100) NOT NULL DEFAULT 'general',
     created_at TIMESTAMP DEFAULT NOW()
 );
 
