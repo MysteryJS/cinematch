@@ -24,6 +24,19 @@ CineMatch, a movie recommendation application.
 - [movieswithplotsandgenres](https://huggingface.co/datasets/archich/movieswithplotsandgenres) for sentiment analysis gerne recognition.
 
 # 🖱️ Instrutions
+```sh
+# Clone this repository
+git clone https://github.com/MysteryJS/cinematch
+```
+
+```bash
+# Go into repository
+cd cinematch
+```
+```dockerfile
+# Execute the Docker compose
+docker compose up
+```
 
 # ©️ License
 All rights reserved.
