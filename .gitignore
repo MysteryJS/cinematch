@@ -27,9 +27,9 @@ replay_pid*
 
 #Maven files
 /target/
+/uploads/images/*
+/uploads/videos/*
 
 #Others
 .idea/
 .vscode/
-
-/uploads/
