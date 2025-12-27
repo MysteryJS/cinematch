@@ -37,8 +37,6 @@ function appendMedia(card, mediaUrls) {
     card.appendChild(mediaWrap);
 }
 
-/* ------------------ RATING (Stars) ------------------ */
-
 function createRatingBlock(postId) {
     const wrap = document.createElement('div');
     wrap.className = 'post-rating';
@@ -72,7 +70,7 @@ async function loadRatingSummary(ratingEl, postId) {
     try {
         const res = await fetch(`/api/forum/posts/${postId}/rating`);
         if (!res.ok) {
-            // Αν αποτύχει, απλώς μην “σπάσεις” το UI
+            // If it fails, just don’t break the UI
             return;
         }
 
@@ -107,7 +105,7 @@ function wireRating(ratingEl) {
             });
 
             if (!res.ok) {
-                alert('Πρέπει να είσαι συνδεδεμένος για να ψηφίσεις.');
+                alert('You must be logged in to vote.');
                 return;
             }
 
@@ -115,8 +113,6 @@ function wireRating(ratingEl) {
         });
     }
 }
-
-/* ---------------------------------------------------- */
 
 async function uploadFilesForPost(postId, files) {
     for (const file of files) {
@@ -144,7 +140,7 @@ async function loadPosts() {
     const res = await fetch(url);
     if (!res.ok) {
         document.getElementById('postsEmpty').style.display = 'block';
-        document.getElementById('postsEmpty').textContent = 'Αποτυχία φόρτωσης posts.';
+        document.getElementById('postsEmpty').textContent = 'Failed to load posts.';
         return;
     }
 
@@ -156,7 +152,7 @@ async function loadPosts() {
 
     if (!posts || posts.length === 0) {
         emptyEl.style.display = 'block';
-        emptyEl.textContent = 'Δεν υπάρχουν posts σε αυτή την κατηγορία.';
+        emptyEl.textContent = 'No posts in this category.';
         return;
     }
 
@@ -166,7 +162,7 @@ async function loadPosts() {
         const card = document.createElement('div');
         card.className = 'movie-card';
 
-        const createdAt = p.createdAt ? new Date(p.createdAt).toLocaleString('el-GR') : '—';
+        const createdAt = p.createdAt ? new Date(p.createdAt).toLocaleString('en-GB') : '—';
 
         card.innerHTML = `
                 <div class="movie-title"></div>
@@ -175,12 +171,12 @@ async function loadPosts() {
             `;
 
         card.querySelector('.movie-title').textContent = p.title ?? '';
-        card.querySelector('.text-muted').textContent = `Χρήστης: ${p.username ?? 'unknown'} | Ημερομηνία: ${createdAt}`;
+        card.querySelector('.text-muted').textContent = `User: ${p.username ?? 'unknown'} | Date: ${createdAt}`;
         card.querySelector('p').textContent = p.content ?? '';
 
         appendMedia(card, p.mediaUrls);
 
-        // --- add rating block κάτω από το post ---
+        // --- add rating block below the post ---
         const ratingBlock = createRatingBlock(p.id);
         card.appendChild(ratingBlock);
         wireRating(ratingBlock);
@@ -219,7 +215,7 @@ async function validateSelectedFiles(files) {
         if (f.type && f.type.startsWith('video/')) {
             const dur = await getVideoDurationSeconds(f);
             if (dur > 60) {
-                throw new Error(`Το video "${f.name}" είναι ${Math.ceil(dur)}s. Επιτρέπονται έως 60s.`);
+                throw new Error(`The video "${f.name}" is ${Math.ceil(dur)}s. Maximum allowed is 60s.`);
             }
         }
         out.push(f);
@@ -275,7 +271,7 @@ async function submitPost() {
 
     if (!res.ok) {
         const text = await res.text();
-        alert(text || 'Αποτυχία δημοσίευσης.');
+        alert(text || 'Failed to post.');
         return;
     }
 
@@ -297,7 +293,7 @@ async function submitPost() {
             await uploadFilesForPost(postId, files);
         }
     } catch (e) {
-        alert('Το post δημιουργήθηκε, αλλά απέτυχε το upload των media: ' + e.message);
+        alert('The post was created, but uploading media failed: ' + e.message);
     }
 
     titleEl.value = '';
@@ -332,3 +328,105 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('submitPostBtn').addEventListener('click', submitPost);
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const langBtn = document.getElementById("lang-btn");
+    if (!langBtn) return;
+    const langFlag = document.getElementById("lang-flag");
+    const langText = document.getElementById("lang-text");
+
+    const translations = {
+        en: {
+            forum: "Forum", categories: "Categories", latest: "Latest Discussions", create: "Create new topic",
+            topicTitle: "Topic title", yourMsg: "Your message...", postBtn: "Post",
+            empty: "No posts yet.", none: "No posts in this category.", user: "User", date: "Date",
+            horror: "Horror Movies", comedy: "Comedies", drama: "Drama", adventure: "Adventure", series: "Series",
+            suggestions: "User Suggestions",
+            rating: "votes", failed: "Failed to load posts.", genCat: "General",
+            footerTag: "Discover movies with smart suggestions and short descriptions.",
+            menu: "Menu", home: "Home", search: "Search", trending: "Trending Movies", quiz: "Quiz",
+            sentiment: "Sentiment Analysis", face: "Face Detection",
+            login: "Login", logout: "Logout", follow: "Follow us",
+            allRights: "All rights reserved.", tou: "Terms of Use", designed: "Designed with ❤ for movie lovers.",
+            imgErr: "The video is too long. Maximum allowed is 60s.",
+            flag: "🇬🇷", btnText: "GR"
+        },
+        el: {
+            forum: "Forum", categories: "Κατηγορίες", latest: "Τελευταίες Συζητήσεις", create: "Δημιούργησε νέο θέμα",
+            topicTitle: "Τίτλος θέματος", yourMsg: "Το μήνυμά σας...", postBtn: "Δημοσίευση",
+            empty: "Δεν υπάρχουν posts ακόμα.", none: "Δεν υπάρχουν posts σε αυτή την κατηγορία.", user: "Χρήστης", date: "Ημερομηνία",
+            horror: "Ταινίες Τρόμου", comedy: "Κωμωδίες", drama: "Δράμα", adventure: "Περιπέτεια", series: "Σειρές",
+            suggestions: "Προτάσεις Χρηστών",
+            rating: "ψήφοι", failed: "Αποτυχία φόρτωσης posts.", genCat: "Γενικά",
+            footerTag: "Ανακαλύψτε ταινίες με έξυπνες προτάσεις και σύντομες περιγραφές.",
+            menu: "Μενού", home: "Αρχική", search: "Αναζήτηση", trending: "Τάσεις", quiz: "Κουίζ",
+            sentiment: "Ανάλυση Συναισθήματος", face: "Ανίχνευση Προσώπου",
+            login: "Σύνδεση", logout: "Αποσύνδεση", follow: "Ακολουθήστε μας",
+            allRights: "Με επιφύλαξη παντός δικαιώματος.", tou: "Όροι Χρήσης", designed: "Designed with ❤ for movie lovers.",
+            imgErr: "Το video είναι πολύ μεγάλο. Μέγιστο επιτρεπόμενο 60s.",
+            flag: "🇬🇧", btnText: "EN"
+        }
+    };
+
+    let currentLang = "el";
+    langBtn.addEventListener("click", () => {
+        currentLang = currentLang === "el" ? "en" : "el";
+        const t = translations[currentLang];
+
+        document.querySelectorAll(".nav-link")[0].textContent = t.home;
+        document.querySelectorAll(".nav-link")[1].textContent = t.search;
+        document.querySelectorAll(".nav-link")[2].textContent = t.trending;
+        document.querySelectorAll(".nav-link")[3].textContent = t.quiz;
+        document.querySelectorAll(".nav-link")[4].textContent = t.sentiment;
+        document.querySelectorAll(".nav-link")[5].textContent = t.face;
+        document.querySelectorAll(".nav-link")[6].textContent = t.forum;
+
+        if (document.querySelector('a[href="/login"]')) document.querySelector('a[href="/login"]').textContent = t.login;
+        if (document.querySelector('a[href="/logout"]')) document.querySelector('a[href="/logout"]').textContent = t.logout;
+
+        document.querySelector(".categories h2").textContent = t.categories;
+        const catBoxes = document.querySelectorAll('.kpi-box[data-category]');
+        if (catBoxes.length >= 6) {
+            catBoxes[0].textContent = t.horror;
+            catBoxes[1].textContent = t.comedy;
+            catBoxes[2].textContent = t.drama;
+            catBoxes[3].textContent = t.adventure;
+            catBoxes[4].textContent = t.series;
+            catBoxes[5].textContent = t.suggestions;
+        }
+
+        document.querySelector(".posts h2").textContent = t.latest;
+        document.getElementById("postsEmpty").textContent = t.empty;
+
+        document.querySelector(".search-container h2").textContent = t.create;
+        document.getElementById("postTitle").placeholder = t.topicTitle;
+        document.getElementById("postContent").placeholder = t.yourMsg;
+        document.getElementById("submitPostBtn").textContent = t.postBtn;
+
+        document.querySelector(".footer-tagline").textContent = t.footerTag;
+        document.querySelector(".footer-nav .footer-title").textContent = t.menu;
+        document.querySelector(".footer-social .footer-title").textContent = t.follow;
+
+        const fLinks = document.querySelectorAll(".footer-menu .footer-link");
+        if (fLinks.length >= 7) {
+            fLinks[0].textContent = t.home;
+            fLinks[1].textContent = t.search;
+            fLinks[2].textContent = t.trending;
+            fLinks[3].textContent = t.quiz;
+            fLinks[4].textContent = t.sentiment;
+            fLinks[5].textContent = t.face;
+            fLinks[6].textContent = t.forum;
+        }
+        const fb = document.querySelector(".footer-bottom .small");
+        if (fb) fb.innerHTML = `&copy; <span id="year">${new Date().getFullYear()}</span> CineMatch — ${t.allRights}`;
+        document.querySelector('.footer-bottom .footer-link').textContent = t.tou;
+
+        langFlag.textContent = t.flag;
+        langText.textContent = t.btnText;
+
+        window.FORUM_LANG = currentLang;
+    });
+
+    window.FORUM_LANG = currentLang;
+});
+
