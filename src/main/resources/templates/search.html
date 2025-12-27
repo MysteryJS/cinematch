@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Movie Search</title>
+  <title>Cinematch — Movie Search</title>
   <link rel="stylesheet" href="search/search.css">
 </head>
 
@@ -22,7 +22,7 @@
         <li><a href="/quiz" class="nav-link">Quiz</a></li>
         <li><a href="/sentiment" class="nav-link">Sentiment Analysis</a></li>
         <li><a href="/face" class="nav-link">Face Detection</a></li>
-        <li><a href="/forum" class="footer-link">Forum</a></li>
+        <li><a href="/forum" class="nav-link">Forum</a></li>
         <li th:if="${isLoggedIn}">
           <a href="/logout" class="nav-link">Logout</a>
         </li>
@@ -117,7 +117,6 @@
       <div class="footer-container">
         <p class="small">&copy; <span id="year">2025</span> CineMatch — All rights reserved.</p>
         <p class="small muted">Designed with ❤ for movie lovers.</p>
-
 
         <a href="/TOU" class="footer-link" style="margin-top:10px; display:inline-block;">
           Terms Of Use
