@@ -37,6 +37,87 @@ function appendMedia(card, mediaUrls) {
     card.appendChild(mediaWrap);
 }
 
+/* ------------------ RATING (Stars) ------------------ */
+
+function createRatingBlock(postId) {
+    const wrap = document.createElement('div');
+    wrap.className = 'post-rating';
+    wrap.setAttribute('data-post-id', String(postId));
+
+    wrap.innerHTML = `
+        <div class="stars" aria-label="Rate this post">
+            <span class="star" data-value="1">★</span>
+            <span class="star" data-value="2">★</span>
+            <span class="star" data-value="3">★</span>
+            <span class="star" data-value="4">★</span>
+            <span class="star" data-value="5">★</span>
+        </div>
+        <div class="rating-meta">
+            <span class="avg">0.0</span>/5 • <span class="count">0</span> votes
+        </div>
+    `;
+    return wrap;
+}
+
+function setStars(ratingEl, value) {
+    const stars = ratingEl.querySelectorAll('.star');
+    for (let i = 0; i < stars.length; i++) {
+        const v = parseInt(stars[i].getAttribute('data-value'), 10);
+        if (v <= value) stars[i].classList.add('active');
+        else stars[i].classList.remove('active');
+    }
+}
+
+async function loadRatingSummary(ratingEl, postId) {
+    try {
+        const res = await fetch(`/api/forum/posts/${postId}/rating`);
+        if (!res.ok) {
+            // Αν αποτύχει, απλώς μην “σπάσεις” το UI
+            return;
+        }
+
+        const data = await res.json();
+        const avg = typeof data.average === 'number' ? data.average : 0.0;
+        const cnt = typeof data.count === 'number' ? data.count : 0;
+
+        ratingEl.querySelector('.avg').textContent = (Math.round(avg * 10) / 10).toFixed(1);
+        ratingEl.querySelector('.count').textContent = String(cnt);
+
+        const my = data.myRating ? data.myRating : 0;
+        setStars(ratingEl, my);
+    } catch (e) {
+        // ignore
+    }
+}
+
+function wireRating(ratingEl) {
+    const postId = ratingEl.getAttribute('data-post-id');
+
+    loadRatingSummary(ratingEl, postId);
+
+    const stars = ratingEl.querySelectorAll('.star');
+    for (let i = 0; i < stars.length; i++) {
+        stars[i].addEventListener('click', async function () {
+            const v = parseInt(this.getAttribute('data-value'), 10);
+
+            const res = await fetch(`/api/forum/posts/${postId}/rating`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ rating: v })
+            });
+
+            if (!res.ok) {
+                alert('Πρέπει να είσαι συνδεδεμένος για να ψηφίσεις.');
+                return;
+            }
+
+            await loadRatingSummary(ratingEl, postId);
+        });
+    }
+}
+
+/* ---------------------------------------------------- */
+
 async function uploadFilesForPost(postId, files) {
     for (const file of files) {
         const formData = new FormData();
@@ -98,6 +179,12 @@ async function loadPosts() {
         card.querySelector('p').textContent = p.content ?? '';
 
         appendMedia(card, p.mediaUrls);
+
+        // --- add rating block κάτω από το post ---
+        const ratingBlock = createRatingBlock(p.id);
+        card.appendChild(ratingBlock);
+        wireRating(ratingBlock);
+
         container.appendChild(card);
     }
 }
@@ -166,7 +253,6 @@ function renderSelectedMediaPreview(files) {
     }
 }
 
-
 async function submitPost() {
     const titleEl = document.getElementById('postTitle');
     const contentEl = document.getElementById('postContent');
@@ -205,7 +291,6 @@ async function submitPost() {
         alert(e.message);
         return;
     }
-
 
     try {
         if (files.length > 0) {
