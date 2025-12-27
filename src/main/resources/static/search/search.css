@@ -77,7 +77,8 @@ body {
 
 .page-header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin: 1.6rem 0 1rem;
+  padding: 0 1rem;
 }
 
 .page-header h1 {
@@ -302,7 +303,6 @@ body {
   color: var(--text-secondary);
 }
 
-/* ----- KPI BOX STYLE ----- */
 .kpi-container {
   margin-top: 20px;
   padding: 15px;
@@ -411,7 +411,6 @@ body {
   margin-bottom: 0;
 }
 
-/* ----- Watch/Search History Button ----- */
 #historyBtn {
   padding: 0.7rem 1.3rem;
   background: var(--accent);
@@ -432,7 +431,6 @@ body {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);
 }
 
-/* ----- History Container ----- */
 #historyContainer {
   margin-top: 1.5rem;
   padding: 1rem;
