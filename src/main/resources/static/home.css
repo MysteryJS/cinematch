@@ -417,32 +417,3 @@ body {
   height: auto;
   border-radius: 2px;
 }
-
-/* Forum post rating stars */
-.post-rating {
-  margin-top: 12px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.post-rating .stars {
-  cursor: pointer;
-  user-select: none;
-}
-
-.post-rating .star {
-  font-size: 20px;
-  opacity: 0.35;
-  margin-right: 2px;
-  transition: opacity 0.15s ease;
-}
-
-.post-rating .star.active {
-  opacity: 1;
-}
-
-.post-rating .rating-meta {
-  font-size: 14px;
-  opacity: 0.85;
-}
