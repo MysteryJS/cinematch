@@ -176,7 +176,6 @@ async function loadPosts() {
 
         appendMedia(card, p.mediaUrls);
 
-        // --- add rating block below the post ---
         const ratingBlock = createRatingBlock(p.id);
         card.appendChild(ratingBlock);
         wireRating(ratingBlock);
@@ -337,7 +336,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const translations = {
         en: {
-            forum: "Forum", categories: "Categories", latest: "Latest Discussions", create: "Create new topic",
+            general: "General", forum: "Forum", categories: "Categories", latest: "Latest Discussions", create: "Create new topic",
             topicTitle: "Topic title", yourMsg: "Your message...", postBtn: "Post",
             empty: "No posts yet.", none: "No posts in this category.", user: "User", date: "Date",
             horror: "Horror Movies", comedy: "Comedies", drama: "Drama", adventure: "Adventure", series: "Series",
@@ -352,7 +351,7 @@ document.addEventListener("DOMContentLoaded", function () {
             flag: "🇬🇷", btnText: "GR"
         },
         el: {
-            forum: "Forum", categories: "Κατηγορίες", latest: "Τελευταίες Συζητήσεις", create: "Δημιούργησε νέο θέμα",
+            general: "Γενικά", forum: "Forum", categories: "Κατηγορίες", latest: "Τελευταίες Συζητήσεις", create: "Δημιούργησε νέο θέμα",
             topicTitle: "Τίτλος θέματος", yourMsg: "Το μήνυμά σας...", postBtn: "Δημοσίευση",
             empty: "Δεν υπάρχουν posts ακόμα.", none: "Δεν υπάρχουν posts σε αυτή την κατηγορία.", user: "Χρήστης", date: "Ημερομηνία",
             horror: "Ταινίες Τρόμου", comedy: "Κωμωδίες", drama: "Δράμα", adventure: "Περιπέτεια", series: "Σειρές",
@@ -386,13 +385,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
         document.querySelector(".categories h2").textContent = t.categories;
         const catBoxes = document.querySelectorAll('.kpi-box[data-category]');
-        if (catBoxes.length >= 6) {
-            catBoxes[0].textContent = t.horror;
-            catBoxes[1].textContent = t.comedy;
-            catBoxes[2].textContent = t.drama;
-            catBoxes[3].textContent = t.adventure;
-            catBoxes[4].textContent = t.series;
-            catBoxes[5].textContent = t.suggestions;
+        if (catBoxes.length >= 7) {
+            catBoxes[0].textContent = t.general;
+            catBoxes[1].textContent = t.horror;
+            catBoxes[2].textContent = t.comedy;
+            catBoxes[3].textContent = t.drama;
+            catBoxes[4].textContent = t.adventure;
+            catBoxes[5].textContent = t.series;
+            catBoxes[6].textContent = t.suggestions;
         }
 
         document.querySelector(".posts h2").textContent = t.latest;
