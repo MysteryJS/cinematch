@@ -40,8 +40,8 @@ class QuizServiceIntegrationTest {
         assertNotNull(result);
         assertTrue(result.containsKey("questions"));
 
-        List<Map<String, Object>> questions =
-                (List<Map<String, Object>>) result.get("questions");
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> questions = (List<Map<String, Object>>) result.get("questions");
 
         assertNotNull(questions);
         assertFalse(questions.isEmpty());
@@ -52,6 +52,7 @@ class QuizServiceIntegrationTest {
         assertTrue(q.containsKey("answers"));
         assertTrue(q.containsKey("correctIndex"));
 
+        @SuppressWarnings("unchecked")
         List<String> answers = (List<String>) q.get("answers");
         assertFalse(answers.isEmpty());
     }

@@ -1,15 +1,16 @@
 package com.project.cinematch;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.cinematch.Controller.QuizHistoryController;
 import com.project.cinematch.Model.User;
 import com.project.cinematch.Repository.QuizHistoryRepository;
 import com.project.cinematch.Repository.UserRepository;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -22,20 +23,18 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@ExtendWith(MockitoExtension.class)
 @WebMvcTest(QuizHistoryController.class)
 class quiztests {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @Mock
     private QuizHistoryRepository quizHistoryRepository;
 
-    @MockBean
+    @Mock
     private UserRepository userRepository;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     private Principal mockPrincipal(String username) {
         return () -> username;

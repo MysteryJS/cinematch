@@ -18,6 +18,7 @@ class ApiConnectivityTest {
 
         String url = "https://opentdb.com/api.php?amount=1&category=11&difficulty=easy";
 
+        @SuppressWarnings("unchecked")
         Map<String, Object> response =
                 restTemplate.getForObject(url, Map.class);
 

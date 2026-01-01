@@ -28,7 +28,7 @@ public class logintest {
 
         ResponseEntity<?> response = controller.login(login);
 
-        assertEquals(401, response.getStatusCodeValue());
+        assertEquals(401, response.getStatusCode().value());
         assertEquals("User not found", response.getBody());
     }
 
@@ -50,7 +50,7 @@ public class logintest {
 
         ResponseEntity<?> response = controller.login(login);
 
-        assertEquals(401, response.getStatusCodeValue());
+        assertEquals(401, response.getStatusCode().value());
         assertEquals("Wrong password", response.getBody());
     }
 
@@ -72,7 +72,7 @@ public class logintest {
 
         ResponseEntity<?> response = controller.login(login);
 
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(200, response.getStatusCode().value());
         assertEquals(user, response.getBody());
     }
 
