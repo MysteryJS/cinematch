@@ -63,7 +63,7 @@ class quiztests {
         mockMvc.perform(post("/api/user/quiz-history")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
-                .andExpect(status().isOk()); // controller returns void
+                .andExpect(status().isOk());
 
         verify(quizHistoryRepository, never()).save(any());
     }

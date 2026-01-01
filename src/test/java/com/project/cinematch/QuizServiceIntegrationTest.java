@@ -18,7 +18,6 @@ class QuizServiceIntegrationTest {
 
         RestTemplate mockRestTemplate = mock(RestTemplate.class);
 
-        // Mock API JSON response
         Map<String, Object> fakeApiResponse = Map.of(
                 "results", List.of(
                         Map.of(
@@ -29,13 +28,11 @@ class QuizServiceIntegrationTest {
                 )
         );
 
-        // Make mockRestTemplate return the fake response
         when(mockRestTemplate.getForObject(
                 org.mockito.ArgumentMatchers.anyString(),
                 org.mockito.ArgumentMatchers.eq(Map.class)
         )).thenReturn(fakeApiResponse);
 
-        // Inject mock into service
         QuizService quizService = new QuizService(mockRestTemplate);
 
         Map<String, Object> result = quizService.fetchQuiz(3, "easy");
