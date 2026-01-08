@@ -1,7 +1,7 @@
 ![image alt](https://github.com/MysteryJS/cinematch/blob/main/src/main/resources/static/logo.png)
 
 CineMatch, a movie recommendation application.
-# For more information you can visit our [wiki page](https://github.com/MysteryJS/cinematch/wiki)
+# 📔 For more information you can visit our [wiki page](https://github.com/MysteryJS/cinematch/wiki)
 
 # 🖱️ Instrutions
 ```sh
