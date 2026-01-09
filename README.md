@@ -27,9 +27,9 @@ touch .env
 # .env file content
 OMDB_KEY=your_OMDB_key
 TRAKT_CLIENT_ID=your_trakt_key
-DB_URL=your_db_url
-DB_USER=your_db_user
-DB_PASS=your_db_password
+DB_URL=jdbc:postgresql://postgres:5432/cinematchdb
+DB_USER=cinematch
+DB_PASS=secret
 ```
 
 ```dockerfile
